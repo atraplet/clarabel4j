@@ -3,7 +3,7 @@
 [![Build](https://github.com/atraplet/clarabel4j/actions/workflows/build.yml/badge.svg)](https://github.com/atraplet/clarabel4j/actions/workflows/build.yml)
 [![Codecov](https://codecov.io/github/atraplet/clarabel4j/graph/badge.svg?token=S8TXRQ4UAZ)](https://codecov.io/github/atraplet/clarabel4j)
 [![Maven Central](https://img.shields.io/maven-central/v/com.ustermetrics/clarabel4j)](https://central.sonatype.com/artifact/com.ustermetrics/clarabel4j)
-[![GPLv3 licensed](https://img.shields.io/badge/license-GPLv3-blue)](https://github.com/atraplet/clarabel4j/blob/master/LICENSE)
+[![Apache License, Version 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/atraplet/clarabel4j/blob/master/LICENSE)
 
 *This library requires JDK 22 as it depends on Java's
 new [Foreign Function and Memory (FFM) API](https://docs.oracle.com/en/java/javase/22/core/foreign-function-and-memory-api.html).*
