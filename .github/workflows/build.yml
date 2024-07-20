@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_call:
+    secrets:
+      codecov_token:
+        required: true
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get JDK version from Maven project
+        shell: bash
+        run: |
+          JDK_VERSION=$(mvn help:evaluate -Dexpression=maven.compiler.source -q -DforceStdout)
+          echo "JDK_VERSION=$JDK_VERSION" >> $GITHUB_ENV
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JDK_VERSION }}
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B clean verify -P coverage --file pom.xml
+      - name: Upload coverage reports to Codecov
+        if: matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v4.5.0
+        with:
+          token: ${{ secrets.codecov_token }}
+          slug: atraplet/clarabel4j
