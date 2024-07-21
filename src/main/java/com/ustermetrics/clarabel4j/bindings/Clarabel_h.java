@@ -2,9 +2,6 @@
 
 package com.ustermetrics.clarabel4j.bindings;
 
-import org.scijava.nativelib.NativeLoader;
-
-import java.io.IOException;
 import java.lang.invoke.*;
 import java.lang.foreign.*;
 import java.nio.ByteOrder;
@@ -19,14 +16,6 @@ public class Clarabel_h {
 
     Clarabel_h() {
         // Should not be called directly
-    }
-
-    static {
-        try {
-            NativeLoader.loadLibrary("clarabel_c");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     static final Arena LIBRARY_ARENA = Arena.ofAuto();
@@ -85,68 +74,6 @@ public class Clarabel_h {
      * }
      */
     public static final OfDouble ClarabelFloat = Clarabel_h.C_DOUBLE;
-
-    private static class clarabel_CscMatrix_f32_init {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG,
-            Clarabel_h.C_LONG,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_CscMatrix_f32_init");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * void clarabel_CscMatrix_f32_init(ClarabelCscMatrix_f32 *ptr, uintptr_t m, uintptr_t n, const uintptr_t *colptr, const uintptr_t *rowval, const float *nzval)
-     * }
-     */
-    public static FunctionDescriptor clarabel_CscMatrix_f32_init$descriptor() {
-        return clarabel_CscMatrix_f32_init.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * void clarabel_CscMatrix_f32_init(ClarabelCscMatrix_f32 *ptr, uintptr_t m, uintptr_t n, const uintptr_t *colptr, const uintptr_t *rowval, const float *nzval)
-     * }
-     */
-    public static MethodHandle clarabel_CscMatrix_f32_init$handle() {
-        return clarabel_CscMatrix_f32_init.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * void clarabel_CscMatrix_f32_init(ClarabelCscMatrix_f32 *ptr, uintptr_t m, uintptr_t n, const uintptr_t *colptr, const uintptr_t *rowval, const float *nzval)
-     * }
-     */
-    public static MemorySegment clarabel_CscMatrix_f32_init$address() {
-        return clarabel_CscMatrix_f32_init.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * void clarabel_CscMatrix_f32_init(ClarabelCscMatrix_f32 *ptr, uintptr_t m, uintptr_t n, const uintptr_t *colptr, const uintptr_t *rowval, const float *nzval)
-     * }
-     */
-    public static void clarabel_CscMatrix_f32_init(MemorySegment ptr, long m, long n, MemorySegment colptr, MemorySegment rowval, MemorySegment nzval) {
-        var mh$ = clarabel_CscMatrix_f32_init.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_CscMatrix_f32_init", ptr, m, n, colptr, rowval, nzval);
-            }
-            mh$.invokeExact(ptr, m, n, colptr, rowval, nzval);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
 
     private static class clarabel_CscMatrix_f64_init {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
@@ -373,62 +300,6 @@ public class Clarabel_h {
            throw new AssertionError("should not reach here", ex$);
         }
     }
-
-    private static class clarabel_DefaultSettings_f32_default {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultSettings_f32.layout()    );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSettings_f32_default");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSettings_f32 clarabel_DefaultSettings_f32_default()
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSettings_f32_default$descriptor() {
-        return clarabel_DefaultSettings_f32_default.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSettings_f32 clarabel_DefaultSettings_f32_default()
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSettings_f32_default$handle() {
-        return clarabel_DefaultSettings_f32_default.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSettings_f32 clarabel_DefaultSettings_f32_default()
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSettings_f32_default$address() {
-        return clarabel_DefaultSettings_f32_default.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultSettings_f32 clarabel_DefaultSettings_f32_default()
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSettings_f32_default(SegmentAllocator allocator) {
-        var mh$ = clarabel_DefaultSettings_f32_default.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSettings_f32_default", allocator);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
     private static final int ClarabelZeroConeT_Tag = (int)0L;
     /**
      * {@snippet lang=c :
@@ -548,70 +419,6 @@ public class Clarabel_h {
         }
     }
 
-    private static class clarabel_DefaultSolver_f32_new {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_new");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSolver_f32 *clarabel_DefaultSolver_f32_new(const ClarabelCscMatrix_f32 *P, const float *q, const ClarabelCscMatrix_f32 *A, const float *b, uintptr_t n_cones, const ClarabelSupportedConeT_f32 *cones, const ClarabelDefaultSettings_f32 *settings)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_new$descriptor() {
-        return clarabel_DefaultSolver_f32_new.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSolver_f32 *clarabel_DefaultSolver_f32_new(const ClarabelCscMatrix_f32 *P, const float *q, const ClarabelCscMatrix_f32 *A, const float *b, uintptr_t n_cones, const ClarabelSupportedConeT_f32 *cones, const ClarabelDefaultSettings_f32 *settings)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_new$handle() {
-        return clarabel_DefaultSolver_f32_new.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSolver_f32 *clarabel_DefaultSolver_f32_new(const ClarabelCscMatrix_f32 *P, const float *q, const ClarabelCscMatrix_f32 *A, const float *b, uintptr_t n_cones, const ClarabelSupportedConeT_f32 *cones, const ClarabelDefaultSettings_f32 *settings)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_new$address() {
-        return clarabel_DefaultSolver_f32_new.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultSolver_f32 *clarabel_DefaultSolver_f32_new(const ClarabelCscMatrix_f32 *P, const float *q, const ClarabelCscMatrix_f32 *A, const float *b, uintptr_t n_cones, const ClarabelSupportedConeT_f32 *cones, const ClarabelDefaultSettings_f32 *settings)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_new(MemorySegment P, MemorySegment q, MemorySegment A, MemorySegment b, long n_cones, MemorySegment cones, MemorySegment settings) {
-        var mh$ = clarabel_DefaultSolver_f32_new.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_new", P, q, A, b, n_cones, cones, settings);
-            }
-            return (MemorySegment)mh$.invokeExact(P, q, A, b, n_cones, cones, settings);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
     private static class clarabel_DefaultSolver_f64_solve {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
             Clarabel_h.C_POINTER
@@ -669,63 +476,6 @@ public class Clarabel_h {
         }
     }
 
-    private static class clarabel_DefaultSolver_f32_solve {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_solve");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_solve(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_solve$descriptor() {
-        return clarabel_DefaultSolver_f32_solve.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_solve(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_solve$handle() {
-        return clarabel_DefaultSolver_f32_solve.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_solve(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_solve$address() {
-        return clarabel_DefaultSolver_f32_solve.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_solve(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static void clarabel_DefaultSolver_f32_solve(MemorySegment solver) {
-        var mh$ = clarabel_DefaultSolver_f32_solve.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_solve", solver);
-            }
-            mh$.invokeExact(solver);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
     private static class clarabel_DefaultSolver_f64_free {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
             Clarabel_h.C_POINTER
@@ -776,63 +526,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_free", solver);
-            }
-            mh$.invokeExact(solver);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_free {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_free");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_free(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_free$descriptor() {
-        return clarabel_DefaultSolver_f32_free.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_free(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_free$handle() {
-        return clarabel_DefaultSolver_f32_free.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_free(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_free$address() {
-        return clarabel_DefaultSolver_f32_free.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * void clarabel_DefaultSolver_f32_free(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static void clarabel_DefaultSolver_f32_free(MemorySegment solver) {
-        var mh$ = clarabel_DefaultSolver_f32_free.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_free", solver);
             }
             mh$.invokeExact(solver);
         } catch (Throwable ex$) {
@@ -898,64 +591,6 @@ public class Clarabel_h {
         }
     }
 
-    private static class clarabel_DefaultSolver_f32_solution {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultSolution_f32.layout(),
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_solution");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSolution_f32 clarabel_DefaultSolver_f32_solution(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_solution$descriptor() {
-        return clarabel_DefaultSolver_f32_solution.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSolution_f32 clarabel_DefaultSolver_f32_solution(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_solution$handle() {
-        return clarabel_DefaultSolver_f32_solution.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultSolution_f32 clarabel_DefaultSolver_f32_solution(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_solution$address() {
-        return clarabel_DefaultSolver_f32_solution.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultSolution_f32 clarabel_DefaultSolver_f32_solution(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_solution(SegmentAllocator allocator, MemorySegment solver) {
-        var mh$ = clarabel_DefaultSolver_f32_solution.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_solution", allocator, solver);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
     private static class clarabel_DefaultSolver_f64_info {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             ClarabelDefaultInfo_f64.layout(),
@@ -1007,64 +642,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_info", allocator, solver);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_info {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_info");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_info(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_info$descriptor() {
-        return clarabel_DefaultSolver_f32_info.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_info(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_info$handle() {
-        return clarabel_DefaultSolver_f32_info.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_info(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_info$address() {
-        return clarabel_DefaultSolver_f32_info.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_info(ClarabelDefaultSolver_f32 *solver)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_info(SegmentAllocator allocator, MemorySegment solver) {
-        var mh$ = clarabel_DefaultSolver_f32_info.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_info", allocator, solver);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver);
         } catch (Throwable ex$) {
@@ -1125,66 +702,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_update_P", allocator, solver, Pnzval, nnzP);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, Pnzval, nnzP);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_update_P {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_P");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P(ClarabelDefaultSolver_f32 *solver, const float *Pnzval, uintptr_t nnzP)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_P$descriptor() {
-        return clarabel_DefaultSolver_f32_update_P.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P(ClarabelDefaultSolver_f32 *solver, const float *Pnzval, uintptr_t nnzP)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_P$handle() {
-        return clarabel_DefaultSolver_f32_update_P.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P(ClarabelDefaultSolver_f32 *solver, const float *Pnzval, uintptr_t nnzP)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_P$address() {
-        return clarabel_DefaultSolver_f32_update_P.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P(ClarabelDefaultSolver_f32 *solver, const float *Pnzval, uintptr_t nnzP)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_P(SegmentAllocator allocator, MemorySegment solver, MemorySegment Pnzval, long nnzP) {
-        var mh$ = clarabel_DefaultSolver_f32_update_P.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_P", allocator, solver, Pnzval, nnzP);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver, Pnzval, nnzP);
         } catch (Throwable ex$) {
@@ -1253,67 +770,6 @@ public class Clarabel_h {
         }
     }
 
-    private static class clarabel_DefaultSolver_f32_update_P_partial {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_P_partial");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_P_partial$descriptor() {
-        return clarabel_DefaultSolver_f32_update_P_partial.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_P_partial$handle() {
-        return clarabel_DefaultSolver_f32_update_P_partial.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_P_partial$address() {
-        return clarabel_DefaultSolver_f32_update_P_partial.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_P_partial(SegmentAllocator allocator, MemorySegment solver, MemorySegment index, MemorySegment values, long nvals) {
-        var mh$ = clarabel_DefaultSolver_f32_update_P_partial.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_P_partial", allocator, solver, index, values, nvals);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, index, values, nvals);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
     private static class clarabel_DefaultSolver_f64_update_P_csc {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             ClarabelDefaultInfo_f64.layout(),
@@ -1366,65 +822,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_update_P_csc", allocator, solver, P);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, P);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_update_P_csc {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_P_csc");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *P)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_P_csc$descriptor() {
-        return clarabel_DefaultSolver_f32_update_P_csc.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *P)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_P_csc$handle() {
-        return clarabel_DefaultSolver_f32_update_P_csc.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *P)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_P_csc$address() {
-        return clarabel_DefaultSolver_f32_update_P_csc.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_P_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *P)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_P_csc(SegmentAllocator allocator, MemorySegment solver, MemorySegment P) {
-        var mh$ = clarabel_DefaultSolver_f32_update_P_csc.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_P_csc", allocator, solver, P);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver, P);
         } catch (Throwable ex$) {
@@ -1485,66 +882,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_update_A", allocator, solver, Anzval, nnzA);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, Anzval, nnzA);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_update_A {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_A");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A(ClarabelDefaultSolver_f32 *solver, const float *Anzval, uintptr_t nnzA)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_A$descriptor() {
-        return clarabel_DefaultSolver_f32_update_A.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A(ClarabelDefaultSolver_f32 *solver, const float *Anzval, uintptr_t nnzA)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_A$handle() {
-        return clarabel_DefaultSolver_f32_update_A.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A(ClarabelDefaultSolver_f32 *solver, const float *Anzval, uintptr_t nnzA)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_A$address() {
-        return clarabel_DefaultSolver_f32_update_A.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A(ClarabelDefaultSolver_f32 *solver, const float *Anzval, uintptr_t nnzA)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_A(SegmentAllocator allocator, MemorySegment solver, MemorySegment Anzval, long nnzA) {
-        var mh$ = clarabel_DefaultSolver_f32_update_A.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_A", allocator, solver, Anzval, nnzA);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver, Anzval, nnzA);
         } catch (Throwable ex$) {
@@ -1613,67 +950,6 @@ public class Clarabel_h {
         }
     }
 
-    private static class clarabel_DefaultSolver_f32_update_A_partial {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_A_partial");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_A_partial$descriptor() {
-        return clarabel_DefaultSolver_f32_update_A_partial.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_A_partial$handle() {
-        return clarabel_DefaultSolver_f32_update_A_partial.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_A_partial$address() {
-        return clarabel_DefaultSolver_f32_update_A_partial.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_A_partial(SegmentAllocator allocator, MemorySegment solver, MemorySegment index, MemorySegment values, long nvals) {
-        var mh$ = clarabel_DefaultSolver_f32_update_A_partial.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_A_partial", allocator, solver, index, values, nvals);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, index, values, nvals);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
     private static class clarabel_DefaultSolver_f64_update_A_csc {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             ClarabelDefaultInfo_f64.layout(),
@@ -1726,65 +1002,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_update_A_csc", allocator, solver, A);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, A);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_update_A_csc {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_A_csc");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *A)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_A_csc$descriptor() {
-        return clarabel_DefaultSolver_f32_update_A_csc.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *A)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_A_csc$handle() {
-        return clarabel_DefaultSolver_f32_update_A_csc.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *A)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_A_csc$address() {
-        return clarabel_DefaultSolver_f32_update_A_csc.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_A_csc(ClarabelDefaultSolver_f32 *solver, const ClarabelCscMatrix_f32 *A)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_A_csc(SegmentAllocator allocator, MemorySegment solver, MemorySegment A) {
-        var mh$ = clarabel_DefaultSolver_f32_update_A_csc.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_A_csc", allocator, solver, A);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver, A);
         } catch (Throwable ex$) {
@@ -1845,66 +1062,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_update_q", allocator, solver, values, n);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, values, n);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_update_q {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_q");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_q$descriptor() {
-        return clarabel_DefaultSolver_f32_update_q.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_q$handle() {
-        return clarabel_DefaultSolver_f32_update_q.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_q$address() {
-        return clarabel_DefaultSolver_f32_update_q.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_q(SegmentAllocator allocator, MemorySegment solver, MemorySegment values, long n) {
-        var mh$ = clarabel_DefaultSolver_f32_update_q.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_q", allocator, solver, values, n);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver, values, n);
         } catch (Throwable ex$) {
@@ -1973,67 +1130,6 @@ public class Clarabel_h {
         }
     }
 
-    private static class clarabel_DefaultSolver_f32_update_q_partial {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_q_partial");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_q_partial$descriptor() {
-        return clarabel_DefaultSolver_f32_update_q_partial.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_q_partial$handle() {
-        return clarabel_DefaultSolver_f32_update_q_partial.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_q_partial$address() {
-        return clarabel_DefaultSolver_f32_update_q_partial.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_q_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_q_partial(SegmentAllocator allocator, MemorySegment solver, MemorySegment index, MemorySegment values, long nvals) {
-        var mh$ = clarabel_DefaultSolver_f32_update_q_partial.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_q_partial", allocator, solver, index, values, nvals);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, index, values, nvals);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
     private static class clarabel_DefaultSolver_f64_update_b {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             ClarabelDefaultInfo_f64.layout(),
@@ -2087,66 +1183,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_update_b", allocator, solver, values, n);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, values, n);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_update_b {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_b");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_b$descriptor() {
-        return clarabel_DefaultSolver_f32_update_b.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_b$handle() {
-        return clarabel_DefaultSolver_f32_update_b.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_b$address() {
-        return clarabel_DefaultSolver_f32_update_b.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b(ClarabelDefaultSolver_f32 *solver, const float *values, uintptr_t n)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_b(SegmentAllocator allocator, MemorySegment solver, MemorySegment values, long n) {
-        var mh$ = clarabel_DefaultSolver_f32_update_b.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_b", allocator, solver, values, n);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver, values, n);
         } catch (Throwable ex$) {
@@ -2208,67 +1244,6 @@ public class Clarabel_h {
         try {
             if (TRACE_DOWNCALLS) {
                 traceDowncall("clarabel_DefaultSolver_f64_update_b_partial", allocator, solver, index, values, nvals);
-            }
-            return (MemorySegment)mh$.invokeExact(allocator, solver, index, values, nvals);
-        } catch (Throwable ex$) {
-           throw new AssertionError("should not reach here", ex$);
-        }
-    }
-
-    private static class clarabel_DefaultSolver_f32_update_b_partial {
-        public static final FunctionDescriptor DESC = FunctionDescriptor.of(
-            ClarabelDefaultInfo_f32.layout(),
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
-        );
-
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f32_update_b_partial");
-
-        public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
-    }
-
-    /**
-     * Function descriptor for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static FunctionDescriptor clarabel_DefaultSolver_f32_update_b_partial$descriptor() {
-        return clarabel_DefaultSolver_f32_update_b_partial.DESC;
-    }
-
-    /**
-     * Downcall method handle for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MethodHandle clarabel_DefaultSolver_f32_update_b_partial$handle() {
-        return clarabel_DefaultSolver_f32_update_b_partial.HANDLE;
-    }
-
-    /**
-     * Address for:
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_b_partial$address() {
-        return clarabel_DefaultSolver_f32_update_b_partial.ADDR;
-    }
-
-    /**
-     * {@snippet lang=c :
-     * ClarabelDefaultInfo_f32 clarabel_DefaultSolver_f32_update_b_partial(ClarabelDefaultSolver_f32 *solver, const uintptr_t *index, const float *values, uintptr_t nvals)
-     * }
-     */
-    public static MemorySegment clarabel_DefaultSolver_f32_update_b_partial(SegmentAllocator allocator, MemorySegment solver, MemorySegment index, MemorySegment values, long nvals) {
-        var mh$ = clarabel_DefaultSolver_f32_update_b_partial.HANDLE;
-        try {
-            if (TRACE_DOWNCALLS) {
-                traceDowncall("clarabel_DefaultSolver_f32_update_b_partial", allocator, solver, index, values, nvals);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver, index, values, nvals);
         } catch (Throwable ex$) {
