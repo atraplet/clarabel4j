@@ -2,6 +2,9 @@
 
 package com.ustermetrics.clarabel4j.bindings;
 
+import org.scijava.nativelib.NativeLoader;
+
+import java.io.IOException;
 import java.lang.invoke.*;
 import java.lang.foreign.*;
 import java.nio.ByteOrder;
@@ -16,6 +19,14 @@ public class Clarabel_h {
 
     Clarabel_h() {
         // Should not be called directly
+    }
+
+    static {
+        try {
+            NativeLoader.loadLibrary("clarabel_c");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     static final Arena LIBRARY_ARENA = Arena.ofAuto();
