@@ -49,21 +49,21 @@ public class ClarabelSupportedConeT_f64 {
         MemoryLayout.paddingLayout(4),
         MemoryLayout.unionLayout(
             MemoryLayout.structLayout(
-                Clarabel_h.C_LONG.withName("zero_cone_t")
+                Clarabel_h.C_LONG_LONG.withName("zero_cone_t")
             ).withName("$anon$66:9"),
             MemoryLayout.structLayout(
-                Clarabel_h.C_LONG.withName("nonnegative_cone_t")
+                Clarabel_h.C_LONG_LONG.withName("nonnegative_cone_t")
             ).withName("$anon$70:9"),
             MemoryLayout.structLayout(
-                Clarabel_h.C_LONG.withName("second_order_cone_t")
+                Clarabel_h.C_LONG_LONG.withName("second_order_cone_t")
             ).withName("$anon$74:9"),
             MemoryLayout.structLayout(
                 Clarabel_h.C_DOUBLE.withName("power_cone_t")
             ).withName("$anon$79:9"),
             MemoryLayout.structLayout(
                 Clarabel_h.C_POINTER.withName("genpow_cone_alpha_t"),
-                Clarabel_h.C_LONG.withName("genpow_cone_dim1_t"),
-                Clarabel_h.C_LONG.withName("genpow_cone_dim2_t")
+                Clarabel_h.C_LONG_LONG.withName("genpow_cone_dim1_t"),
+                Clarabel_h.C_LONG_LONG.withName("genpow_cone_dim2_t")
             ).withName("$anon$83:9")
         ).withName("$anon$64:5")
     ).withName("ClarabelSupportedConeT_f64");

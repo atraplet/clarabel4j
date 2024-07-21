@@ -78,7 +78,6 @@ public class Clarabel_h {
     public static final ValueLayout.OfDouble C_DOUBLE = ValueLayout.JAVA_DOUBLE;
     public static final AddressLayout C_POINTER = ValueLayout.ADDRESS
             .withTargetLayout(MemoryLayout.sequenceLayout(java.lang.Long.MAX_VALUE, JAVA_BYTE));
-    public static final ValueLayout.OfLong C_LONG = ValueLayout.JAVA_LONG;
     /**
      * {@snippet lang=c :
      * typedef double ClarabelFloat
@@ -89,8 +88,8 @@ public class Clarabel_h {
     private static class clarabel_CscMatrix_f64_init {
         public static final FunctionDescriptor DESC = FunctionDescriptor.ofVoid(
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG,
-            Clarabel_h.C_LONG,
+            Clarabel_h.C_LONG_LONG,
+            Clarabel_h.C_LONG_LONG,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER
@@ -373,7 +372,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG,
+            Clarabel_h.C_LONG_LONG,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER
         );
@@ -665,7 +664,7 @@ public class Clarabel_h {
             ClarabelDefaultInfo_f64.layout(),
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_P");
@@ -726,7 +725,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_P_partial");
@@ -845,7 +844,7 @@ public class Clarabel_h {
             ClarabelDefaultInfo_f64.layout(),
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_A");
@@ -906,7 +905,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_A_partial");
@@ -1025,7 +1024,7 @@ public class Clarabel_h {
             ClarabelDefaultInfo_f64.layout(),
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_q");
@@ -1086,7 +1085,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_q_partial");
@@ -1146,7 +1145,7 @@ public class Clarabel_h {
             ClarabelDefaultInfo_f64.layout(),
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_b");
@@ -1207,7 +1206,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
             Clarabel_h.C_POINTER,
-            Clarabel_h.C_LONG
+            Clarabel_h.C_LONG_LONG
         );
 
         public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_b_partial");

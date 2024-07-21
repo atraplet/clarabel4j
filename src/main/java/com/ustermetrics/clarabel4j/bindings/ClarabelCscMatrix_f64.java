@@ -30,8 +30,8 @@ public class ClarabelCscMatrix_f64 {
     }
 
     private static final GroupLayout $LAYOUT = MemoryLayout.structLayout(
-        Clarabel_h.C_LONG.withName("m"),
-        Clarabel_h.C_LONG.withName("n"),
+        Clarabel_h.C_LONG_LONG.withName("m"),
+        Clarabel_h.C_LONG_LONG.withName("n"),
         Clarabel_h.C_POINTER.withName("colptr"),
         Clarabel_h.C_POINTER.withName("rowval"),
         Clarabel_h.C_POINTER.withName("nzval")

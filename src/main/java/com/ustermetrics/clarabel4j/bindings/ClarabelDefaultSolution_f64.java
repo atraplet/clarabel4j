@@ -39,11 +39,11 @@ public class ClarabelDefaultSolution_f64 {
 
     private static final GroupLayout $LAYOUT = MemoryLayout.structLayout(
         Clarabel_h.C_POINTER.withName("x"),
-        Clarabel_h.C_LONG.withName("x_length"),
+        Clarabel_h.C_LONG_LONG.withName("x_length"),
         Clarabel_h.C_POINTER.withName("z"),
-        Clarabel_h.C_LONG.withName("z_length"),
+        Clarabel_h.C_LONG_LONG.withName("z_length"),
         Clarabel_h.C_POINTER.withName("s"),
-        Clarabel_h.C_LONG.withName("s_length"),
+        Clarabel_h.C_LONG_LONG.withName("s_length"),
         Clarabel_h.C_INT.withName("status"),
         MemoryLayout.paddingLayout(4),
         Clarabel_h.C_DOUBLE.withName("obj_val"),
