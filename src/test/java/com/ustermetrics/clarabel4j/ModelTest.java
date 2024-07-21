@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 class ModelTest {
 
     @Test
-    void versionReturnsNonEmptyString() {
+    void test() {
     }
 
 }
