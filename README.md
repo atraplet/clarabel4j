@@ -63,9 +63,9 @@ The scripts depend on the [jextract](https://jdk.java.net/jextract/) tool, which
 from native library headers.
 
 The bindings are generated in two steps: First, `./bindings/generate_includes.sh` generates the dumps of the included
-symbols in the `includes.txt` file. Replace absolute path with relative path in the comments.
-Second, `./bindings/generate_bindings.sh` generates the actual Java bindings. Finally, add `NativeLoader.loadLibrary`
-and remove the platform dependent layout constants.
+symbols in the `includes.txt` file. Replace absolute platform dependent path with relative platform independent path in
+the comments. Remove unused includes. Second, `./bindings/generate_bindings.sh` generates the actual Java bindings.
+Add `NativeLoader.loadLibrary.` Remove platform dependent layout constants and make the code platform independent.
 
 ## Release
 
