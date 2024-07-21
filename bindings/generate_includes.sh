@@ -26,5 +26,5 @@ ${JEXTRACT} \
   "${CLARABEL}"/include/Clarabel.h
 
 # select symbols
-grep "Clarabel" "${TMP_INCLUDES}" >"${INCLUDES}"
+grep "Clarabel" "${TMP_INCLUDES}" | grep -v "f32" >"${INCLUDES}"
 rm -f "${TMP_INCLUDES}"
