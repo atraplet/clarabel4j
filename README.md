@@ -88,5 +88,7 @@ release.
 ## Credits
 
 This project is based on the native open source mathematical programming
-solver [Clarabel](https://clarabel.org), which is developed and maintained
-by Paul Goulart and other members of the [Oxford Control Group](http://www.eng.ox.ac.uk/control).
+solver [Clarabel](https://clarabel.org), which is developed and maintained by Paul Goulart,
+the [Oxford Control Group](http://www.eng.ox.ac.uk/control), and
+other contributors. For details see https://github.com/oxfordcontrol/Clarabel.rs and
+https://github.com/oxfordcontrol/Clarabel.cpp.
