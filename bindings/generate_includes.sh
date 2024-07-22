@@ -26,5 +26,5 @@ ${JEXTRACT} \
   "${CLARABEL}"/include/Clarabel.h
 
 # select symbols
-#grep "ecos\|fflush" "${TMP_INCLUDES}" | grep -v "SuiteSparse\|timer\|fflush_nolock\|fflush_unlocked" >"${INCLUDES}"
-#rm -f "${TMP_INCLUDES}"
+grep "Clarabel" "${TMP_INCLUDES}" | grep -v "f32" >"${INCLUDES}"
+rm -f "${TMP_INCLUDES}"
