@@ -4,4 +4,5 @@ module com.ustermetrics.clarabel4j {
     requires org.scijava.nativelib;
 
     exports com.ustermetrics.clarabel4j;
+    exports com.ustermetrics.clarabel4j.cone;
 }
