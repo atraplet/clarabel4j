@@ -57,7 +57,7 @@ public record Parameters(Integer maxIter, Double timeLimit, Boolean verbose, Dou
                          Double reducedTolInfeasAbs, Double reducedTolInfeasRel, Double reducedTolKtratio,
                          Boolean equilibrateEnable, Integer equilibrateMaxIter, Double equilibrateMinScaling,
                          Double equilibrateMaxScaling, Double linesearchBacktrackStep, Double minSwitchStepLength,
-                         Double minTerminateStepLength, Boolean directKktSolver, DirectSolveMethods directSolveMethod,
+                         Double minTerminateStepLength, Boolean directKktSolver, DirectSolveMethod directSolveMethod,
                          Boolean staticRegularizationEnable, Double staticRegularizationConstant,
                          Double staticRegularizationProportional, Boolean dynamicRegularizationEnable,
                          Double dynamicRegularizationEps, Double dynamicRegularizationDelta,
