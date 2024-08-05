@@ -1,19 +1,12 @@
 package com.ustermetrics.clarabel4j.cone;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelPowerConeT_Tag;
 
-import static com.ustermetrics.clarabel4j.cone.ConeType.POWER_CONE;
-
-@Getter
-@AllArgsConstructor
-public class PowerCone implements Cone {
-
-    private final double a;
+public record PowerCone(double a) implements Cone {
 
     @Override
-    public ConeType getConeType() {
-        return POWER_CONE;
+    public int getTag() {
+        return ClarabelPowerConeT_Tag();
     }
 
 }

@@ -1,8 +1,8 @@
 package com.ustermetrics.clarabel4j.cone;
 
-// TODO @NonNull etc everywhere in cone
-public interface Cone {
+public sealed interface Cone permits ZeroCone, NonnegativeCone, SecondOrderCone, ExponentialCone, PowerCone,
+        GenPowerCone {
 
-    ConeType getConeType();
+    int getTag();
 
 }

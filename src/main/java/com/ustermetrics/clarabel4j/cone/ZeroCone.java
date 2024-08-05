@@ -1,11 +1,12 @@
 package com.ustermetrics.clarabel4j.cone;
 
-import static com.ustermetrics.clarabel4j.cone.ConeType.ZERO_CONE;
+import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelZeroConeT_Tag;
 
-public class ZeroCone extends ConeWithDimension {
+public record ZeroCone(long n) implements Cone {
 
-    public ZeroCone(long dimension) {
-        super(ZERO_CONE, dimension);
+    @Override
+    public int getTag() {
+        return ClarabelZeroConeT_Tag();
     }
 
 }

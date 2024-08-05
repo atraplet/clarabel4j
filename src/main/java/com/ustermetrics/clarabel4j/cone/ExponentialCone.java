@@ -1,12 +1,12 @@
 package com.ustermetrics.clarabel4j.cone;
 
-import static com.ustermetrics.clarabel4j.cone.ConeType.EXPONENTIAL_CONE;
+import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelExponentialConeT_Tag;
 
-public class ExponentialCone implements Cone {
+public record ExponentialCone() implements Cone {
 
     @Override
-    public ConeType getConeType() {
-        return EXPONENTIAL_CONE;
+    public int getTag() {
+        return ClarabelExponentialConeT_Tag();
     }
 
 }
