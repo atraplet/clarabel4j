@@ -28,7 +28,7 @@ public record GenPowerCone(double @NonNull [] a, long n) implements Cone {
     }
 
     @Override
-    public int getTag() {
+    public int tag() {
         return ClarabelGenPowerConeT_Tag();
     }
 

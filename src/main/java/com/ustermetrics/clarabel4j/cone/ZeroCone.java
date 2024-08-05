@@ -16,7 +16,7 @@ public record ZeroCone(long n) implements Cone {
     }
 
     @Override
-    public int getTag() {
+    public int tag() {
         return ClarabelZeroConeT_Tag();
     }
 

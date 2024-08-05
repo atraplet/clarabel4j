@@ -16,7 +16,7 @@ public record PowerCone(double a) implements Cone {
     }
 
     @Override
-    public int getTag() {
+    public int tag() {
         return ClarabelPowerConeT_Tag();
     }
 

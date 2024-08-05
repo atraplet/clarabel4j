@@ -16,7 +16,7 @@ public record NonnegativeCone(long n) implements Cone {
     }
 
     @Override
-    public int getTag() {
+    public int tag() {
         return ClarabelNonnegativeConeT_Tag();
     }
 
