@@ -1,4 +1,4 @@
-package com.ustermetrics.clarabel4j.cone;
+package com.ustermetrics.clarabel4j;
 
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelExponentialConeT_Tag;
 

@@ -1,4 +1,4 @@
-package com.ustermetrics.clarabel4j.cone;
+package com.ustermetrics.clarabel4j;
 
 import lombok.NonNull;
 
