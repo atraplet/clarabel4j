@@ -7,10 +7,10 @@ import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelExponentia
  *
  * @see <a href="https://clarabel.org">Clarabel</a>
  */
-public record ExponentialCone() implements Cone {
+public final class ExponentialCone extends Cone {
 
     @Override
-    public int tag() {
+    int getTag() {
         return ClarabelExponentialConeT_Tag();
     }
 

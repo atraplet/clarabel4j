@@ -1,5 +1,6 @@
 package com.ustermetrics.clarabel4j;
 
+import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.Arrays;
@@ -11,24 +12,33 @@ import static java.lang.Math.abs;
 /**
  * Generalized Power Cone
  *
- * @param a power defining the cone
- * @param n dimension
  * @see <a href="https://clarabel.org">Clarabel</a>
  */
-public record GenPowerCone(double @NonNull [] a, long n) implements Cone {
+@Getter
+public final class GenPowerCone extends Cone {
 
     private static final double TOLERANCE = Math.ulp(1.0);
 
-    public GenPowerCone {
+    private final double[] a;
+    private final long n;
+
+    /**
+     * @param a power defining the cone
+     * @param n dimension
+     */
+    public GenPowerCone(double @NonNull [] a, long n) {
         checkArgument(a.length > 0, "Length of a must be positive");
         checkArgument(Arrays.stream(a).allMatch(e -> 0 < e && e < 1), "All elements of a must be in (0, 1)");
         checkArgument(abs(Arrays.stream(a).sum() - 1.0) < TOLERANCE,
                 "The sum of all elements of a must be equal to one");
         checkArgument(n > 0, "n must be positive");
+
+        this.a = a;
+        this.n = n;
     }
 
     @Override
-    public int tag() {
+    int getTag() {
         return ClarabelGenPowerConeT_Tag();
     }
 

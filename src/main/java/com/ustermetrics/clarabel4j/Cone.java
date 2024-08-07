@@ -1,13 +1,13 @@
 package com.ustermetrics.clarabel4j;
 
 /**
- * Cone interface permits supported cone types
+ * Abstract sealed class {@code Cone} permits supported cone types.
  *
  * @see <a href="https://clarabel.org">Clarabel</a>
  */
-public sealed interface Cone
+public abstract sealed class Cone
         permits ZeroCone, NonnegativeCone, SecondOrderCone, ExponentialCone, PowerCone, GenPowerCone {
 
-    int tag();
+    abstract int getTag();
 
 }
