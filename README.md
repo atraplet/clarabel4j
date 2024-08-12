@@ -5,6 +5,8 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.ustermetrics/clarabel4j)](https://central.sonatype.com/artifact/com.ustermetrics/clarabel4j)
 [![Apache License, Version 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/atraplet/clarabel4j/blob/master/LICENSE)
 
+*Work in progress*
+
 *This library requires JDK 22 as it depends on Java's
 new [Foreign Function and Memory (FFM) API](https://docs.oracle.com/en/java/javase/22/core/foreign-function-and-memory-api.html).*
 
