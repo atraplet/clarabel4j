@@ -17,7 +17,7 @@ import static java.lang.Math.abs;
 @Getter
 public final class GenPowerCone extends Cone {
 
-    private static final double TOLERANCE = Math.ulp(1.0);
+    private static final double TOLERANCE = Math.ulp(1.);
 
     private final double[] a;
     private final long n;
@@ -29,7 +29,7 @@ public final class GenPowerCone extends Cone {
     public GenPowerCone(double @NonNull [] a, long n) {
         checkArgument(a.length > 0, "Length of a must be positive");
         checkArgument(Arrays.stream(a).allMatch(e -> 0 < e && e < 1), "All elements of a must be in (0, 1)");
-        checkArgument(abs(Arrays.stream(a).sum() - 1.0) < TOLERANCE,
+        checkArgument(abs(Arrays.stream(a).sum() - 1.) < TOLERANCE,
                 "The sum of all elements of a must be equal to one");
         checkArgument(n > 0, "n must be positive");
 
