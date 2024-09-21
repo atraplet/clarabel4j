@@ -28,4 +28,9 @@ public final class SecondOrderCone extends Cone {
         return ClarabelSecondOrderConeT_Tag();
     }
 
+    @Override
+    long getDimension() {
+        return n;
+    }
+
 }

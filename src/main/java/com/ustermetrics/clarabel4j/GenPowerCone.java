@@ -42,4 +42,9 @@ public final class GenPowerCone extends Cone {
         return ClarabelGenPowerConeT_Tag();
     }
 
+    @Override
+    long getDimension() {
+        return a.length + n;
+    }
+
 }

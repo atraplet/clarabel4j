@@ -28,4 +28,9 @@ public final class NonnegativeCone extends Cone {
         return ClarabelNonnegativeConeT_Tag();
     }
 
+    @Override
+    long getDimension() {
+        return n;
+    }
+
 }

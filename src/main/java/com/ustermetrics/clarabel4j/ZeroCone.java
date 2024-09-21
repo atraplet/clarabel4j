@@ -28,4 +28,9 @@ public final class ZeroCone extends Cone {
         return ClarabelZeroConeT_Tag();
     }
 
+    @Override
+    long getDimension() {
+        return n;
+    }
+
 }

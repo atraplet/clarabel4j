@@ -14,4 +14,9 @@ public final class ExponentialCone extends Cone {
         return ClarabelExponentialConeT_Tag();
     }
 
+    @Override
+    long getDimension() {
+        return 3;
+    }
+
 }

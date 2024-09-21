@@ -28,4 +28,9 @@ public final class PowerCone extends Cone {
         return ClarabelPowerConeT_Tag();
     }
 
+    @Override
+    long getDimension() {
+        return 3;
+    }
+
 }
