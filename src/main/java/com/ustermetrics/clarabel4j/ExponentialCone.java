@@ -15,7 +15,7 @@ public final class ExponentialCone extends Cone {
     }
 
     @Override
-    long getDimension() {
+    public long getDimension() {
         return 3;
     }
 

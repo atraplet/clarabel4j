@@ -10,6 +10,6 @@ public abstract sealed class Cone
 
     abstract int getTag();
 
-    abstract long getDimension();
+    public abstract long getDimension();
 
 }

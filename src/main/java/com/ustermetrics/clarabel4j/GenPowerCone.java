@@ -43,7 +43,7 @@ public final class GenPowerCone extends Cone {
     }
 
     @Override
-    long getDimension() {
+    public long getDimension() {
         return a.length + n;
     }
 

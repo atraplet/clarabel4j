@@ -29,7 +29,7 @@ public final class PowerCone extends Cone {
     }
 
     @Override
-    long getDimension() {
+    public long getDimension() {
         return 3;
     }
 

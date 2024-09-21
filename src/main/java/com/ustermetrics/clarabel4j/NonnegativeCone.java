@@ -29,7 +29,7 @@ public final class NonnegativeCone extends Cone {
     }
 
     @Override
-    long getDimension() {
+    public long getDimension() {
         return n;
     }
 
