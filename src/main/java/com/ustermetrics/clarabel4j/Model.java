@@ -206,6 +206,8 @@ public class Model implements AutoCloseable {
                 .ifPresent(maxIter -> ClarabelDefaultSettings_f64.max_iter(settingsSeg, maxIter));
         Optional.ofNullable(parameters.timeLimit())
                 .ifPresent(timeLimit -> ClarabelDefaultSettings_f64.time_limit(settingsSeg, timeLimit));
+        Optional.ofNullable(parameters.verbose())
+                .ifPresent(verbose -> ClarabelDefaultSettings_f64.verbose(settingsSeg, verbose));
         Optional.ofNullable(parameters.maxStepFraction())
                 .ifPresent(maxStepFraction ->
                         ClarabelDefaultSettings_f64.max_step_fraction(settingsSeg, maxStepFraction));
@@ -238,6 +240,9 @@ public class Model implements AutoCloseable {
         Optional.ofNullable(parameters.reducedTolKtratio())
                 .ifPresent(reducedTolKtratio ->
                         ClarabelDefaultSettings_f64.reduced_tol_ktratio(settingsSeg, reducedTolKtratio));
+        Optional.ofNullable(parameters.equilibrateEnable())
+                .ifPresent(equilibrateEnable ->
+                        ClarabelDefaultSettings_f64.equilibrate_enable(settingsSeg, equilibrateEnable));
         Optional.ofNullable(parameters.equilibrateMaxIter())
                 .ifPresent(equilibrateMaxIter ->
                         ClarabelDefaultSettings_f64.equilibrate_max_iter(settingsSeg, equilibrateMaxIter));
@@ -256,6 +261,16 @@ public class Model implements AutoCloseable {
         Optional.ofNullable(parameters.minTerminateStepLength())
                 .ifPresent(minTerminateStepLength ->
                         ClarabelDefaultSettings_f64.min_terminate_step_length(settingsSeg, minTerminateStepLength));
+        Optional.ofNullable(parameters.directKktSolver())
+                .ifPresent(directKktSolver ->
+                        ClarabelDefaultSettings_f64.direct_kkt_solver(settingsSeg, directKktSolver));
+        Optional.ofNullable(parameters.directSolveMethod())
+                .ifPresent(directSolveMethod ->
+                        ClarabelDefaultSettings_f64.direct_solve_method(settingsSeg, directSolveMethod.method()));
+        Optional.ofNullable(parameters.staticRegularizationEnable())
+                .ifPresent(staticRegularizationEnable ->
+                        ClarabelDefaultSettings_f64.static_regularization_enable(settingsSeg,
+                                staticRegularizationEnable));
         Optional.ofNullable(parameters.staticRegularizationConstant())
                 .ifPresent(staticRegularizationConstant ->
                         ClarabelDefaultSettings_f64.static_regularization_constant(settingsSeg,
@@ -264,6 +279,10 @@ public class Model implements AutoCloseable {
                 .ifPresent(staticRegularizationProportional ->
                         ClarabelDefaultSettings_f64.static_regularization_proportional(settingsSeg,
                                 staticRegularizationProportional));
+        Optional.ofNullable(parameters.dynamicRegularizationEnable())
+                .ifPresent(dynamicRegularizationEnable ->
+                        ClarabelDefaultSettings_f64.dynamic_regularization_enable(settingsSeg,
+                                dynamicRegularizationEnable));
         Optional.ofNullable(parameters.dynamicRegularizationEps())
                 .ifPresent(dynamicRegularizationEps ->
                         ClarabelDefaultSettings_f64.dynamic_regularization_eps(settingsSeg, dynamicRegularizationEps));
@@ -271,6 +290,10 @@ public class Model implements AutoCloseable {
                 .ifPresent(dynamicRegularizationDelta ->
                         ClarabelDefaultSettings_f64.dynamic_regularization_delta(settingsSeg,
                                 dynamicRegularizationDelta));
+        Optional.ofNullable(parameters.iterativeRefinementEnable())
+                .ifPresent(iterativeRefinementEnable ->
+                        ClarabelDefaultSettings_f64.iterative_refinement_enable(settingsSeg,
+                                iterativeRefinementEnable));
         Optional.ofNullable(parameters.iterativeRefinementReltol())
                 .ifPresent(iterativeRefinementReltol ->
                         ClarabelDefaultSettings_f64.iterative_refinement_reltol(settingsSeg,
@@ -287,6 +310,8 @@ public class Model implements AutoCloseable {
                 .ifPresent(iterativeRefinementStopRatio ->
                         ClarabelDefaultSettings_f64.iterative_refinement_stop_ratio(settingsSeg,
                                 iterativeRefinementStopRatio));
+        Optional.ofNullable(parameters.presolveEnable())
+                .ifPresent(presolveEnable -> ClarabelDefaultSettings_f64.presolve_enable(settingsSeg, presolveEnable));
     }
 
     public Status optimize() {
