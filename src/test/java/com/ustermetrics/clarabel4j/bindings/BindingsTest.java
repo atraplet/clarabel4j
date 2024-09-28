@@ -21,15 +21,15 @@ class BindingsTest {
             val pColPtrSeg = arena.allocateFrom(C_LONG_LONG, 0, 0, 0);
             clarabel_CscMatrix_f64_init(pSeg, 2, 2, pColPtrSeg, NULL, NULL);
 
-            val qSeg = arena.allocateFrom(C_DOUBLE, 1.0, -1.0);
+            val qSeg = arena.allocateFrom(C_DOUBLE, 1., -1.);
 
             val aSeg = ClarabelCscMatrix_f64.allocate(arena);
             val aColPtrSeg = arena.allocateFrom(C_LONG_LONG, 0, 2, 4);
             val aRowValSeg = arena.allocateFrom(C_LONG_LONG, 0, 2, 1, 3);
-            val aNzValSeg = arena.allocateFrom(C_DOUBLE, 1.0, -1.0, 1.0, -1.0);
+            val aNzValSeg = arena.allocateFrom(C_DOUBLE, 1., -1., 1., -1.);
             clarabel_CscMatrix_f64_init(aSeg, 4, 2, aColPtrSeg, aRowValSeg, aNzValSeg);
 
-            val bSeg = arena.allocateFrom(C_DOUBLE, 1.0, 1.0, 1.0, 1.0);
+            val bSeg = arena.allocateFrom(C_DOUBLE, 1., 1., 1., 1.);
 
             val conesSeg = ClarabelSupportedConeT_f64.allocateArray(1, arena);
             val coneSeg = ClarabelSupportedConeT_f64.asSlice(conesSeg, 0);
