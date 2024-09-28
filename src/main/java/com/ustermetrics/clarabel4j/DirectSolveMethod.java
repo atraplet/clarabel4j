@@ -17,7 +17,7 @@ public enum DirectSolveMethod {
         this.method = method;
     }
 
-    private int method() {
+    int method() {
         return method;
     }
 
