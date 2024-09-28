@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ModelTest {
 
     @Test
-    void solveLpReturnsExpectedSolution() {
+    void solveLinearProgramReturnsExpectedSolution() {
         // Linear program from the Clarabel examples
         // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_lp.c.
         try (val model = new Model()) {
