@@ -16,7 +16,7 @@ class BindingsTest {
     void solveLinearProgramReturnsExpectedSolution() {
         try (val arena = Arena.ofConfined()) {
             // Create linear program from the Clarabel examples
-            // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_lp.c.
+            // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_lp.c
             val pSeg = ClarabelCscMatrix_f64.allocate(arena);
             val pColPtrSeg = arena.allocateFrom(C_LONG_LONG, 0, 0, 0);
             clarabel_CscMatrix_f64_init(pSeg, 2, 2, pColPtrSeg, NULL, NULL);
