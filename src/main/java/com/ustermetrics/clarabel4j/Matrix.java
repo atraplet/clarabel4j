@@ -26,14 +26,16 @@ public record Matrix(int m, int n, long @NonNull [] colPtr, long @NonNull [] row
     public Matrix {
         checkArgument(m > 0, "number of rows must be positive");
         checkArgument(n > 0, "number of columns must be positive");
+        checkArgument(colPtr.length > 0, "length of the column index must be positive");
+        checkArgument(rowVal.length > 0, "length of the row index must be positive");
+        checkArgument(nzVal.length > 0, "length of data must be positive");
 
         val nnz = nzVal.length;
         checkArgument(nnz == rowVal.length, "length of data must be equal to the length of the row index");
         checkArgument(colPtr.length == n + 1,
                 "length of the column index must be equal to the number of columns plus one");
-        checkArgument(0 < nnz && nnz <= m * n,
-                "number of non-zero entries must be greater than zero and less equal than the number of rows times " +
-                        "the number of columns");
+        checkArgument(nnz <= m * n,
+                "number of non-zero entries must be less equal than the number of rows times the number of columns");
         checkArgument(Arrays.stream(rowVal).allMatch(i -> 0 <= i && i < m),
                 "entries of the row index must be greater equal zero and less than the number of rows");
         checkArgument(colPtr[0] == 0 && colPtr[colPtr.length - 1] == nnz,
