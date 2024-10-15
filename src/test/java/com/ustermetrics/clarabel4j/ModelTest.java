@@ -15,9 +15,13 @@ class ModelTest {
     void solveLinearProgramReturnsExpectedSolution() {
         // Linear program from the Clarabel examples
         // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_lp.c
+        val q = new double[]{1., -1.};
+        val a = new Matrix(4, 2, new long[]{0, 2, 4}, new long[]{0, 2, 1, 3}, new double[]{1., -1., 1., -1.});
+        val b = new double[]{1., 1., 1., 1.};
+        final List<Cone> cones = List.of(new NonnegativeCone(4));
+
         try (val model = new Model()) {
-            model.setup(new double[]{1., -1.}, new double[]{1., -1., 1., -1.}, new long[]{0, 2, 4},
-                    new long[]{0, 2, 1, 3}, new double[]{1., 1., 1., 1.}, List.of(new NonnegativeCone(4)));
+            model.setup(q, a, b, cones);
 
             val parameters = Parameters.builder()
                     .equilibrateEnable(true)
@@ -46,10 +50,15 @@ class ModelTest {
     void solveQuadraticProgramReturnsExpectedSolution() {
         // Quadratic program from the Clarabel examples
         // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_qp.c
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val q = new double[]{-1., -4.};
+        val a = new Matrix(5, 2, new long[]{0, 3, 6}, new long[]{0, 1, 3, 0, 2, 4},
+                new double[]{1., 1., -1., -2., 1., -1.});
+        val b = new double[]{0., 1., 1., 1., 1.};
+        val cones = List.of(new ZeroCone(1), new NonnegativeCone(4));
+
         try (val model = new Model()) {
-            model.setup(new double[]{6., 4.}, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{-1., -4.},
-                    new double[]{1., 1., -1., -2., 1., -1.}, new long[]{0, 3, 6}, new long[]{0, 1, 3, 0, 2, 4},
-                    new double[]{0., 1., 1., 1., 1.}, List.of(new ZeroCone(1), new NonnegativeCone(4)));
+            model.setup(p, q, a, b, cones);
 
             val parameters = Parameters.builder()
                     .verbose(false)
@@ -70,10 +79,13 @@ class ModelTest {
     void solveSecondOrderConeProgramReturnsExpectedSolution() {
         // Second-order cone program from the Clarabel examples
         // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_socp.c
+        val p = new Matrix(2, 2, new long[]{0, 0, 1}, new long[]{1}, new double[]{2.});
+        val a = new Matrix(3, 2, new long[]{0, 1, 2}, new long[]{1, 2}, new double[]{-2., -1.});
+        val b = new double[]{1., -2., -2.};
+        final List<Cone> cones = List.of(new SecondOrderCone(3));
+
         try (val model = new Model()) {
-            model.setup(new double[]{2.}, new long[]{0, 0, 1}, new long[]{1}, new double[]{0., 0.},
-                    new double[]{-2., -1.}, new long[]{0, 1, 2}, new long[]{1, 2}, new double[]{1., -2., -2.},
-                    List.of(new SecondOrderCone(3)));
+            model.setup(p, a, b, cones);
 
             val parameters = Parameters.builder()
                     .verbose(false)
@@ -94,10 +106,14 @@ class ModelTest {
     void solveExponentialConeProgramReturnsExpectedSolution() {
         // Exponential cone program from the Clarabel examples
         // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_expcone.c
+        val q = new double[]{-1., 0., 0.};
+        val a = new Matrix(5, 3, new long[]{0, 1, 3, 5}, new long[]{0, 1, 3, 2, 4},
+                new double[]{-1., -1., 1., -1., 1.});
+        val b = new double[]{0., 0., 0., 1., exp(5.)};
+        val cones = List.of(new ExponentialCone(), new ZeroCone(2));
+
         try (val model = new Model()) {
-            model.setup(new double[]{-1., 0., 0.}, new double[]{-1., -1., 1., -1., 1.}, new long[]{0, 1, 3, 5},
-                    new long[]{0, 1, 3, 2, 4}, new double[]{0., 0., 0., 1., exp(5.)},
-                    List.of(new ExponentialCone(), new ZeroCone(2)));
+            model.setup(q, a, b, cones);
 
             val parameters = Parameters.builder()
                     .verbose(false)
@@ -119,11 +135,14 @@ class ModelTest {
     void solvePowerConeProgramReturnsExpectedSolution() {
         // Power cone program from the Clarabel examples
         // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_powcone.c
+        val q = new double[]{0., 0., -1., 0., 0., -1.};
+        val a = new Matrix(8, 6, new long[]{0, 2, 4, 5, 7, 9, 10}, new long[]{0, 6, 1, 6, 2, 3, 6, 4, 7, 5},
+                new double[]{-1., 1., -1., 2., -1., -1., 3., -1., 1., -1.});
+        val b = new double[]{0., 0., 0., 0., 0., 0., 3., 1.};
+        val cones = List.of(new PowerCone(0.6), new PowerCone(0.1), new ZeroCone(1), new ZeroCone(1));
+
         try (val model = new Model()) {
-            model.setup(new double[]{0., 0., -1., 0., 0., -1.},
-                    new double[]{-1., 1., -1., 2., -1., -1., 3., -1., 1., -1.}, new long[]{0, 2, 4, 5, 7, 9, 10},
-                    new long[]{0, 6, 1, 6, 2, 3, 6, 4, 7, 5}, new double[]{0., 0., 0., 0., 0., 0., 3., 1.},
-                    List.of(new PowerCone(0.6), new PowerCone(0.1), new ZeroCone(1), new ZeroCone(1)));
+            model.setup(q, a, b, cones);
 
             val parameters = Parameters.builder()
                     .verbose(false)
@@ -148,12 +167,15 @@ class ModelTest {
     void solveGeneralizedPowerConeProgramReturnsExpectedSolution() {
         // Generalized power cone program from the Clarabel examples
         // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_genpowcone.c
+        val q = new double[]{0., 0., -1., 0., 0., -1.};
+        val a = new Matrix(8, 6, new long[]{0, 2, 4, 5, 7, 9, 10}, new long[]{0, 6, 1, 6, 2, 3, 6, 4, 7, 5},
+                new double[]{-1., 1., -1., 2., -1., -1., 3., -1., 1., -1.});
+        val b = new double[]{0., 0., 0., 0., 0., 0., 3., 1.};
+        val cones = List.of(new GenPowerCone(new double[]{0.6, 0.4}, 1), new GenPowerCone(new double[]{0.1, 0.9}, 1),
+                new ZeroCone(1), new ZeroCone(1));
+
         try (val model = new Model()) {
-            model.setup(new double[]{0., 0., -1., 0., 0., -1.},
-                    new double[]{-1., 1., -1., 2., -1., -1., 3., -1., 1., -1.}, new long[]{0, 2, 4, 5, 7, 9, 10},
-                    new long[]{0, 6, 1, 6, 2, 3, 6, 4, 7, 5}, new double[]{0., 0., 0., 0., 0., 0., 3., 1.},
-                    List.of(new GenPowerCone(new double[]{0.6, 0.4}, 1), new GenPowerCone(new double[]{0.1, 0.9}, 1),
-                            new ZeroCone(1), new ZeroCone(1)));
+            model.setup(q, a, b, cones);
 
             val parameters = Parameters.builder()
                     .verbose(false)
