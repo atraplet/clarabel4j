@@ -66,7 +66,7 @@ public record Parameters(Integer maxIter, Double timeLimit, Boolean verbose, Dou
                          Double iterativeRefinementStopRatio, Boolean presolveEnable) {
 
     public Parameters {
-        val errMsg = "%s must be positive";
+        val errMsg = "%s must be null or positive";
         checkArgument(maxIter == null || maxIter > 0, errMsg, "maxIter");
         checkArgument(timeLimit == null || timeLimit > 0., errMsg, "timeLimit");
         checkArgument(maxStepFraction == null || maxStepFraction > 0., errMsg, "maxStepFraction");
