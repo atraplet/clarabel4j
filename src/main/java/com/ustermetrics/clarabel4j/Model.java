@@ -9,15 +9,12 @@ import lombok.val;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.*;
-import static java.lang.Math.toIntExact;
 import static java.lang.foreign.MemorySegment.NULL;
 
 /**
@@ -43,7 +40,7 @@ public class Model implements AutoCloseable {
     private MemorySegment solutionSeg;
 
     /**
-     * Set up the {@link Model} data for a convex optimization problem of type
+     * Set up this {@link Model} data for a convex optimization problem of type
      * <pre>
      * minimize        1/2 x'Px + q'x
      * subject to      Ax + s = b
@@ -53,253 +50,176 @@ public class Model implements AutoCloseable {
      * K is a composition of convex cones. Supported cones are the Zero cone, the Nonnegative Orthant, the
      * Second-Order Cone, the Exponential Cone, the Power Cone, and the Generalized Power Cone.
      *
-     * @param pNzVal  the (optional) cost function sparse P matrix data (Column Compressed Storage CCS).
-     * @param pColPtr the (optional) cost function sparse P matrix column index (CCS).
-     * @param pRowVal the (optional) cost function sparse P matrix row index (CCS). Entries within each column need
-     *                to appear in order of increasing row index.
-     * @param q       the (optional) cost function q weights.
-     * @param aNzVal  the (optional) cone constraints sparse A matrix data (CCS).
-     * @param aColPtr the (optional) cone constraints sparse A matrix column index (CCS).
-     * @param aRowVal the (optional) cone constraints sparse A matrix row index (CCS). Entries within each column
-     *                need to appear in order of increasing row index.
-     * @param b       the right-hand-side of the cone constraints.
-     * @param cones   the types and dimensions of the convex cones.
+     * @param p     (optional) cost function matrix P. P is assumed to be positive semi-definite and only values in
+     *              the upper triangular part of P need to be supplied.
+     * @param q     (optional) cost function weights q
+     * @param a     (optional) cone constraints matrix A
+     * @param b     (optional) right-hand-side of the cone constraints
+     * @param cones (optional) types and dimensions of the convex cones
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
-    public void setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal, long[] aColPtr,
-                      long[] aRowVal, double[] b, List<@NonNull Cone> cones) {
-        checkArguments(pNzVal, pColPtr, pRowVal, q, aNzVal, aColPtr, aRowVal, b, cones);
-        unsafeSetup(pNzVal, pColPtr, pRowVal, q, aNzVal, aColPtr, aRowVal, b, cones);
+    public void setup(Matrix p, double[] q, Matrix a, double[] b, List<@NonNull Cone> cones) {
+        checkArguments(p, q, a, b, cones);
+        unsafeSetup(p, q, a, b, cones);
     }
 
-    private static void checkArguments(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal,
-                                       long[] aColPtr, long[] aRowVal, double[] b, List<Cone> cones) {
-        checkArgument(pColPtr != null && pRowVal != null && pNzVal != null
-                        || pColPtr == null && pRowVal == null && pNzVal == null,
-                "all arguments of the matrix P must be supplied together or must be null together");
-        checkArgument(aColPtr != null && aRowVal != null && aNzVal != null && b != null && cones != null
-                        || aColPtr == null && aRowVal == null && aNzVal == null && b == null && cones == null,
-                "all arguments of the matrix A, the array b, and the cones must be supplied together or must be null" +
-                        " together");
-        checkArgument(pColPtr != null || aColPtr != null, "matrix P or matrix A must be supplied");
+    private static void checkArguments(Matrix p, double[] q, Matrix a, double[] b, List<Cone> cones) {
+        checkArgument(p != null || a != null, "P or A must be supplied");
+        checkArgument(a != null && b != null && cones != null || a == null && b == null && cones == null,
+                "A, b, and cones must be supplied together or must be null together");
 
-        val nCols = nCols(pColPtr, aColPtr);
-        if (pColPtr != null) {
-            checkMatrix(pNzVal, pColPtr, pRowVal, nCols, nCols, "P");
-        }
+        checkArgument(p == null || p.m() == p.n(), "P must be null or a square matrix");
+        checkArgument(q == null || q.length > 0, "q must be null or the length must be positive");
+        checkArgument(b == null || b.length > 0, "b must be null or the length must be positive");
+        checkArgument(cones == null || !cones.isEmpty(), "cones must be null or not empty");
 
-        if (q != null) {
-            checkArgument(q.length == nCols,
-                    "array q must have the same length as the number of columns (rows) of the matrix P (if supplied) " +
-                            "or the number of columns of the matrix A (if supplied)");
-        }
-
-        if (aColPtr != null) {
-            val nRows = b.length;
-            checkMatrix(aNzVal, aColPtr, aRowVal, nRows, nCols, "A");
-            checkArgument(nRows == cones.stream().mapToLong(Cone::getDimension).sum(),
-                    "length of the array b must be equal to the dimension of the convex set K");
-        }
-    }
-
-    private static int nCols(long[] pColPtr, long[] aColPtr) {
-        if (pColPtr != null) {
-            return pColPtr.length - 1;
-        } else {
-            return aColPtr.length - 1;
-        }
-    }
-
-    private static void checkMatrix(double[] mNzVal, long[] mColPtr, long[] mRowVal, int nRows, int nCols,
-                                    String mName) {
-        checkArgument(nRows > 0, "matrix %s: number of rows must be positive", mName);
-        checkArgument(nCols > 0, "matrix %s: number of columns must be positive", mName);
-
-        val nnz = mNzVal.length;
-        checkArgument(0 < nnz && nnz <= nRows * nCols,
-                "matrix %s: number of non-zero entries must be greater than zero and less equal than the number of " +
-                        "rows times the number of columns", mName);
-        checkArgument(mRowVal.length == nnz,
-                "matrix %s: number of entries in the row index must be equal to the number of non-zero entries", mName);
-        checkArgument(mColPtr.length == nCols + 1,
-                "length of the column index must be equal to the number of columns plus one", mName);
-        checkArgument(Arrays.stream(mRowVal).allMatch(i -> 0 <= i && i < nRows),
-                "matrix %s: entries of the row index must be greater equal zero and less than the number of rows",
-                mName);
-        checkArgument(mColPtr[0] == 0 && mColPtr[mColPtr.length - 1] == nnz,
-                "matrix %s: the first entry of the column index must be equal to zero and the last entry must be " +
-                        "equal to the number of non-zero entries", mName);
-        checkArgument(IntStream.range(0, mColPtr.length - 1).allMatch(i ->
-                        0 <= mColPtr[i] && mColPtr[i] <= nnz && mColPtr[i] <= mColPtr[i + 1]
-                                && IntStream.range(toIntExact(mColPtr[i]), toIntExact(mColPtr[i + 1]) - 1).allMatch(j -> mRowVal[j] < mRowVal[j + 1])),
-                "matrix %s: entries of the column index must be greater equal zero, less equal than the number of " +
-                        "non-zero entries, and must be ordered, entries of the row index within each column must be " +
-                        "strictly ordered", mName);
+        checkArgument(p == null || q == null || p.n() == q.length,
+                "P or q must be null or the number of columns of P must be equal to the length of q");
+        checkArgument(p == null || a == null || p.n() == a.n(),
+                "P or A must be null or the number of columns of P must be equal to the number of columns of A");
+        checkArgument(q == null || a == null || q.length == a.n(),
+                "q or A must be null or the length of q must be equal to the number of columns of A");
+        checkArgument(a == null || a.m() == b.length,
+                "A must be null or the number of rows of A must be equal to the length of b");
+        checkArgument(a == null || a.m() == cones.stream().mapToLong(Cone::getDimension).sum(),
+                "A must be null or the number of rows of A must be equal to the dimension of the convex set K");
     }
 
     /**
      * Set up the {@link Model} data.
      * <p>
-     * Same as
-     * {@link Model#setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b, List cones)}
-     * without quadratic cost function part, i.e. {@code pNzVal}, {@code pColPtr}, and {@code pRowVal} are {@code null}.
+     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without quadratic cost
+     * function part, i.e. {@code p} is {@code null}.
      *
-     * @param q       the (optional) cost function q weights.
-     * @param aNzVal  the (optional) cone constraints sparse A matrix data (CCS).
-     * @param aColPtr the (optional) cone constraints sparse A matrix column index (CCS).
-     * @param aRowVal the (optional) cone constraints sparse A matrix row index (CCS). Entries within each column
-     *                need to appear in order of increasing row index.
-     * @param b       the right-hand-side of the cone constraints.
-     * @param cones   the types and dimensions of the convex cones.
+     * @param q     (optional) cost function weights q
+     * @param a     cone constraints matrix A
+     * @param b     right-hand-side of the cone constraints
+     * @param cones types and dimensions of the convex cones
      */
-    public void setup(double[] q, double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b,
-                      List<@NonNull Cone> cones) {
-        setup(null, null, null, q, aNzVal, aColPtr, aRowVal, b, cones);
+    public void setup(double[] q, @NonNull Matrix a, double @NonNull [] b, @NonNull List<@NonNull Cone> cones) {
+        setup(null, q, a, b, cones);
     }
 
     /**
      * Set up the {@link Model} data.
      * <p>
-     * Same as
-     * {@link Model#setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b, List cones)}
-     * without linear cost function part, i.e. {@code q} is {@code null}.
+     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without linear cost
+     * function part, i.e. {@code q} is {@code null}.
      *
-     * @param pNzVal  the (optional) cost function sparse P matrix data (Column Compressed Storage CCS).
-     * @param pColPtr the (optional) cost function sparse P matrix column index (CCS).
-     * @param pRowVal the (optional) cost function sparse P matrix row index (CCS). Entries within each column need
-     *                to appear in order of increasing row index.
-     * @param aNzVal  the (optional) cone constraints sparse A matrix data (CCS).
-     * @param aColPtr the (optional) cone constraints sparse A matrix column index (CCS).
-     * @param aRowVal the (optional) cone constraints sparse A matrix row index (CCS). Entries within each column
-     *                need to appear in order of increasing row index.
-     * @param b       the right-hand-side of the cone constraints.
-     * @param cones   the types and dimensions of the convex cones.
+     * @param p     (optional) cost function matrix P. P is assumed to be positive semi-definite and only values in
+     *              the upper triangular part of P need to be supplied.
+     * @param a     (optional) cone constraints matrix A
+     * @param b     (optional) right-hand-side of the cone constraints
+     * @param cones (optional) types and dimensions of the convex cones
      */
-    public void setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] aNzVal, long[] aColPtr,
-                      long[] aRowVal, double[] b, List<@NonNull Cone> cones) {
-        setup(pNzVal, pColPtr, pRowVal, null, aNzVal, aColPtr, aRowVal, b, cones);
+    public void setup(Matrix p, Matrix a, double[] b, List<@NonNull Cone> cones) {
+        setup(p, null, a, b, cones);
     }
 
     /**
      * Set up the {@link Model} data.
      * <p>
-     * Same as
-     * {@link Model#setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b, List cones)}
-     * without cost function, i.e. {@code pNzVal}, {@code pColPtr}, {@code pRowVal}, and {@code q} are
-     * {@code null}.
+     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without cost function, i.e.
+     * {@code p} and {@code q} are {@code null}.
      *
-     * @param aNzVal  the (optional) cone constraints sparse A matrix data (CCS).
-     * @param aColPtr the (optional) cone constraints sparse A matrix column index (CCS).
-     * @param aRowVal the (optional) cone constraints sparse A matrix row index (CCS). Entries within each column
-     *                need to appear in order of increasing row index.
-     * @param b       the right-hand-side of the cone constraints.
-     * @param cones   the types and dimensions of the convex cones.
+     * @param a     cone constraints matrix A
+     * @param b     right-hand-side of the cone constraints
+     * @param cones types and dimensions of the convex cones
      */
-    public void setup(double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b, List<@NonNull Cone> cones) { //
-        setup(null, null, null, null, aNzVal, aColPtr, aRowVal, b, cones);
+    public void setup(@NonNull Matrix a, double @NonNull [] b, @NonNull List<@NonNull Cone> cones) { //
+        setup(null, null, a, b, cones);
     }
 
     /**
      * Set up the {@link Model} data.
      * <p>
-     * Same as
-     * {@link Model#setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b, List cones)}
-     * without cone constraints, i.e. {@code aNzVal}, {@code aColPtr}, {@code aRowVal}, {@code b}, and {@code cones}
-     * are {@code null}.
+     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without cone constraints,
+     * i.e. {@code a}, {@code b}, and {@code cones} are {@code null}.
      *
-     * @param pNzVal  the (optional) cost function sparse P matrix data (Column Compressed Storage CCS).
-     * @param pColPtr the (optional) cost function sparse P matrix column index (CCS).
-     * @param pRowVal the (optional) cost function sparse P matrix row index (CCS). Entries within each column need
-     *                to appear in order of increasing row index.
-     * @param q       the (optional) cost function q weights.
+     * @param p cost function matrix P. P is assumed to be positive semi-definite and only values in the upper
+     *          triangular part of P need to be supplied.
+     * @param q (optional) cost function weights q
      */
-    public void setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q) {
-        setup(pNzVal, pColPtr, pRowVal, q, null, null, null, null, null);
+    public void setup(@NonNull Matrix p, double[] q) {
+        setup(p, q, null, null, null);
     }
 
     /**
      * Set up the {@link Model} data.
      * <p>
-     * Same as
-     * {@link Model#setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b, List cones)}
-     * without linear cost function part and cone constraints, i.e. {@code q}, {@code aNzVal}, {@code aColPtr},
-     * {@code aRowVal}, {@code b}, and {@code cones} are {@code null}.
+     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without linear cost
+     * function part and cone constraints, i.e. {@code q}, {@code a}, {@code b}, and {@code cones} are {@code null}.
      *
-     * @param pNzVal  the (optional) cost function sparse P matrix data (Column Compressed Storage CCS).
-     * @param pColPtr the (optional) cost function sparse P matrix column index (CCS).
-     * @param pRowVal the (optional) cost function sparse P matrix row index (CCS). Entries within each column need
-     *                to appear in order of increasing row index.
+     * @param p cost function matrix P. P is assumed to be positive semi-definite and only values in the upper
+     *          triangular part of P need to be supplied.
      */
-    public void setup(double[] pNzVal, long[] pColPtr, long[] pRowVal) {
-        setup(pNzVal, pColPtr, pRowVal, null, null, null, null, null, null);
+    public void setup(@NonNull Matrix p) {
+        setup(p, null, null, null, null);
     }
 
     /**
      * Unsafe set up the {@link Model} data.
      * <p>
-     * Same as
-     * {@link Model#setup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal, long[] aColPtr, long[] aRowVal, double[] b, List cones)}
-     * without any precondition checks on its arguments.
+     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without any precondition
+     * checks on its arguments.
      * <p>
      * <b>Warning: Setting the arguments incorrectly may lead to incorrect results in the best case. In the worst
      * case, it can crash the JVM and may silently result in memory corruption.</b>
      *
-     * @param pNzVal  the (optional) cost function sparse P matrix data (Column Compressed Storage CCS).
-     * @param pColPtr the (optional) cost function sparse P matrix column index (CCS).
-     * @param pRowVal the (optional) cost function sparse P matrix row index (CCS). Entries within each column need
-     *                to appear in order of increasing row index.
-     * @param q       the (optional) cost function q weights.
-     * @param aNzVal  the (optional) cone constraints sparse A matrix data (CCS).
-     * @param aColPtr the (optional) cone constraints sparse A matrix column index (CCS).
-     * @param aRowVal the (optional) cone constraints sparse A matrix row index (CCS). Entries within each column
-     *                need to appear in order of increasing row index.
-     * @param b       the right-hand-side of the cone constraints.
-     * @param cones   the types and dimensions of the convex cones.
+     * @param p     (optional) cost function matrix P. P is assumed to be positive semi-definite and only values in
+     *              the upper triangular part of P need to be supplied.
+     * @param q     (optional) cost function weights q
+     * @param a     (optional) cone constraints matrix A
+     * @param b     (optional) right-hand-side of the cone constraints
+     * @param cones (optional) types and dimensions of the convex cones
      */
-    public void unsafeSetup(double[] pNzVal, long[] pColPtr, long[] pRowVal, double[] q, double[] aNzVal,
-                            long[] aColPtr, long[] aRowVal, double[] b, List<@NonNull Cone> cones) {
+    public void unsafeSetup(Matrix p, double[] q, Matrix a, double[] b, List<@NonNull Cone> cones) {
         checkState(stage == Stage.NEW, "model must be in stage new");
 
-        val nCols = nCols(pColPtr, aColPtr);
-        pSeg = createMatrixSegment(pNzVal, pColPtr, pRowVal, nCols, nCols);
-        qSeg = q != null ? arena.allocateFrom(C_DOUBLE, q) : arena.allocateFrom(C_DOUBLE);
+        pSeg = p != null ? createMatrixSegment(p) : createZeroMatrixSegment(a.n(), a.n());
+        qSeg = q != null ? createArraySegment(q) : createZeroArraySegment();
 
-        val nRows = b != null ? b.length : 0;
-        aSeg = createMatrixSegment(aNzVal, aColPtr, aRowVal, nRows, nCols);
-        bSeg = b != null ? arena.allocateFrom(C_DOUBLE, b) : arena.allocateFrom(C_DOUBLE);
+        aSeg = a != null ? createMatrixSegment(a) : createZeroMatrixSegment(0, p.n());
+        bSeg = b != null ? createArraySegment(b) : createZeroArraySegment();
 
         nCones = cones != null ? cones.size() : 0;
-        conesSeg = createConesSegment(cones);
+        conesSeg = cones != null ? createConesSegment(cones) : createZeroConesSegment();
 
         settingsSeg = clarabel_DefaultSettings_f64_default(arena);
 
         stage = Stage.SETUP;
     }
 
-    private MemorySegment createMatrixSegment(double[] mNzVal, long[] mColPtr, long[] mRowVal, int nRows, int nCols) {
-        val mSeg = ClarabelCscMatrix_f64.allocate(arena);
+    private MemorySegment createMatrixSegment(Matrix matrix) {
+        val matrixSeg = ClarabelCscMatrix_f64.allocate(arena);
+        val colPtrSeg = arena.allocateFrom(C_LONG_LONG, matrix.colPtr());
+        val rowValSeg = arena.allocateFrom(C_LONG_LONG, matrix.rowVal());
+        val nzValSeg = arena.allocateFrom(C_DOUBLE, matrix.nzVal());
+        clarabel_CscMatrix_f64_init(matrixSeg, matrix.m(), matrix.n(), colPtrSeg, rowValSeg, nzValSeg);
 
-        final MemorySegment mNzValSeg, mColPtrSeg, mRowValSeg;
-        if (mColPtr != null) {
-            mNzValSeg = arena.allocateFrom(C_DOUBLE, mNzVal);
-            mColPtrSeg = arena.allocateFrom(C_LONG_LONG, mColPtr);
-            mRowValSeg = arena.allocateFrom(C_LONG_LONG, mRowVal);
-        } else {
-            mNzValSeg = NULL;
-            mColPtrSeg = arena.allocateFrom(C_LONG_LONG, new long[nCols + 1]);
-            mRowValSeg = NULL;
-        }
+        return matrixSeg;
+    }
 
-        clarabel_CscMatrix_f64_init(mSeg, nRows, nCols, mColPtrSeg, mRowValSeg, mNzValSeg);
+    private MemorySegment createZeroMatrixSegment(int m, int n) {
+        val matrixSeg = ClarabelCscMatrix_f64.allocate(arena);
+        val colPtrSeg = arena.allocateFrom(C_LONG_LONG, new long[n + 1]);
+        clarabel_CscMatrix_f64_init(matrixSeg, m, n, colPtrSeg, NULL, NULL);
 
-        return mSeg;
+        return matrixSeg;
+    }
+
+    private MemorySegment createArraySegment(double[] array) {
+        return arena.allocateFrom(C_DOUBLE, array);
+    }
+
+    private MemorySegment createZeroArraySegment() {
+        return arena.allocateFrom(C_DOUBLE);
     }
 
     private MemorySegment createConesSegment(List<Cone> cones) {
-        val nCones = cones != null ? cones.size() : 0;
-        val conesSeg = ClarabelSupportedConeT_f64.allocateArray(nCones, arena);
+        val conesSeg = ClarabelSupportedConeT_f64.allocateArray(cones.size(), arena);
 
-        for (int i = 0; i < nCones; i++) {
+        for (int i = 0; i < cones.size(); i++) {
             val coneSeg = ClarabelSupportedConeT_f64.asSlice(conesSeg, i);
             val cone = cones.get(i);
 
@@ -326,12 +246,16 @@ public class Model implements AutoCloseable {
         return conesSeg;
     }
 
+    private MemorySegment createZeroConesSegment() {
+        return ClarabelSupportedConeT_f64.allocateArray(0, arena);
+    }
+
     /**
      * Sets the <a href="https://clarabel.org">Clarabel</a> solver settings.
      * <p>
-     * For {@code null} settings solver defaults are applied.
+     * If not called, then solver defaults are applied.
      *
-     * @param parameters the parameter object for the solver settings.
+     * @param parameters parameter object for the solver settings
      */
     public void setParameters(@NonNull Parameters parameters) {
         checkState(stage != Stage.NEW, "Model must not be in stage new");
@@ -451,7 +375,7 @@ public class Model implements AutoCloseable {
     /**
      * Optimizes this {@link Model} with the<a href="https://clarabel.org">Clarabel</a> solver.
      *
-     * @return the solver status.
+     * @return solver status
      */
     public Status optimize() {
         checkState(stage != Stage.NEW, "model must not be in stage new");
@@ -477,7 +401,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the primal variables of this optimized {@link Model}.
+     * @return primal variables of this optimized {@link Model}
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double @NonNull [] x() {
@@ -489,7 +413,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the dual variables of this optimized {@link Model}.
+     * @return dual variables of this optimized {@link Model}
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double @NonNull [] z() {
@@ -501,7 +425,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the slack variables of this optimized {@link Model}.
+     * @return slack variables of this optimized {@link Model}
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double @NonNull [] s() {
@@ -513,7 +437,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the primal objective of this optimized {@link Model}.
+     * @return primal objective of this optimized {@link Model}
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double objVal() {
@@ -522,7 +446,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the dual objective of this optimized {@link Model}.
+     * @return dual objective of this optimized {@link Model}
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double objValDual() {
@@ -531,7 +455,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the time needed until this {@link Model} was optimized.
+     * @return time needed until this {@link Model} was optimized
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double solveTime() {
@@ -540,7 +464,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the performed number of iterations until this {@link Model} was optimized.
+     * @return performed number of iterations until this {@link Model} was optimized
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public int iterations() {
@@ -549,7 +473,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the primal residual of this optimized {@link Model}.
+     * @return primal residual of this optimized {@link Model}
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double rPrim() {
@@ -558,7 +482,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * @return the dual residual of this optimized {@link Model}.
+     * @return dual residual of this optimized {@link Model}
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
     public double rDual() {

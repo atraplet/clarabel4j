@@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * A parameter object for <a href="https://clarabel.org">Clarabel</a> solver settings.
  * <p>
- * For {@code null} settings {@link Model#setParameters(Parameters parameters)} applies solver defaults.
+ * If {@link Model#setParameters(Parameters parameters)} is not called, then solver defaults are applied.
  *
  * @param maxIter                          maximum number of iterations
  * @param timeLimit                        maximum run time (seconds)
