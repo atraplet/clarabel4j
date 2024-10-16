@@ -430,7 +430,7 @@ class ModelTest {
     }
 
     @Test
-    void setAllParametersShouldNotThrow() {
+    void setAllParametersDoesNotThrow() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
 
         assertDoesNotThrow(() -> {
