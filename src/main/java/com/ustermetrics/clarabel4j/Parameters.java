@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @param equilibrateMaxScaling            maximum equilibration scaling allowed
  * @param linesearchBacktrackStep          linesearch backtracking
  * @param minSwitchStepLength              minimum step size allowed for asymmetric cones with PrimalDual scaling
- * @param minTerminateStepLength           minimum step size allowed for symmetric cones & asymmetric cones with Dual
+ * @param minTerminateStepLength           minimum step size allowed for symmetric cones and asymmetric cones with Dual
  *                                         scaling
  * @param directKktSolver                  use a direct linear solver method
  * @param directSolveMethod                direct linear solver
