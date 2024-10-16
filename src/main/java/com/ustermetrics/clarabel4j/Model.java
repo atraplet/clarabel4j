@@ -258,7 +258,7 @@ public class Model implements AutoCloseable {
      * @param parameters parameter object for the solver settings
      */
     public void setParameters(@NonNull Parameters parameters) {
-        checkState(stage != Stage.NEW, "Model must not be in stage new");
+        checkState(stage != Stage.NEW, "model must not be in stage new");
 
         Optional.ofNullable(parameters.maxIter())
                 .ifPresent(maxIter -> ClarabelDefaultSettings_f64.max_iter(settingsSeg, maxIter));
