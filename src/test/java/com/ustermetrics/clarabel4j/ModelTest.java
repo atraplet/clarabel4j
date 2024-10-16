@@ -347,4 +347,51 @@ class ModelTest {
         }
     }
 
+    @Test
+    void solveUnconstrainedQuadraticProgramReturnsExpectedSolution() {
+        // [[6., 0.],
+        //  [0., 4.]]
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val q = new double[]{-1., -4.};
+
+        try (val model = new Model()) {
+            model.setup(p, q);
+
+            val parameters = Parameters.builder()
+                    .verbose(false)
+                    .build();
+            model.setParameters(parameters);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            assertArrayEquals(new double[]{1. / 6., 1.}, model.x(), TOLERANCE);
+            assertEquals(0, model.z().length);
+            assertEquals(0, model.s().length);
+        }
+    }
+
+    @Test
+    void solveUnconstrainedPureQuadraticProgramReturnsExpectedSolution() {
+        // [[6., 0.],
+        //  [0., 4.]]
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+
+        try (val model = new Model()) {
+            model.setup(p);
+
+            val parameters = Parameters.builder()
+                    .verbose(false)
+                    .build();
+            model.setParameters(parameters);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            assertArrayEquals(new double[]{0., 0.}, model.x(), TOLERANCE);
+            assertEquals(0, model.z().length);
+            assertEquals(0, model.s().length);
+        }
+    }
+
 }
