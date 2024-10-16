@@ -29,15 +29,22 @@ public class Model implements AutoCloseable {
 
     private final Arena arena = Arena.ofConfined();
     private Stage stage = Stage.NEW;
-    private long nCones;
-    private MemorySegment pSeg;
-    private MemorySegment qSeg;
-    private MemorySegment aSeg;
-    private MemorySegment bSeg;
-    private MemorySegment conesSeg;
-    private MemorySegment settingsSeg;
+    private Parameters parameters;
     private MemorySegment solverSeg;
     private MemorySegment solutionSeg;
+
+    /**
+     * Sets the <a href="https://clarabel.org">Clarabel</a> solver settings.
+     * <p>
+     * If not called, then solver defaults are applied.
+     *
+     * @param parameters parameter object for the solver settings
+     */
+    public void setParameters(@NonNull Parameters parameters) {
+        checkState(stage == Stage.NEW, "model must be in stage new");
+
+        this.parameters = parameters;
+    }
 
     /**
      * Set up this {@link Model} data for a convex optimization problem of type
@@ -176,16 +183,15 @@ public class Model implements AutoCloseable {
     public void unsafeSetup(Matrix p, double[] q, Matrix a, double[] b, List<@NonNull Cone> cones) {
         checkState(stage == Stage.NEW, "model must be in stage new");
 
-        pSeg = p != null ? createMatrixSegment(p) : createNullMatrixSegment(a.n(), a.n());
-        qSeg = q != null ? createArraySegment(q) : createNullArraySegment();
+        val pSeg = p != null ? createMatrixSegment(p) : createNullMatrixSegment(a.n(), a.n());
+        val qSeg = q != null ? createArraySegment(q) : createNullArraySegment();
+        val aSeg = a != null ? createMatrixSegment(a) : createNullMatrixSegment(0, p.n());
+        val bSeg = b != null ? createArraySegment(b) : createNullArraySegment();
+        val nCones = cones != null ? cones.size() : 0;
+        val conesSeg = cones != null ? createConesSegment(cones) : createNullConesSegment();
+        val settingsSeg = createSettingsSegment();
 
-        aSeg = a != null ? createMatrixSegment(a) : createNullMatrixSegment(0, p.n());
-        bSeg = b != null ? createArraySegment(b) : createNullArraySegment();
-
-        nCones = cones != null ? cones.size() : 0;
-        conesSeg = cones != null ? createConesSegment(cones) : createNullConesSegment();
-
-        settingsSeg = clarabel_DefaultSettings_f64_default(arena);
+        solverSeg = clarabel_DefaultSolver_f64_new(pSeg, qSeg, aSeg, bSeg, nCones, conesSeg, settingsSeg);
 
         stage = Stage.SETUP;
     }
@@ -250,126 +256,87 @@ public class Model implements AutoCloseable {
         return ClarabelSupportedConeT_f64.allocateArray(0, arena);
     }
 
-    /**
-     * Sets the <a href="https://clarabel.org">Clarabel</a> solver settings.
-     * <p>
-     * If not called, then solver defaults are applied.
-     *
-     * @param parameters parameter object for the solver settings
-     */
-    public void setParameters(@NonNull Parameters parameters) {
-        checkState(stage != Stage.NEW, "model must not be in stage new");
+    private MemorySegment createSettingsSegment() {
+        val settingsSeg = clarabel_DefaultSettings_f64_default(arena);
 
-        Optional.ofNullable(parameters.maxIter())
-                .ifPresent(maxIter -> ClarabelDefaultSettings_f64.max_iter(settingsSeg, maxIter));
-        Optional.ofNullable(parameters.timeLimit())
-                .ifPresent(timeLimit -> ClarabelDefaultSettings_f64.time_limit(settingsSeg, timeLimit));
-        Optional.ofNullable(parameters.verbose())
-                .ifPresent(verbose -> ClarabelDefaultSettings_f64.verbose(settingsSeg, verbose));
-        Optional.ofNullable(parameters.maxStepFraction())
-                .ifPresent(maxStepFraction ->
-                        ClarabelDefaultSettings_f64.max_step_fraction(settingsSeg, maxStepFraction));
-        Optional.ofNullable(parameters.tolGapAbs())
-                .ifPresent(tolGapAbs -> ClarabelDefaultSettings_f64.tol_gap_abs(settingsSeg, tolGapAbs));
-        Optional.ofNullable(parameters.tolGapRel())
-                .ifPresent(tolGapRel -> ClarabelDefaultSettings_f64.tol_gap_rel(settingsSeg, tolGapRel));
-        Optional.ofNullable(parameters.tolFeas())
-                .ifPresent(tolFeas -> ClarabelDefaultSettings_f64.tol_feas(settingsSeg, tolFeas));
-        Optional.ofNullable(parameters.tolInfeasAbs())
-                .ifPresent(tolInfeasAbs -> ClarabelDefaultSettings_f64.tol_infeas_abs(settingsSeg, tolInfeasAbs));
-        Optional.ofNullable(parameters.tolInfeasRel())
-                .ifPresent(tolInfeasRel -> ClarabelDefaultSettings_f64.tol_infeas_rel(settingsSeg, tolInfeasRel));
-        Optional.ofNullable(parameters.tolKtratio())
-                .ifPresent(tolKtratio -> ClarabelDefaultSettings_f64.tol_ktratio(settingsSeg, tolKtratio));
-        Optional.ofNullable(parameters.reducedTolGapAbs())
-                .ifPresent(reducedTolGapAbs ->
-                        ClarabelDefaultSettings_f64.reduced_tol_gap_abs(settingsSeg, reducedTolGapAbs));
-        Optional.ofNullable(parameters.reducedTolGapRel())
-                .ifPresent(reducedTolGapRel ->
-                        ClarabelDefaultSettings_f64.reduced_tol_gap_rel(settingsSeg, reducedTolGapRel));
-        Optional.ofNullable(parameters.reducedTolFeas())
-                .ifPresent(reducedTolFeas -> ClarabelDefaultSettings_f64.reduced_tol_feas(settingsSeg, reducedTolFeas));
-        Optional.ofNullable(parameters.reducedTolInfeasAbs())
-                .ifPresent(reducedTolInfeasAbs ->
-                        ClarabelDefaultSettings_f64.reduced_tol_infeas_abs(settingsSeg, reducedTolInfeasAbs));
-        Optional.ofNullable(parameters.reducedTolInfeasRel())
-                .ifPresent(reducedTolInfeasRel ->
-                        ClarabelDefaultSettings_f64.reduced_tol_infeas_rel(settingsSeg, reducedTolInfeasRel));
-        Optional.ofNullable(parameters.reducedTolKtratio())
-                .ifPresent(reducedTolKtratio ->
-                        ClarabelDefaultSettings_f64.reduced_tol_ktratio(settingsSeg, reducedTolKtratio));
-        Optional.ofNullable(parameters.equilibrateEnable())
-                .ifPresent(equilibrateEnable ->
-                        ClarabelDefaultSettings_f64.equilibrate_enable(settingsSeg, equilibrateEnable));
-        Optional.ofNullable(parameters.equilibrateMaxIter())
-                .ifPresent(equilibrateMaxIter ->
-                        ClarabelDefaultSettings_f64.equilibrate_max_iter(settingsSeg, equilibrateMaxIter));
-        Optional.ofNullable(parameters.equilibrateMinScaling())
-                .ifPresent(equilibrateMinScaling ->
-                        ClarabelDefaultSettings_f64.equilibrate_min_scaling(settingsSeg, equilibrateMinScaling));
-        Optional.ofNullable(parameters.equilibrateMaxScaling())
-                .ifPresent(equilibrateMaxScaling ->
-                        ClarabelDefaultSettings_f64.equilibrate_max_scaling(settingsSeg, equilibrateMaxScaling));
-        Optional.ofNullable(parameters.linesearchBacktrackStep())
-                .ifPresent(linesearchBacktrackStep ->
-                        ClarabelDefaultSettings_f64.linesearch_backtrack_step(settingsSeg, linesearchBacktrackStep));
-        Optional.ofNullable(parameters.minSwitchStepLength())
-                .ifPresent(minSwitchStepLength ->
-                        ClarabelDefaultSettings_f64.min_switch_step_length(settingsSeg, minSwitchStepLength));
-        Optional.ofNullable(parameters.minTerminateStepLength())
-                .ifPresent(minTerminateStepLength ->
-                        ClarabelDefaultSettings_f64.min_terminate_step_length(settingsSeg, minTerminateStepLength));
-        Optional.ofNullable(parameters.directKktSolver())
-                .ifPresent(directKktSolver ->
-                        ClarabelDefaultSettings_f64.direct_kkt_solver(settingsSeg, directKktSolver));
-        Optional.ofNullable(parameters.directSolveMethod())
-                .ifPresent(directSolveMethod ->
-                        ClarabelDefaultSettings_f64.direct_solve_method(settingsSeg, directSolveMethod.method()));
-        Optional.ofNullable(parameters.staticRegularizationEnable())
-                .ifPresent(staticRegularizationEnable ->
-                        ClarabelDefaultSettings_f64.static_regularization_enable(settingsSeg,
-                                staticRegularizationEnable));
-        Optional.ofNullable(parameters.staticRegularizationConstant())
-                .ifPresent(staticRegularizationConstant ->
-                        ClarabelDefaultSettings_f64.static_regularization_constant(settingsSeg,
-                                staticRegularizationConstant));
-        Optional.ofNullable(parameters.staticRegularizationProportional())
-                .ifPresent(staticRegularizationProportional ->
-                        ClarabelDefaultSettings_f64.static_regularization_proportional(settingsSeg,
-                                staticRegularizationProportional));
-        Optional.ofNullable(parameters.dynamicRegularizationEnable())
-                .ifPresent(dynamicRegularizationEnable ->
-                        ClarabelDefaultSettings_f64.dynamic_regularization_enable(settingsSeg,
-                                dynamicRegularizationEnable));
-        Optional.ofNullable(parameters.dynamicRegularizationEps())
-                .ifPresent(dynamicRegularizationEps ->
-                        ClarabelDefaultSettings_f64.dynamic_regularization_eps(settingsSeg, dynamicRegularizationEps));
-        Optional.ofNullable(parameters.dynamicRegularizationDelta())
-                .ifPresent(dynamicRegularizationDelta ->
-                        ClarabelDefaultSettings_f64.dynamic_regularization_delta(settingsSeg,
-                                dynamicRegularizationDelta));
-        Optional.ofNullable(parameters.iterativeRefinementEnable())
-                .ifPresent(iterativeRefinementEnable ->
-                        ClarabelDefaultSettings_f64.iterative_refinement_enable(settingsSeg,
-                                iterativeRefinementEnable));
-        Optional.ofNullable(parameters.iterativeRefinementReltol())
-                .ifPresent(iterativeRefinementReltol ->
-                        ClarabelDefaultSettings_f64.iterative_refinement_reltol(settingsSeg,
-                                iterativeRefinementReltol));
-        Optional.ofNullable(parameters.iterativeRefinementAbstol())
-                .ifPresent(iterativeRefinementAbstol ->
-                        ClarabelDefaultSettings_f64.iterative_refinement_abstol(settingsSeg,
-                                iterativeRefinementAbstol));
-        Optional.ofNullable(parameters.iterativeRefinementMaxIter())
-                .ifPresent(iterativeRefinementMaxIter ->
-                        ClarabelDefaultSettings_f64.iterative_refinement_max_iter(settingsSeg,
-                                iterativeRefinementMaxIter));
-        Optional.ofNullable(parameters.iterativeRefinementStopRatio())
-                .ifPresent(iterativeRefinementStopRatio ->
-                        ClarabelDefaultSettings_f64.iterative_refinement_stop_ratio(settingsSeg,
-                                iterativeRefinementStopRatio));
-        Optional.ofNullable(parameters.presolveEnable())
-                .ifPresent(presolveEnable -> ClarabelDefaultSettings_f64.presolve_enable(settingsSeg, presolveEnable));
+        if (parameters != null) {
+            Optional.ofNullable(parameters.maxIter())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.max_iter(settingsSeg, p));
+            Optional.ofNullable(parameters.timeLimit())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.time_limit(settingsSeg, p));
+            Optional.ofNullable(parameters.verbose())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.verbose(settingsSeg, p));
+            Optional.ofNullable(parameters.maxStepFraction())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.max_step_fraction(settingsSeg, p));
+            Optional.ofNullable(parameters.tolGapAbs())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.tol_gap_abs(settingsSeg, p));
+            Optional.ofNullable(parameters.tolGapRel())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.tol_gap_rel(settingsSeg, p));
+            Optional.ofNullable(parameters.tolFeas())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.tol_feas(settingsSeg, p));
+            Optional.ofNullable(parameters.tolInfeasAbs())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.tol_infeas_abs(settingsSeg, p));
+            Optional.ofNullable(parameters.tolInfeasRel())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.tol_infeas_rel(settingsSeg, p));
+            Optional.ofNullable(parameters.tolKtratio())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.tol_ktratio(settingsSeg, p));
+            Optional.ofNullable(parameters.reducedTolGapAbs())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_gap_abs(settingsSeg, p));
+            Optional.ofNullable(parameters.reducedTolGapRel())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_gap_rel(settingsSeg, p));
+            Optional.ofNullable(parameters.reducedTolFeas())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_feas(settingsSeg, p));
+            Optional.ofNullable(parameters.reducedTolInfeasAbs())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_infeas_abs(settingsSeg, p));
+            Optional.ofNullable(parameters.reducedTolInfeasRel())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_infeas_rel(settingsSeg, p));
+            Optional.ofNullable(parameters.reducedTolKtratio())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_ktratio(settingsSeg, p));
+            Optional.ofNullable(parameters.equilibrateEnable())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_enable(settingsSeg, p));
+            Optional.ofNullable(parameters.equilibrateMaxIter())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_max_iter(settingsSeg, p));
+            Optional.ofNullable(parameters.equilibrateMinScaling())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_min_scaling(settingsSeg, p));
+            Optional.ofNullable(parameters.equilibrateMaxScaling())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_max_scaling(settingsSeg, p));
+            Optional.ofNullable(parameters.linesearchBacktrackStep())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.linesearch_backtrack_step(settingsSeg, p));
+            Optional.ofNullable(parameters.minSwitchStepLength())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.min_switch_step_length(settingsSeg, p));
+            Optional.ofNullable(parameters.minTerminateStepLength())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.min_terminate_step_length(settingsSeg, p));
+            Optional.ofNullable(parameters.directKktSolver())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.direct_kkt_solver(settingsSeg, p));
+            Optional.ofNullable(parameters.directSolveMethod())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.direct_solve_method(settingsSeg, p.method()));
+            Optional.ofNullable(parameters.staticRegularizationEnable())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.static_regularization_enable(settingsSeg, p));
+            Optional.ofNullable(parameters.staticRegularizationConstant())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.static_regularization_constant(settingsSeg, p));
+            Optional.ofNullable(parameters.staticRegularizationProportional())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.static_regularization_proportional(settingsSeg, p));
+            Optional.ofNullable(parameters.dynamicRegularizationEnable())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.dynamic_regularization_enable(settingsSeg, p));
+            Optional.ofNullable(parameters.dynamicRegularizationEps())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.dynamic_regularization_eps(settingsSeg, p));
+            Optional.ofNullable(parameters.dynamicRegularizationDelta())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.dynamic_regularization_delta(settingsSeg, p));
+            Optional.ofNullable(parameters.iterativeRefinementEnable())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_enable(settingsSeg, p));
+            Optional.ofNullable(parameters.iterativeRefinementReltol())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_reltol(settingsSeg, p));
+            Optional.ofNullable(parameters.iterativeRefinementAbstol())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_abstol(settingsSeg, p));
+            Optional.ofNullable(parameters.iterativeRefinementMaxIter())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_max_iter(settingsSeg, p));
+            Optional.ofNullable(parameters.iterativeRefinementStopRatio())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_stop_ratio(settingsSeg, p));
+            Optional.ofNullable(parameters.presolveEnable())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.presolve_enable(settingsSeg, p));
+        }
+
+        return settingsSeg;
     }
 
     /**
@@ -380,7 +347,6 @@ public class Model implements AutoCloseable {
     public Status optimize() {
         checkState(stage != Stage.NEW, "model must not be in stage new");
 
-        solverSeg = clarabel_DefaultSolver_f64_new(pSeg, qSeg, aSeg, bSeg, nCones, conesSeg, settingsSeg);
         clarabel_DefaultSolver_f64_solve(solverSeg);
         solutionSeg = ClarabelDefaultSolution_f64.reinterpret(clarabel_DefaultSolver_f64_solution(arena, solverSeg),
                 arena, null);
@@ -395,7 +361,7 @@ public class Model implements AutoCloseable {
      * Cleanup: free this {@link Model} native memory.
      */
     public void cleanup() {
-        checkState(stage == Stage.OPTIMIZED, "model must be in stage optimized");
+        checkState(stage != Stage.NEW, "model must not be in stage new");
         clarabel_DefaultSolver_f64_free(solverSeg);
         stage = Stage.NEW;
     }
@@ -496,7 +462,7 @@ public class Model implements AutoCloseable {
 
     @Override
     public void close() {
-        if (stage == Stage.OPTIMIZED) {
+        if (stage != Stage.NEW) {
             clarabel_DefaultSolver_f64_free(solverSeg);
         }
         arena.close();
