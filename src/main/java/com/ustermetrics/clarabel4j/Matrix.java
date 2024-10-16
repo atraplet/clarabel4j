@@ -27,8 +27,6 @@ public record Matrix(int m, int n, long @NonNull [] colPtr, long @NonNull [] row
         checkArgument(m > 0, "number of rows must be positive");
         checkArgument(n > 0, "number of columns must be positive");
         checkArgument(colPtr.length > 0, "length of the column index must be positive");
-        checkArgument(rowVal.length > 0, "length of the row index must be positive");
-        checkArgument(nzVal.length > 0, "length of data must be positive");
 
         val nnz = nzVal.length;
         checkArgument(nnz == rowVal.length, "length of data must be equal to the length of the row index");
