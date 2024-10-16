@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.ustermetrics.clarabel4j.DirectSolveMethod.QDLDL;
 import static com.ustermetrics.clarabel4j.Status.SOLVED;
 import static java.lang.Math.exp;
 import static org.junit.jupiter.api.Assertions.*;
@@ -334,7 +335,7 @@ class ModelTest {
             model.setup(a, b, cones);
 
             val parameters = Parameters.builder()
-                    .verbose(true)
+                    .verbose(false)
                     .build();
             model.setParameters(parameters);
 
@@ -403,12 +404,10 @@ class ModelTest {
 
         try (val model = new Model()) {
             model.setup(p, q);
-
             val parameters = Parameters.builder()
                     .verbose(false)
                     .build();
             model.setParameters(parameters);
-
             var status = model.optimize();
 
             assertEquals(SOLVED, status);
@@ -419,9 +418,8 @@ class ModelTest {
             model.cleanup();
 
             q = new double[]{-2., -4.};
-
             model.setup(p, q);
-
+            model.setParameters(parameters);
             status = model.optimize();
 
             assertEquals(SOLVED, status);
@@ -429,6 +427,57 @@ class ModelTest {
             assertEquals(0, model.z().length);
             assertEquals(0, model.s().length);
         }
+    }
+
+    @Test
+    void setAllParametersShouldNotThrow() {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+
+        assertDoesNotThrow(() -> {
+            try (val model = new Model()) {
+                model.setup(p);
+                val parameters = Parameters.builder()
+                        .maxIter(1)
+                        .timeLimit(1.)
+                        .verbose(true)
+                        .maxStepFraction(1.)
+                        .tolGapAbs(1.)
+                        .tolGapRel(1.)
+                        .tolFeas(1.)
+                        .tolInfeasAbs(1.)
+                        .tolInfeasRel(1.)
+                        .tolKtratio(1.)
+                        .reducedTolGapAbs(1.)
+                        .reducedTolGapRel(1.)
+                        .reducedTolFeas(1.)
+                        .reducedTolInfeasAbs(1.)
+                        .reducedTolInfeasRel(1.)
+                        .reducedTolKtratio(1.)
+                        .equilibrateEnable(true)
+                        .equilibrateMaxIter(1)
+                        .equilibrateMinScaling(1.)
+                        .equilibrateMaxScaling(1.)
+                        .linesearchBacktrackStep(1.)
+                        .minSwitchStepLength(1.)
+                        .minTerminateStepLength(1.)
+                        .directKktSolver(true)
+                        .directSolveMethod(QDLDL)
+                        .staticRegularizationEnable(true)
+                        .staticRegularizationConstant(1.)
+                        .staticRegularizationProportional(1.)
+                        .dynamicRegularizationEnable(true)
+                        .dynamicRegularizationEps(1.)
+                        .dynamicRegularizationDelta(1.)
+                        .iterativeRefinementEnable(true)
+                        .iterativeRefinementReltol(1.)
+                        .iterativeRefinementAbstol(1.)
+                        .iterativeRefinementMaxIter(1)
+                        .iterativeRefinementStopRatio(1.)
+                        .presolveEnable(true)
+                        .build();
+                model.setParameters(parameters);
+            }
+        });
     }
 
     @Test
@@ -481,14 +530,14 @@ class ModelTest {
     }
 
     @Test
-    void cleanupBeforeSetupThrowsException() {
+    void cleanupBeforeOptimizeThrowsException() {
         val exception = assertThrows(IllegalStateException.class, () -> {
             try (val model = new Model()) {
                 model.cleanup();
             }
         });
 
-        assertEquals("model must not be in stage new", exception.getMessage());
+        assertEquals("model must be in stage optimized", exception.getMessage());
     }
 
 }
