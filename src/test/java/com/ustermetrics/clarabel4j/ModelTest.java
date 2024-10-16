@@ -394,4 +394,31 @@ class ModelTest {
         }
     }
 
+    @Test
+    void setupAfterOptimizeThrowsException() {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+
+        val exception = assertThrows(IllegalStateException.class, () -> {
+            try (val model = new Model()) {
+                model.setup(p);
+                model.setParameters(Parameters.builder().verbose(false).build());
+                model.optimize();
+                model.setup(p);
+            }
+        });
+
+        assertEquals("model must be in stage new", exception.getMessage());
+    }
+
+    @Test
+    void setParametersBeforeSetupThrowsException() {
+        val exception = assertThrows(IllegalStateException.class, () -> {
+            try (val model = new Model()) {
+                model.setParameters(Parameters.builder().verbose(false).build());
+            }
+        });
+
+        assertEquals("model must not be in stage new", exception.getMessage());
+    }
+
 }
