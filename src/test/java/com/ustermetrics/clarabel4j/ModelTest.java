@@ -395,6 +395,43 @@ class ModelTest {
     }
 
     @Test
+    void solveProblemTwiceWithCleanupInBetweenReturnsExpectedSolution() {
+        // [[6., 0.],
+        //  [0., 4.]]
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        var q = new double[]{-1., -4.};
+
+        try (val model = new Model()) {
+            model.setup(p, q);
+
+            val parameters = Parameters.builder()
+                    .verbose(false)
+                    .build();
+            model.setParameters(parameters);
+
+            var status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            assertArrayEquals(new double[]{1. / 6., 1.}, model.x(), TOLERANCE);
+            assertEquals(0, model.z().length);
+            assertEquals(0, model.s().length);
+
+            model.cleanup();
+
+            q = new double[]{-2., -4.};
+
+            model.setup(p, q);
+
+            status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            assertArrayEquals(new double[]{1. / 3., 1.}, model.x(), TOLERANCE);
+            assertEquals(0, model.z().length);
+            assertEquals(0, model.s().length);
+        }
+    }
+
+    @Test
     void setupAfterOptimizeThrowsException() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
 
@@ -419,6 +456,28 @@ class ModelTest {
         });
 
         assertEquals("model must not be in stage new", exception.getMessage());
+    }
+
+    @Test
+    void optimizeBeforeSetupThrowsException() {
+        val exception = assertThrows(IllegalStateException.class, () -> {
+            try (val model = new Model()) {
+                model.optimize();
+            }
+        });
+
+        assertEquals("model must not be in stage new", exception.getMessage());
+    }
+
+    @Test
+    void getSolutionBeforeOptimizeThrowsException() {
+        val exception = assertThrows(IllegalStateException.class, () -> {
+            try (val model = new Model()) {
+                model.x();
+            }
+        });
+
+        assertEquals("model must be in stage optimized", exception.getMessage());
     }
 
 }
