@@ -48,6 +48,15 @@ class MatrixTest {
     }
 
     @Test
+    void createMatrixWithZeroLengthColumnIndexThrowsException() {
+        val exception = assertThrowsExactly(IllegalArgumentException.class, () ->
+                new Matrix(1, 1, new long[]{}, new long[]{}, new double[]{})
+        );
+
+        assertEquals("length of the column index must be positive", exception.getMessage());
+    }
+
+    @Test
     void createMatrixWithInvalidDataThrowsException() {
         val exception = assertThrowsExactly(IllegalArgumentException.class, () ->
                 new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4., 5.})
