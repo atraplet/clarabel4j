@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ModelTest {
 
+    private static final double TOLERANCE = 1e-8;
+
     @Test
     void solveLinearProgramReturnsExpectedSolution() {
         // Linear program from the Clarabel examples
@@ -34,16 +36,15 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
-            assertArrayEquals(new double[]{-1., 1.}, model.x(), tol);
-            assertArrayEquals(new double[]{0., 1., 1., 0.}, model.z(), tol);
-            assertArrayEquals(new double[]{2., 0., 0., 2.}, model.s(), tol);
-            assertEquals(-2., model.objVal(), tol);
-            assertEquals(-2., model.objValDual(), tol);
+            assertArrayEquals(new double[]{-1., 1.}, model.x(), TOLERANCE);
+            assertArrayEquals(new double[]{0., 1., 1., 0.}, model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{2., 0., 0., 2.}, model.s(), TOLERANCE);
+            assertEquals(-2., model.objVal(), TOLERANCE);
+            assertEquals(-2., model.objValDual(), TOLERANCE);
             assertTrue(model.solveTime() > 0.);
             assertEquals(6, model.iterations());
-            assertEquals(0., model.rPrim(), tol);
-            assertEquals(0., model.rDual(), tol);
+            assertEquals(0., model.rPrim(), TOLERANCE);
+            assertEquals(0., model.rDual(), TOLERANCE);
         }
     }
 
@@ -69,16 +70,15 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
-            assertArrayEquals(new double[]{-1., 1.}, model.x(), tol);
-            assertArrayEquals(new double[]{0., 1., 1., 0.}, model.z(), tol);
-            assertArrayEquals(new double[]{2., 0., 0., 2.}, model.s(), tol);
-            assertEquals(-2., model.objVal(), tol);
-            assertEquals(-2., model.objValDual(), tol);
+            assertArrayEquals(new double[]{-1., 1.}, model.x(), TOLERANCE);
+            assertArrayEquals(new double[]{0., 1., 1., 0.}, model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{2., 0., 0., 2.}, model.s(), TOLERANCE);
+            assertEquals(-2., model.objVal(), TOLERANCE);
+            assertEquals(-2., model.objValDual(), TOLERANCE);
             assertTrue(model.solveTime() > 0.);
             assertEquals(6, model.iterations());
-            assertEquals(0., model.rPrim(), tol);
-            assertEquals(0., model.rDual(), tol);
+            assertEquals(0., model.rPrim(), TOLERANCE);
+            assertEquals(0., model.rDual(), TOLERANCE);
         }
     }
 
@@ -104,10 +104,10 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
-            assertArrayEquals(new double[]{0.4285714282, 0.2142857141}, model.x(), tol);
-            assertArrayEquals(new double[]{-1.5714285714, 0., 0., 0., 0.}, model.z(), tol);
-            assertArrayEquals(new double[]{0., 0.5714285718, 0.7857142859, 1.4285714282, 1.2142857141}, model.s(), tol);
+            assertArrayEquals(new double[]{0.4285714282, 0.2142857141}, model.x(), TOLERANCE);
+            assertArrayEquals(new double[]{-1.5714285714, 0., 0., 0., 0.}, model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{0., 0.5714285718, 0.7857142859, 1.4285714282, 1.2142857141}, model.s(),
+                    TOLERANCE);
         }
     }
 
@@ -131,10 +131,9 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
-            assertArrayEquals(new double[]{1., 1.}, model.x(), tol);
-            assertArrayEquals(new double[]{2., 0., 2.}, model.z(), tol);
-            assertArrayEquals(new double[]{1., 0., -1.}, model.s(), tol);
+            assertArrayEquals(new double[]{1., 1.}, model.x(), TOLERANCE);
+            assertArrayEquals(new double[]{2., 0., 2.}, model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{1., 0., -1.}, model.s(), TOLERANCE);
         }
     }
 
@@ -160,11 +159,10 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
-            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589664}, model.x(), tol);
+            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589664}, model.x(), TOLERANCE);
             assertArrayEquals(new double[]{-1., 4.0001066439, 0.0067372289, 4.0001066434, 0.0067372278},
-                    model.z(), tol);
-            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589675, 0., 0.}, model.s(), tol);
+                    model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589675, 0., 0.}, model.s(), TOLERANCE);
         }
     }
 
@@ -189,11 +187,10 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
-            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589664}, model.x(), tol);
+            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589664}, model.x(), TOLERANCE);
             assertArrayEquals(new double[]{-1., 4.0001066439, 0.0067372289, 4.0001066434, 0.0067372278},
-                    model.z(), tol);
-            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589675, 0., 0.}, model.s(), tol);
+                    model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{4.9999999409, 1., 148.4131589675, 0., 0.}, model.s(), TOLERANCE);
         }
     }
 
@@ -220,13 +217,12 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
             assertArrayEquals(new double[]{1.6818793424, 0.5605840338, 1.0837601801, 0.0656508579, 1., 0.7615949175},
-                    model.x(), tol);
+                    model.x(), TOLERANCE);
             assertArrayEquals(new double[]{0.3866364120, 0.7732728161, -1., 1.1599092208, 0.6854458909, -1.,
-                    0.3866364045, 0.6854458815}, model.z(), tol);
+                    0.3866364045, 0.6854458815}, model.z(), TOLERANCE);
             assertArrayEquals(new double[]{1.6818793488, 0.5605840398, 1.0837601801, 0.0656508625, 1., 0.7615949175,
-                    0., 0.}, model.s(), tol);
+                    0., 0.}, model.s(), TOLERANCE);
         }
     }
 
@@ -252,13 +248,12 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
             assertArrayEquals(new double[]{1.6818793424, 0.5605840338, 1.0837601801, 0.0656508579, 1., 0.7615949175},
-                    model.x(), tol);
+                    model.x(), TOLERANCE);
             assertArrayEquals(new double[]{0.3866364120, 0.7732728161, -1., 1.1599092208, 0.6854458909, -1.,
-                    0.3866364045, 0.6854458815}, model.z(), tol);
+                    0.3866364045, 0.6854458815}, model.z(), TOLERANCE);
             assertArrayEquals(new double[]{1.6818793488, 0.5605840398, 1.0837601801, 0.0656508625, 1., 0.7615949175,
-                    0., 0.}, model.s(), tol);
+                    0., 0.}, model.s(), TOLERANCE);
         }
     }
 
@@ -286,13 +281,12 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
             assertArrayEquals(new double[]{1.6818105475, 0.5606033992, 1.0837485448, 0.0656608752, 1., 0.7616065300},
-                    model.x(), tol);
+                    model.x(), TOLERANCE);
             assertArrayEquals(new double[]{0.3866364127, 0.7732728115, -1., 1.1599092115, 0.6854458898, -1.,
-                    0.3866363997, 0.6854458735}, model.z(), tol);
+                    0.3866363997, 0.6854458735}, model.z(), TOLERANCE);
             assertArrayEquals(new double[]{1.6818105584, 0.5606034095, 1.0837485446, 0.0656608832, 1., 0.7616065300,
-                    0., 0.}, model.s(), tol);
+                    0., 0.}, model.s(), TOLERANCE);
         }
     }
 
@@ -319,13 +313,12 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
-            val tol = 1e-8;
             assertArrayEquals(new double[]{1.6818105475, 0.5606033992, 1.0837485448, 0.0656608752, 1., 0.7616065300},
-                    model.x(), tol);
+                    model.x(), TOLERANCE);
             assertArrayEquals(new double[]{0.3866364127, 0.7732728115, -1., 1.1599092115, 0.6854458898, -1.,
-                    0.3866363997, 0.6854458735}, model.z(), tol);
+                    0.3866363997, 0.6854458735}, model.z(), TOLERANCE);
             assertArrayEquals(new double[]{1.6818105584, 0.5606034095, 1.0837485446, 0.0656608832, 1., 0.7616065300,
-                    0., 0.}, model.s(), tol);
+                    0., 0.}, model.s(), TOLERANCE);
         }
     }
 
