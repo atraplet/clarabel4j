@@ -480,4 +480,15 @@ class ModelTest {
         assertEquals("model must be in stage optimized", exception.getMessage());
     }
 
+    @Test
+    void cleanupBeforeSetupThrowsException() {
+        val exception = assertThrows(IllegalStateException.class, () -> {
+            try (val model = new Model()) {
+                model.cleanup();
+            }
+        });
+
+        assertEquals("model must not be in stage new", exception.getMessage());
+    }
+
 }
