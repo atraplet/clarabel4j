@@ -40,12 +40,13 @@ public record Matrix(int m, int n, long @NonNull [] colPtr, long @NonNull [] row
                 "the first entry of the column index must be equal to zero and the last entry must be equal to the " +
                         "number of non-zero entries");
         checkArgument(IntStream.range(0, colPtr.length - 1)
-                        .allMatch(i -> 0 <= colPtr[i] && colPtr[i] <= nnz && colPtr[i] <= colPtr[i + 1]
-                                && IntStream.range(toIntExact(colPtr[i]), toIntExact(colPtr[i + 1]) - 1)
-                                .allMatch(j -> rowVal[j] < rowVal[j + 1])),
+                        .allMatch(i -> 0 <= colPtr[i] && colPtr[i] <= nnz && colPtr[i] <= colPtr[i + 1]),
                 "entries of the column index must be greater equal zero, less equal than the number of non-zero " +
-                        "entries, and must be ordered, entries of the row index within each column must be strictly " +
-                        "ordered");
+                        "entries, and must be ordered");
+        checkArgument(IntStream.range(0, colPtr.length - 1)
+                        .allMatch(i -> IntStream.range(toIntExact(colPtr[i]), toIntExact(colPtr[i + 1]) - 1)
+                                .allMatch(j -> rowVal[j] < rowVal[j + 1])),
+                "entries of the row index within each column must be strictly ordered");
     }
 
 }
