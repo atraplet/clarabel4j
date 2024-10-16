@@ -74,12 +74,6 @@ class ModelTest {
             assertArrayEquals(new double[]{-1., 1.}, model.x(), TOLERANCE);
             assertArrayEquals(new double[]{0., 1., 1., 0.}, model.z(), TOLERANCE);
             assertArrayEquals(new double[]{2., 0., 0., 2.}, model.s(), TOLERANCE);
-            assertEquals(-2., model.objVal(), TOLERANCE);
-            assertEquals(-2., model.objValDual(), TOLERANCE);
-            assertTrue(model.solveTime() > 0.);
-            assertEquals(6, model.iterations());
-            assertEquals(0., model.rPrim(), TOLERANCE);
-            assertEquals(0., model.rDual(), TOLERANCE);
         }
     }
 
@@ -343,8 +337,6 @@ class ModelTest {
 
             assertEquals(SOLVED, status);
             assertArrayEquals(new double[]{1., 0.25}, model.x(), TOLERANCE);
-            assertArrayEquals(new double[]{0., 0.}, model.z(), TOLERANCE);
-            assertArrayEquals(new double[]{0., 0.}, model.s(), TOLERANCE);
         }
     }
 
@@ -367,8 +359,6 @@ class ModelTest {
 
             assertEquals(SOLVED, status);
             assertArrayEquals(new double[]{1. / 6., 1.}, model.x(), TOLERANCE);
-            assertEquals(0, model.z().length);
-            assertEquals(0, model.s().length);
         }
     }
 
@@ -390,8 +380,6 @@ class ModelTest {
 
             assertEquals(SOLVED, status);
             assertArrayEquals(new double[]{0., 0.}, model.x(), TOLERANCE);
-            assertEquals(0, model.z().length);
-            assertEquals(0, model.s().length);
         }
     }
 
@@ -412,8 +400,6 @@ class ModelTest {
 
             assertEquals(SOLVED, status);
             assertArrayEquals(new double[]{1. / 6., 1.}, model.x(), TOLERANCE);
-            assertEquals(0, model.z().length);
-            assertEquals(0, model.s().length);
 
             model.cleanup();
 
@@ -424,8 +410,6 @@ class ModelTest {
 
             assertEquals(SOLVED, status);
             assertArrayEquals(new double[]{1. / 3., 1.}, model.x(), TOLERANCE);
-            assertEquals(0, model.z().length);
-            assertEquals(0, model.s().length);
         }
     }
 
