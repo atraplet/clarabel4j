@@ -176,14 +176,14 @@ public class Model implements AutoCloseable {
     public void unsafeSetup(Matrix p, double[] q, Matrix a, double[] b, List<@NonNull Cone> cones) {
         checkState(stage == Stage.NEW, "model must be in stage new");
 
-        pSeg = p != null ? createMatrixSegment(p) : createZeroMatrixSegment(a.n(), a.n());
-        qSeg = q != null ? createArraySegment(q) : createZeroArraySegment();
+        pSeg = p != null ? createMatrixSegment(p) : createNullMatrixSegment(a.n(), a.n());
+        qSeg = q != null ? createArraySegment(q) : createNullArraySegment();
 
-        aSeg = a != null ? createMatrixSegment(a) : createZeroMatrixSegment(0, p.n());
-        bSeg = b != null ? createArraySegment(b) : createZeroArraySegment();
+        aSeg = a != null ? createMatrixSegment(a) : createNullMatrixSegment(0, p.n());
+        bSeg = b != null ? createArraySegment(b) : createNullArraySegment();
 
         nCones = cones != null ? cones.size() : 0;
-        conesSeg = cones != null ? createConesSegment(cones) : createZeroConesSegment();
+        conesSeg = cones != null ? createConesSegment(cones) : createNullConesSegment();
 
         settingsSeg = clarabel_DefaultSettings_f64_default(arena);
 
@@ -200,7 +200,7 @@ public class Model implements AutoCloseable {
         return matrixSeg;
     }
 
-    private MemorySegment createZeroMatrixSegment(int m, int n) {
+    private MemorySegment createNullMatrixSegment(int m, int n) {
         val matrixSeg = ClarabelCscMatrix_f64.allocate(arena);
         val colPtrSeg = arena.allocateFrom(C_LONG_LONG, new long[n + 1]);
         clarabel_CscMatrix_f64_init(matrixSeg, m, n, colPtrSeg, NULL, NULL);
@@ -212,7 +212,7 @@ public class Model implements AutoCloseable {
         return arena.allocateFrom(C_DOUBLE, array);
     }
 
-    private MemorySegment createZeroArraySegment() {
+    private MemorySegment createNullArraySegment() {
         return arena.allocateFrom(C_DOUBLE);
     }
 
@@ -246,7 +246,7 @@ public class Model implements AutoCloseable {
         return conesSeg;
     }
 
-    private MemorySegment createZeroConesSegment() {
+    private MemorySegment createNullConesSegment() {
         return ClarabelSupportedConeT_f64.allocateArray(0, arena);
     }
 
@@ -258,7 +258,7 @@ public class Model implements AutoCloseable {
      * @param parameters parameter object for the solver settings
      */
     public void setParameters(@NonNull Parameters parameters) {
-        checkState(stage != Stage.NEW, "Model must not be in stage new");
+        checkState(stage != Stage.NEW, "model must not be in stage new");
 
         Optional.ofNullable(parameters.maxIter())
                 .ifPresent(maxIter -> ClarabelDefaultSettings_f64.max_iter(settingsSeg, maxIter));
@@ -395,7 +395,7 @@ public class Model implements AutoCloseable {
      * Cleanup: free this {@link Model} native memory.
      */
     public void cleanup() {
-        checkState(stage != Stage.NEW, "model must not be in stage new");
+        checkState(stage == Stage.OPTIMIZED, "model must be in stage optimized");
         clarabel_DefaultSolver_f64_free(solverSeg);
         stage = Stage.NEW;
     }
@@ -496,7 +496,7 @@ public class Model implements AutoCloseable {
 
     @Override
     public void close() {
-        if (stage != Stage.NEW) {
+        if (stage == Stage.OPTIMIZED) {
             clarabel_DefaultSolver_f64_free(solverSeg);
         }
         arena.close();
