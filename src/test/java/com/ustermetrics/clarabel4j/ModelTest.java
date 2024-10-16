@@ -322,4 +322,29 @@ class ModelTest {
         }
     }
 
+    @Test
+    void solveFeasibilityProblemReturnsExpectedSolution() {
+        // [[6., 0.],
+        //  [0., 4.]]
+        val a = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val b = new double[]{6., 1.};
+        final List<Cone> cones = List.of(new ZeroCone(2));
+
+        try (val model = new Model()) {
+            model.setup(a, b, cones);
+
+            val parameters = Parameters.builder()
+                    .verbose(true)
+                    .build();
+            model.setParameters(parameters);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            assertArrayEquals(new double[]{1., 0.25}, model.x(), TOLERANCE);
+            assertArrayEquals(new double[]{0., 0.}, model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{0., 0.}, model.s(), TOLERANCE);
+        }
+    }
+
 }
