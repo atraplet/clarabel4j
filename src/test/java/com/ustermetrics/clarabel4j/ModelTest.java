@@ -400,6 +400,23 @@ class ModelTest {
     }
 
     @Test
+    void solveProblemWithVerboseParameterTrueReturnsSolved() {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+
+        try (val model = new Model()) {
+            val parameters = Parameters.builder()
+                    .verbose(true)
+                    .build();
+            model.setParameters(parameters);
+            model.setup(p);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+        }
+    }
+
+    @Test
     void setAllParametersDoesNotThrow() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
 
