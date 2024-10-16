@@ -184,9 +184,9 @@ public class Model implements AutoCloseable {
         checkState(stage == Stage.NEW, "model must be in stage new");
 
         val pSeg = p != null ? createMatrixSegment(p) : createNullMatrixSegment(a.n(), a.n());
-        val qSeg = q != null ? createArraySegment(q) : createNullArraySegment();
+        val qSeg = q != null ? createArraySegment(q) : createNullArraySegment(p != null ? p.n() : a.n());
         val aSeg = a != null ? createMatrixSegment(a) : createNullMatrixSegment(0, p.n());
-        val bSeg = b != null ? createArraySegment(b) : createNullArraySegment();
+        val bSeg = b != null ? createArraySegment(b) : createNullArraySegment(0);
         val nCones = cones != null ? cones.size() : 0;
         val conesSeg = cones != null ? createConesSegment(cones) : createNullConesSegment();
         val settingsSeg = createSettingsSegment();
@@ -218,8 +218,9 @@ public class Model implements AutoCloseable {
         return arena.allocateFrom(C_DOUBLE, array);
     }
 
-    private MemorySegment createNullArraySegment() {
-        return arena.allocateFrom(C_DOUBLE);
+    private MemorySegment createNullArraySegment(int length) {
+        val array = new double[length];
+        return createArraySegment(array);
     }
 
     private MemorySegment createConesSegment(List<Cone> cones) {
