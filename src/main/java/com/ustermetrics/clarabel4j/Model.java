@@ -395,7 +395,7 @@ public class Model implements AutoCloseable {
      * Cleanup: free this {@link Model} native memory.
      */
     public void cleanup() {
-        checkState(stage != Stage.NEW, "model must not be in stage new");
+        checkState(stage == Stage.OPTIMIZED, "model must be in stage optimized");
         clarabel_DefaultSolver_f64_free(solverSeg);
         stage = Stage.NEW;
     }
@@ -496,7 +496,7 @@ public class Model implements AutoCloseable {
 
     @Override
     public void close() {
-        if (stage != Stage.NEW) {
+        if (stage == Stage.OPTIMIZED) {
             clarabel_DefaultSolver_f64_free(solverSeg);
         }
         arena.close();
