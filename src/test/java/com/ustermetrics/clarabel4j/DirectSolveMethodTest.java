@@ -11,8 +11,8 @@ class DirectSolveMethodTest {
 
     @ParameterizedTest
     @ValueSource(ints = {0})
-    void valueOfDoesNotThrow(int status) {
-        assertDoesNotThrow(() -> DirectSolveMethod.valueOf(status));
+    void valueOfDoesNotThrow(int method) {
+        assertDoesNotThrow(() -> DirectSolveMethod.valueOf(method));
     }
 
     @Test
