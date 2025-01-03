@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ExponentialConeTest {
 
-    private static Cone cone;
+    private static ExponentialCone cone;
 
     @BeforeAll
     static void setUp() {
