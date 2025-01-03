@@ -28,7 +28,7 @@ public enum DirectSolveMethod {
             }
         }
 
-        throw new IllegalArgumentException("Unknown method " + method);
+        throw new IllegalArgumentException("Unknown direct solve method " + method);
     }
 
 }
