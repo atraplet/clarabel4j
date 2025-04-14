@@ -33,7 +33,7 @@ jobs:
         run: mvn -B clean verify -P coverage --file pom.xml
       - name: Upload coverage reports to Codecov
         if: matrix.os == 'ubuntu-latest'
-        uses: codecov/codecov-action@v5.4.0
+        uses: codecov/codecov-action@v5.4.1
         with:
           token: ${{ secrets.codecov_token }}
           slug: atraplet/clarabel4j
