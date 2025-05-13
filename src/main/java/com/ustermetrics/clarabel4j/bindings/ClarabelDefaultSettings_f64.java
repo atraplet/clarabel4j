@@ -38,6 +38,7 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     double linesearch_backtrack_step;
  *     double min_switch_step_length;
  *     double min_terminate_step_length;
+ *     uint32_t max_threads;
  *     bool direct_kkt_solver;
  *     ClarabelDirectSolveMethods direct_solve_method;
  *     bool static_regularization_enable;
@@ -88,11 +89,12 @@ public class ClarabelDefaultSettings_f64 {
         Clarabel_h.C_DOUBLE.withName("linesearch_backtrack_step"),
         Clarabel_h.C_DOUBLE.withName("min_switch_step_length"),
         Clarabel_h.C_DOUBLE.withName("min_terminate_step_length"),
+        Clarabel_h.C_INT.withName("max_threads"),
         Clarabel_h.C_BOOL.withName("direct_kkt_solver"),
         MemoryLayout.paddingLayout(3),
         Clarabel_h.C_INT.withName("direct_solve_method"),
         Clarabel_h.C_BOOL.withName("static_regularization_enable"),
-        MemoryLayout.paddingLayout(7),
+        MemoryLayout.paddingLayout(3),
         Clarabel_h.C_DOUBLE.withName("static_regularization_constant"),
         Clarabel_h.C_DOUBLE.withName("static_regularization_proportional"),
         Clarabel_h.C_BOOL.withName("dynamic_regularization_enable"),
@@ -1129,6 +1131,50 @@ public class ClarabelDefaultSettings_f64 {
         struct.set(min_terminate_step_length$LAYOUT, min_terminate_step_length$OFFSET, fieldValue);
     }
 
+    private static final OfInt max_threads$LAYOUT = (OfInt)$LAYOUT.select(groupElement("max_threads"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * uint32_t max_threads
+     * }
+     */
+    public static final OfInt max_threads$layout() {
+        return max_threads$LAYOUT;
+    }
+
+    private static final long max_threads$OFFSET = 176;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * uint32_t max_threads
+     * }
+     */
+    public static final long max_threads$offset() {
+        return max_threads$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * uint32_t max_threads
+     * }
+     */
+    public static int max_threads(MemorySegment struct) {
+        return struct.get(max_threads$LAYOUT, max_threads$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * uint32_t max_threads
+     * }
+     */
+    public static void max_threads(MemorySegment struct, int fieldValue) {
+        struct.set(max_threads$LAYOUT, max_threads$OFFSET, fieldValue);
+    }
+
     private static final OfBoolean direct_kkt_solver$LAYOUT = (OfBoolean)$LAYOUT.select(groupElement("direct_kkt_solver"));
 
     /**
@@ -1141,7 +1187,7 @@ public class ClarabelDefaultSettings_f64 {
         return direct_kkt_solver$LAYOUT;
     }
 
-    private static final long direct_kkt_solver$OFFSET = 176;
+    private static final long direct_kkt_solver$OFFSET = 180;
 
     /**
      * Offset for field:
@@ -1185,7 +1231,7 @@ public class ClarabelDefaultSettings_f64 {
         return direct_solve_method$LAYOUT;
     }
 
-    private static final long direct_solve_method$OFFSET = 180;
+    private static final long direct_solve_method$OFFSET = 184;
 
     /**
      * Offset for field:
@@ -1229,7 +1275,7 @@ public class ClarabelDefaultSettings_f64 {
         return static_regularization_enable$LAYOUT;
     }
 
-    private static final long static_regularization_enable$OFFSET = 184;
+    private static final long static_regularization_enable$OFFSET = 188;
 
     /**
      * Offset for field:
