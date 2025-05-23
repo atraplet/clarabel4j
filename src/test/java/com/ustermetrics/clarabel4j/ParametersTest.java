@@ -34,6 +34,7 @@ class ParametersTest {
                 .linesearchBacktrackStep(1.)
                 .minSwitchStepLength(1.)
                 .minTerminateStepLength(1.)
+                .maxThreads(0)
                 .directKktSolver(true)
                 .directSolveMethod(QDLDL)
                 .staticRegularizationEnable(true)
@@ -74,6 +75,7 @@ class ParametersTest {
         assertEquals(1., parameters.linesearchBacktrackStep(), tol);
         assertEquals(1., parameters.minSwitchStepLength(), tol);
         assertEquals(1., parameters.minTerminateStepLength(), tol);
+        assertEquals(0, parameters.maxThreads());
         assertTrue(parameters.directKktSolver());
         assertEquals(QDLDL, parameters.directSolveMethod());
         assertTrue(parameters.staticRegularizationEnable());
@@ -277,6 +279,15 @@ class ParametersTest {
                 .build());
 
         assertEquals("minTerminateStepLength must be null or positive", exception.getMessage());
+    }
+
+    @Test
+    void buildParametersWithInvalidMaxThreadsThrowsException() {
+        val exception = assertThrowsExactly(IllegalArgumentException.class, () -> Parameters.builder()
+                .maxThreads(-1)
+                .build());
+
+        assertEquals("maxThreads must be null or positive", exception.getMessage());
     }
 
     @Test
