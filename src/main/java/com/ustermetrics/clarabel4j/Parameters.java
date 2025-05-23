@@ -34,6 +34,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @param minSwitchStepLength              minimum step size allowed for asymmetric cones with PrimalDual scaling
  * @param minTerminateStepLength           minimum step size allowed for symmetric cones and asymmetric cones with Dual
  *                                         scaling
+ * @param maxThreads                       maximum number of threads for multithreaded KKT solvers (0 lets the solver
+ *                                         choose for itself)
  * @param directKktSolver                  use a direct linear solver method
  * @param directSolveMethod                direct linear solver
  * @param staticRegularizationEnable       enable KKT static regularization
@@ -57,13 +59,14 @@ public record Parameters(Integer maxIter, Double timeLimit, Boolean verbose, Dou
                          Double reducedTolInfeasAbs, Double reducedTolInfeasRel, Double reducedTolKtratio,
                          Boolean equilibrateEnable, Integer equilibrateMaxIter, Double equilibrateMinScaling,
                          Double equilibrateMaxScaling, Double linesearchBacktrackStep, Double minSwitchStepLength,
-                         Double minTerminateStepLength, Boolean directKktSolver, DirectSolveMethod directSolveMethod,
-                         Boolean staticRegularizationEnable, Double staticRegularizationConstant,
-                         Double staticRegularizationProportional, Boolean dynamicRegularizationEnable,
-                         Double dynamicRegularizationEps, Double dynamicRegularizationDelta,
-                         Boolean iterativeRefinementEnable, Double iterativeRefinementReltol,
-                         Double iterativeRefinementAbstol, Integer iterativeRefinementMaxIter,
-                         Double iterativeRefinementStopRatio, Boolean presolveEnable) {
+                         Double minTerminateStepLength, Integer maxThreads, Boolean directKktSolver,
+                         DirectSolveMethod directSolveMethod, Boolean staticRegularizationEnable,
+                         Double staticRegularizationConstant, Double staticRegularizationProportional,
+                         Boolean dynamicRegularizationEnable, Double dynamicRegularizationEps,
+                         Double dynamicRegularizationDelta, Boolean iterativeRefinementEnable,
+                         Double iterativeRefinementReltol, Double iterativeRefinementAbstol,
+                         Integer iterativeRefinementMaxIter, Double iterativeRefinementStopRatio,
+                         Boolean presolveEnable) {
 
     public Parameters {
         val errMsg = "%s must be null or positive";
@@ -89,6 +92,7 @@ public record Parameters(Integer maxIter, Double timeLimit, Boolean verbose, Dou
                 "linesearchBacktrackStep");
         checkArgument(minSwitchStepLength == null || minSwitchStepLength > 0., errMsg, "minSwitchStepLength");
         checkArgument(minTerminateStepLength == null || minTerminateStepLength > 0., errMsg, "minTerminateStepLength");
+        checkArgument(maxThreads == null || maxThreads >= 0, errMsg, "maxThreads");
         checkArgument(staticRegularizationConstant == null || staticRegularizationConstant > 0., errMsg,
                 "staticRegularizationConstant");
         checkArgument(staticRegularizationProportional == null || staticRegularizationProportional > 0., errMsg,

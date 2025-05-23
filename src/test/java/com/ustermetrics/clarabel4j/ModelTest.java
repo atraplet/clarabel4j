@@ -446,6 +446,7 @@ class ModelTest {
                         .linesearchBacktrackStep(1.)
                         .minSwitchStepLength(1.)
                         .minTerminateStepLength(1.)
+                        .maxThreads(0)
                         .directKktSolver(true)
                         .directSolveMethod(QDLDL)
                         .staticRegularizationEnable(true)

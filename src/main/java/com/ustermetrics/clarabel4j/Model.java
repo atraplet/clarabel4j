@@ -307,6 +307,8 @@ public class Model implements AutoCloseable {
                     .ifPresent(p -> ClarabelDefaultSettings_f64.min_switch_step_length(settingsSeg, p));
             Optional.ofNullable(parameters.minTerminateStepLength())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.min_terminate_step_length(settingsSeg, p));
+            Optional.ofNullable(parameters.maxThreads())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.max_threads(settingsSeg, p));
             Optional.ofNullable(parameters.directKktSolver())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.direct_kkt_solver(settingsSeg, p));
             Optional.ofNullable(parameters.directSolveMethod())
