@@ -19,6 +19,9 @@ rm -rf "${CLARABEL4J}"/src/main/java/com/ustermetrics/clarabel4j/bindings/
 
 # generate bindings
 $JEXTRACT \
+  --define-macro FEATURE_FAER_SPARSE \
+  --define-macro FEATURE_PARDISO_MKL \
+  --define-macro FEATURE_PARDISO_ANY \
   --target-package com.ustermetrics.clarabel4j.bindings \
   --output "${CLARABEL4J}"/src/main/java \
   @"${CLARABEL4J}"/bindings/includes.txt "${CLARABEL}"/include/Clarabel.h
