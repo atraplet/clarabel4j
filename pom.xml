@@ -10,7 +10,7 @@
 
     <properties>
         <java.version>24</java.version>
-        <lombok.version>1.18.38</lombok.version>
+        <lombok.version>1.18.40</lombok.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.proc>full</maven.compiler.proc>
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>com.ustermetrics</groupId>
             <artifactId>clarabel4j-native</artifactId>
-            <version>2.0.1-0.10.0</version>
+            <version>3.0.0-0.11.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -97,7 +97,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.5.4</version>
                 <configuration>
                     <argLine>@{argLine} --enable-native-access=com.ustermetrics.clarabel4j
                         --enable-native-access=org.scijava.nativelib
