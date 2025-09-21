@@ -21,7 +21,7 @@ jobs:
           JDK_VERSION=$(mvn help:evaluate -Dexpression=maven.compiler.source -q -DforceStdout)
           echo "JDK_VERSION=$JDK_VERSION" >> $GITHUB_ENV
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JDK_VERSION }}
           distribution: 'temurin'
