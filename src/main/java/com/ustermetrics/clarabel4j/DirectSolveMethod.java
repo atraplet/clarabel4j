@@ -2,14 +2,17 @@ package com.ustermetrics.clarabel4j;
 
 import lombok.val;
 
-import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.QDLDL;
+import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.*;
 
 /**
  * The direct linear solver used by <a href="https://clarabel.org">Clarabel</a>.
  */
 public enum DirectSolveMethod {
 
-    QDLDL(QDLDL());
+    AUTO(AUTO()),
+    QDLDL(QDLDL()),
+    FAER(FAER()),
+    PARDISO_MKL(PARDISO_MKL());
 
     private final int method;
 
