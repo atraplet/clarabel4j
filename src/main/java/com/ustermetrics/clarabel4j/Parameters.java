@@ -111,8 +111,8 @@ public record Parameters(Integer maxIter, Double timeLimit, Boolean verbose, Dou
                 "iterativeRefinementMaxIter");
         checkArgument(iterativeRefinementStopRatio == null || iterativeRefinementStopRatio > 0., errMsg,
                 "iterativeRefinementStopRatio");
-        checkArgument(pardisoIparm == null || pardisoIparm.length > 0,
-                "pardisoIparm must be null or a non-empty array");
+        checkArgument(pardisoIparm == null || pardisoIparm.length == 64,
+                "pardisoIparm must be null or a length 64 array");
     }
 
 }

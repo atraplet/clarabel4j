@@ -10,6 +10,8 @@ class ParametersTest {
 
     @Test
     void buildParametersWithCustomOptionsReturnsParametersWithCustomOptions() {
+        val pardisoIparm = new int[64];
+        pardisoIparm[0] = 1;
         val parameters = Parameters.builder()
                 .maxIter(1)
                 .timeLimit(1.)
@@ -49,7 +51,7 @@ class ParametersTest {
                 .iterativeRefinementMaxIter(1)
                 .iterativeRefinementStopRatio(1.)
                 .presolveEnable(true)
-                .pardisoIparm(new int[]{1})
+                .pardisoIparm(pardisoIparm)
                 .pardisoVerbose(true)
                 .build();
 
@@ -370,10 +372,10 @@ class ParametersTest {
     @Test
     void buildParametersWithInvalidPardisoIparmThrowsException() {
         val exception = assertThrowsExactly(IllegalArgumentException.class, () -> Parameters.builder()
-                .pardisoIparm(new int[0])
+                .pardisoIparm(new int[1])
                 .build());
 
-        assertEquals("pardisoIparm must be null or a non-empty array", exception.getMessage());
+        assertEquals("pardisoIparm must be null or a length 64 array", exception.getMessage());
     }
 
 }
