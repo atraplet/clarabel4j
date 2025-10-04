@@ -28,6 +28,8 @@ class ModelTest {
             val parameters = Parameters.builder()
                     .equilibrateEnable(true)
                     .equilibrateMaxIter(50)
+                    .directSolveMethod(QDLDL)
+                    .maxThreads(1)
                     .verbose(false)
                     .build();
             model.setParameters(parameters);
@@ -45,6 +47,10 @@ class ModelTest {
             assertEquals(6, model.iterations());
             assertEquals(0., model.rPrim(), TOLERANCE);
             assertEquals(0., model.rDual(), TOLERANCE);
+            assertEquals(QDLDL, model.directSolveMethod());
+            assertEquals(1, model.threads());
+            assertEquals(10, model.nnzA());
+            assertEquals(4, model.nnzL());
         }
     }
 
