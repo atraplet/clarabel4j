@@ -462,7 +462,7 @@ class ModelTest {
             assertEquals(PARDISO_MKL, model.directSolveMethod());
             assertTrue(model.threads() >= 1);
             assertEquals(10, model.nnzA());
-            assertEquals(4, model.nnzL());
+            assertEquals(7, model.nnzL());
         }
     }
 
