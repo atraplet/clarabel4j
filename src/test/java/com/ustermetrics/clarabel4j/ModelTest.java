@@ -1,6 +1,7 @@
 package com.ustermetrics.clarabel4j;
 
 import lombok.val;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -423,8 +424,8 @@ class ModelTest {
         }
     }
 
-    //    @Disabled("Needs installation of Pardiso from Intel oneAPI HPC Toolkit " +
-//            "and 'libmkl_rt.so' must be on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
+    @Disabled("Needs installation of Pardiso from Intel oneAPI HPC Toolkit " +
+            "and 'libmkl_rt.so' must be on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
     @Test
     void solveLinearProgramWithPardisoReturnsExpectedSolution() {
         // Linear program from the Clarabel examples
