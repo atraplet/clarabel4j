@@ -442,7 +442,7 @@ class ModelTest {
                     .directSolveMethod(PARDISO_MKL)
                     .pardisoIparm(pardisoIParm)
                     .pardisoVerbose(true)
-                    .verbose(false)
+                    .verbose(true)
                     .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
