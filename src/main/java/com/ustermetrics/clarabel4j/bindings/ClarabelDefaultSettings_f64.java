@@ -53,6 +53,8 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     uint32_t iterative_refinement_max_iter;
  *     double iterative_refinement_stop_ratio;
  *     bool presolve_enable;
+ *     int32_t pardiso_iparm[64];
+ *     bool pardiso_verbose;
  * }
  * }
  */
@@ -109,7 +111,10 @@ public class ClarabelDefaultSettings_f64 {
         MemoryLayout.paddingLayout(4),
         Clarabel_h.C_DOUBLE.withName("iterative_refinement_stop_ratio"),
         Clarabel_h.C_BOOL.withName("presolve_enable"),
-        MemoryLayout.paddingLayout(7)
+        MemoryLayout.paddingLayout(3),
+        MemoryLayout.sequenceLayout(64, Clarabel_h.C_INT).withName("pardiso_iparm"),
+        Clarabel_h.C_BOOL.withName("pardiso_verbose"),
+        MemoryLayout.paddingLayout(3)
     ).withName("ClarabelDefaultSettings_f64");
 
     /**
@@ -1789,6 +1794,127 @@ public class ClarabelDefaultSettings_f64 {
      */
     public static void presolve_enable(MemorySegment struct, boolean fieldValue) {
         struct.set(presolve_enable$LAYOUT, presolve_enable$OFFSET, fieldValue);
+    }
+
+    private static final SequenceLayout pardiso_iparm$LAYOUT = (SequenceLayout)$LAYOUT.select(groupElement("pardiso_iparm"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * int32_t pardiso_iparm[64]
+     * }
+     */
+    public static final SequenceLayout pardiso_iparm$layout() {
+        return pardiso_iparm$LAYOUT;
+    }
+
+    private static final long pardiso_iparm$OFFSET = 276;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * int32_t pardiso_iparm[64]
+     * }
+     */
+    public static final long pardiso_iparm$offset() {
+        return pardiso_iparm$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * int32_t pardiso_iparm[64]
+     * }
+     */
+    public static MemorySegment pardiso_iparm(MemorySegment struct) {
+        return struct.asSlice(pardiso_iparm$OFFSET, pardiso_iparm$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * int32_t pardiso_iparm[64]
+     * }
+     */
+    public static void pardiso_iparm(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, pardiso_iparm$OFFSET, pardiso_iparm$LAYOUT.byteSize());
+    }
+
+    private static long[] pardiso_iparm$DIMS = { 64 };
+
+    /**
+     * Dimensions for array field:
+     * {@snippet lang=c :
+     * int32_t pardiso_iparm[64]
+     * }
+     */
+    public static long[] pardiso_iparm$dimensions() {
+        return pardiso_iparm$DIMS;
+    }
+    private static final VarHandle pardiso_iparm$ELEM_HANDLE = pardiso_iparm$LAYOUT.varHandle(sequenceElement());
+
+    /**
+     * Indexed getter for field:
+     * {@snippet lang=c :
+     * int32_t pardiso_iparm[64]
+     * }
+     */
+    public static int pardiso_iparm(MemorySegment struct, long index0) {
+        return (int)pardiso_iparm$ELEM_HANDLE.get(struct, 0L, index0);
+    }
+
+    /**
+     * Indexed setter for field:
+     * {@snippet lang=c :
+     * int32_t pardiso_iparm[64]
+     * }
+     */
+    public static void pardiso_iparm(MemorySegment struct, long index0, int fieldValue) {
+        pardiso_iparm$ELEM_HANDLE.set(struct, 0L, index0, fieldValue);
+    }
+
+    private static final OfBoolean pardiso_verbose$LAYOUT = (OfBoolean)$LAYOUT.select(groupElement("pardiso_verbose"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * bool pardiso_verbose
+     * }
+     */
+    public static final OfBoolean pardiso_verbose$layout() {
+        return pardiso_verbose$LAYOUT;
+    }
+
+    private static final long pardiso_verbose$OFFSET = 532;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * bool pardiso_verbose
+     * }
+     */
+    public static final long pardiso_verbose$offset() {
+        return pardiso_verbose$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * bool pardiso_verbose
+     * }
+     */
+    public static boolean pardiso_verbose(MemorySegment struct) {
+        return struct.get(pardiso_verbose$LAYOUT, pardiso_verbose$OFFSET);
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * bool pardiso_verbose
+     * }
+     */
+    public static void pardiso_verbose(MemorySegment struct, boolean fieldValue) {
+        struct.set(pardiso_verbose$LAYOUT, pardiso_verbose$OFFSET, fieldValue);
     }
 
     /**

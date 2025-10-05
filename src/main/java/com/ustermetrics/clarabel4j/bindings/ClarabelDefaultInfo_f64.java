@@ -30,6 +30,7 @@ import static java.lang.foreign.MemoryLayout.PathElement.*;
  *     double ktratio;
  *     double solve_time;
  *     enum ClarabelSolverStatus status;
+ *     ClarabelLinearSolverInfo linsolver;
  * }
  * }
  */
@@ -56,6 +57,7 @@ public class ClarabelDefaultInfo_f64 {
         Clarabel_h.C_DOUBLE.withName("ktratio"),
         Clarabel_h.C_DOUBLE.withName("solve_time"),
         Clarabel_h.C_INT.withName("status"),
+        ClarabelLinearSolverInfo.layout().withName("linsolver"),
         MemoryLayout.paddingLayout(4)
     ).withName("ClarabelDefaultInfo_f64");
 
@@ -724,6 +726,50 @@ public class ClarabelDefaultInfo_f64 {
      */
     public static void status(MemorySegment struct, int fieldValue) {
         struct.set(status$LAYOUT, status$OFFSET, fieldValue);
+    }
+
+    private static final GroupLayout linsolver$LAYOUT = (GroupLayout)$LAYOUT.select(groupElement("linsolver"));
+
+    /**
+     * Layout for field:
+     * {@snippet lang=c :
+     * ClarabelLinearSolverInfo linsolver
+     * }
+     */
+    public static final GroupLayout linsolver$layout() {
+        return linsolver$LAYOUT;
+    }
+
+    private static final long linsolver$OFFSET = 116;
+
+    /**
+     * Offset for field:
+     * {@snippet lang=c :
+     * ClarabelLinearSolverInfo linsolver
+     * }
+     */
+    public static final long linsolver$offset() {
+        return linsolver$OFFSET;
+    }
+
+    /**
+     * Getter for field:
+     * {@snippet lang=c :
+     * ClarabelLinearSolverInfo linsolver
+     * }
+     */
+    public static MemorySegment linsolver(MemorySegment struct) {
+        return struct.asSlice(linsolver$OFFSET, linsolver$LAYOUT.byteSize());
+    }
+
+    /**
+     * Setter for field:
+     * {@snippet lang=c :
+     * ClarabelLinearSolverInfo linsolver
+     * }
+     */
+    public static void linsolver(MemorySegment struct, MemorySegment fieldValue) {
+        MemorySegment.copy(fieldValue, 0L, struct, linsolver$OFFSET, linsolver$LAYOUT.byteSize());
     }
 
     /**

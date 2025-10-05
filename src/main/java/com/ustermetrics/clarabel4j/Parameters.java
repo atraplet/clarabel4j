@@ -50,6 +50,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @param iterativeRefinementMaxIter       iterative refinement maximum iterations
  * @param iterativeRefinementStopRatio     iterative refinement stalling tolerance
  * @param presolveEnable                   enable presolve constraint reduction
+ * @param pardisoIparm                     Pardiso iparm settings
+ * @param pardisoVerbose                   enable Pardiso verbose output
  * @see <a href="https://clarabel.org">Clarabel</a>
  */
 @Builder
@@ -66,7 +68,7 @@ public record Parameters(Integer maxIter, Double timeLimit, Boolean verbose, Dou
                          Double dynamicRegularizationDelta, Boolean iterativeRefinementEnable,
                          Double iterativeRefinementReltol, Double iterativeRefinementAbstol,
                          Integer iterativeRefinementMaxIter, Double iterativeRefinementStopRatio,
-                         Boolean presolveEnable) {
+                         Boolean presolveEnable, int[] pardisoIparm, Boolean pardisoVerbose) {
 
     public Parameters {
         val errMsg = "%s must be null or positive";
@@ -109,6 +111,8 @@ public record Parameters(Integer maxIter, Double timeLimit, Boolean verbose, Dou
                 "iterativeRefinementMaxIter");
         checkArgument(iterativeRefinementStopRatio == null || iterativeRefinementStopRatio > 0., errMsg,
                 "iterativeRefinementStopRatio");
+        checkArgument(pardisoIparm == null || pardisoIparm.length == 64,
+                "pardisoIparm must be null or a length 64 array");
     }
 
 }

@@ -10,6 +10,8 @@ class ParametersTest {
 
     @Test
     void buildParametersWithCustomOptionsReturnsParametersWithCustomOptions() {
+        val pardisoIparm = new int[64];
+        pardisoIparm[0] = 1;
         val parameters = Parameters.builder()
                 .maxIter(1)
                 .timeLimit(1.)
@@ -49,6 +51,8 @@ class ParametersTest {
                 .iterativeRefinementMaxIter(1)
                 .iterativeRefinementStopRatio(1.)
                 .presolveEnable(true)
+                .pardisoIparm(pardisoIparm)
+                .pardisoVerbose(true)
                 .build();
 
         val tol = 1e-8;
@@ -90,6 +94,9 @@ class ParametersTest {
         assertEquals(1, parameters.iterativeRefinementMaxIter());
         assertEquals(1., parameters.iterativeRefinementStopRatio(), tol);
         assertTrue(parameters.presolveEnable());
+        assertTrue(parameters.pardisoIparm().length > 0);
+        assertEquals(1, parameters.pardisoIparm()[0]);
+        assertTrue(parameters.pardisoVerbose());
     }
 
     @Test
@@ -360,6 +367,15 @@ class ParametersTest {
                 .build());
 
         assertEquals("iterativeRefinementStopRatio must be null or positive", exception.getMessage());
+    }
+
+    @Test
+    void buildParametersWithInvalidPardisoIparmThrowsException() {
+        val exception = assertThrowsExactly(IllegalArgumentException.class, () -> Parameters.builder()
+                .pardisoIparm(new int[1])
+                .build());
+
+        assertEquals("pardisoIparm must be null or a length 64 array", exception.getMessage());
     }
 
 }

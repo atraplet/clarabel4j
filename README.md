@@ -30,20 +30,23 @@ your `pom.xml`
 ### Native Library
 
 Either add the latest version of [clarabel4j-native](https://github.com/atraplet/clarabel4j-native)
-from [Maven Central](https://central.sonatype.com/artifact/com.ustermetrics/clarabel4j-native) to
-your `pom.xml`
+from [Maven Central](https://central.sonatype.com/artifact/com.ustermetrics/clarabel4j-native) to your `pom.xml`
 
 ```
 <dependency>
     <groupId>com.ustermetrics</groupId>
     <artifactId>clarabel4j-native</artifactId>
     <version>x.y.z</version>
+    <classifier>platform</classifier>
     <scope>runtime</scope>
 </dependency>
 ```
 
-or install the native solver on the machine and add the location to the `java.library.path`. clarabel4j dynamically
-loads the native solver.
+where `x.y.z` is the version of the library and `platform` is one of `linux_64`, `windows_64`, or `osx_arm64`. If no
+`classifier` is specified, binaries for all platforms are included.
+
+Or alternatively install the native solver on the machine and add the location to the `java.library.path`. clarabel4j
+dynamically loads the native solver.
 
 ### Run Code
 

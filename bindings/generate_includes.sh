@@ -22,6 +22,9 @@ INCLUDES="${CLARABEL4J}"/bindings/includes.txt
 rm -f "${TMP_INCLUDES}"
 rm -f "${INCLUDES}"
 ${JEXTRACT} \
+  --define-macro FEATURE_FAER_SPARSE \
+  --define-macro FEATURE_PARDISO_MKL \
+  --define-macro FEATURE_PARDISO_ANY \
   --dump-includes "${TMP_INCLUDES}" \
   "${CLARABEL}"/include/Clarabel.h
 

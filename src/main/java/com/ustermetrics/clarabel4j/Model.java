@@ -1,9 +1,6 @@
 package com.ustermetrics.clarabel4j;
 
-import com.ustermetrics.clarabel4j.bindings.ClarabelCscMatrix_f64;
-import com.ustermetrics.clarabel4j.bindings.ClarabelDefaultSettings_f64;
-import com.ustermetrics.clarabel4j.bindings.ClarabelDefaultSolution_f64;
-import com.ustermetrics.clarabel4j.bindings.ClarabelSupportedConeT_f64;
+import com.ustermetrics.clarabel4j.bindings.*;
 import lombok.NonNull;
 import lombok.val;
 
@@ -32,6 +29,7 @@ public class Model implements AutoCloseable {
     private Parameters parameters;
     private MemorySegment solverSeg;
     private MemorySegment solutionSeg;
+    private MemorySegment infoSeg;
 
     /**
      * Sets the <a href="https://clarabel.org">Clarabel</a> solver settings.
@@ -337,6 +335,10 @@ public class Model implements AutoCloseable {
                     .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_stop_ratio(settingsSeg, p));
             Optional.ofNullable(parameters.presolveEnable())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.presolve_enable(settingsSeg, p));
+            Optional.ofNullable(parameters.pardisoIparm())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.pardiso_iparm(settingsSeg, arena.allocateFrom(C_INT, p)));
+            Optional.ofNullable(parameters.pardisoVerbose())
+                    .ifPresent(p -> ClarabelDefaultSettings_f64.pardiso_verbose(settingsSeg, p));
         }
 
         return settingsSeg;
@@ -353,6 +355,7 @@ public class Model implements AutoCloseable {
         clarabel_DefaultSolver_f64_solve(solverSeg);
         solutionSeg = ClarabelDefaultSolution_f64.reinterpret(clarabel_DefaultSolver_f64_solution(arena, solverSeg),
                 arena, null);
+        infoSeg = ClarabelDefaultInfo_f64.reinterpret(clarabel_DefaultSolver_f64_info(arena, solverSeg), arena, null);
 
         val status = Status.valueOf(ClarabelDefaultSolution_f64.status(solutionSeg));
         stage = Stage.OPTIMIZED;
@@ -457,6 +460,42 @@ public class Model implements AutoCloseable {
     public double rDual() {
         checkStageIsOptimized();
         return ClarabelDefaultSolution_f64.r_dual(solutionSeg);
+    }
+
+    /**
+     * @return direct solve method that was used for this optimized {@link Model}
+     * @see <a href="https://clarabel.org">Clarabel</a>
+     */
+    public DirectSolveMethod directSolveMethod() {
+        checkStageIsOptimized();
+        return DirectSolveMethod.valueOf(ClarabelLinearSolverInfo.name(ClarabelDefaultInfo_f64.linsolver(infoSeg)));
+    }
+
+    /**
+     * @return number of threads that was used by the solver for this optimized {@link Model}
+     * @see <a href="https://clarabel.org">Clarabel</a>
+     */
+    public int threads() {
+        checkStageIsOptimized();
+        return ClarabelLinearSolverInfo.threads(ClarabelDefaultInfo_f64.linsolver(infoSeg));
+    }
+
+    /**
+     * @return number of nonzeros in the linear system of this optimized {@link Model}
+     * @see <a href="https://clarabel.org">Clarabel</a>
+     */
+    public int nnzA() {
+        checkStageIsOptimized();
+        return ClarabelLinearSolverInfo.nnzA(ClarabelDefaultInfo_f64.linsolver(infoSeg));
+    }
+
+    /**
+     * @return number of nonzeros in the factored system of this optimized {@link Model}
+     * @see <a href="https://clarabel.org">Clarabel</a>
+     */
+    public int nnzL() {
+        checkStageIsOptimized();
+        return ClarabelLinearSolverInfo.nnzL(ClarabelDefaultInfo_f64.linsolver(infoSeg));
     }
 
     private void checkStageIsOptimized() {

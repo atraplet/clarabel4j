@@ -19,7 +19,8 @@ public enum Status {
     MAX_ITERATIONS(ClarabelMaxIterations()),
     MAX_TIME(ClarabelMaxTime()),
     NUMERICAL_ERROR(ClarabelNumericalError()),
-    INSUFFICIENT_PROGRESS(ClarabelInsufficientProgress());
+    INSUFFICIENT_PROGRESS(ClarabelInsufficientProgress()),
+    CLARABEL_CALL_BACK_TERMINATED(ClarabelCallbackTerminated());
 
     private final int status;
 

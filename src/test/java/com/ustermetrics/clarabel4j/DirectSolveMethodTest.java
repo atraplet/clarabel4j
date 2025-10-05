@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DirectSolveMethodTest {
 
     @ParameterizedTest
-    @ValueSource(ints = {0})
+    @ValueSource(ints = {0, 1, 2, 3})
     void valueOfDoesNotThrow(int method) {
         assertDoesNotThrow(() -> DirectSolveMethod.valueOf(method));
     }
