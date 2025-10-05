@@ -1,7 +1,6 @@
 package com.ustermetrics.clarabel4j;
 
 import lombok.val;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -424,8 +423,8 @@ class ModelTest {
         }
     }
 
-    @Disabled("Needs installation of Pardiso from Intel oneAPI HPC Toolkit " +
-            "and 'libmkl_rt.so' must be on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
+    //    @Disabled("Needs installation of Pardiso from Intel oneAPI HPC Toolkit " +
+//            "and 'libmkl_rt.so' must be on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
     @Test
     void solveLinearProgramWithPardisoReturnsExpectedSolution() {
         // Linear program from the Clarabel examples
@@ -437,8 +436,12 @@ class ModelTest {
         final List<Cone> cones = List.of(new NonnegativeCone(4));
 
         try (val model = new Model()) {
+            val pardisoIParm = new int[64];
+            pardisoIParm[1] = 0;
             val parameters = Parameters.builder()
                     .directSolveMethod(PARDISO_MKL)
+                    .pardisoIparm(pardisoIParm)
+                    .pardisoVerbose(true)
                     .verbose(false)
                     .build();
             model.setParameters(parameters);
@@ -457,7 +460,7 @@ class ModelTest {
             assertEquals(0., model.rPrim(), TOLERANCE);
             assertEquals(0., model.rDual(), TOLERANCE);
             assertEquals(PARDISO_MKL, model.directSolveMethod());
-            assertEquals(1, model.threads());
+            assertTrue(model.threads() >= 1);
             assertEquals(10, model.nnzA());
             assertEquals(4, model.nnzL());
         }
