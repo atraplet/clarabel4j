@@ -1,10 +1,12 @@
 package com.ustermetrics.clarabel4j;
 
 import lombok.val;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static com.ustermetrics.clarabel4j.DirectSolveMethod.PARDISO_MKL;
 import static com.ustermetrics.clarabel4j.DirectSolveMethod.QDLDL;
 import static com.ustermetrics.clarabel4j.Status.SOLVED;
 import static java.lang.Math.exp;
@@ -419,6 +421,45 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
+        }
+    }
+
+    @Disabled("Needs installation of Pardiso from Intel oneAPI HPC Toolkit " +
+            "and 'libmkl_rt.so' must be on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
+    @Test
+    void solveLinearProgramWithPardisoReturnsExpectedSolution() {
+        // Linear program from the Clarabel examples
+        // https://github.com/oxfordcontrol/Clarabel.cpp/blob/main/examples/c/example_lp.c
+        val p = new Matrix(2, 2, new long[]{0, 0, 0}, new long[]{}, new double[]{});
+        val q = new double[]{1., -1.};
+        val a = new Matrix(4, 2, new long[]{0, 2, 4}, new long[]{0, 2, 1, 3}, new double[]{1., -1., 1., -1.});
+        val b = new double[]{1., 1., 1., 1.};
+        final List<Cone> cones = List.of(new NonnegativeCone(4));
+
+        try (val model = new Model()) {
+            val parameters = Parameters.builder()
+                    .directSolveMethod(PARDISO_MKL)
+                    .verbose(false)
+                    .build();
+            model.setParameters(parameters);
+            model.setup(p, q, a, b, cones);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            assertArrayEquals(new double[]{-1., 1.}, model.x(), TOLERANCE);
+            assertArrayEquals(new double[]{0., 1., 1., 0.}, model.z(), TOLERANCE);
+            assertArrayEquals(new double[]{2., 0., 0., 2.}, model.s(), TOLERANCE);
+            assertEquals(-2., model.objVal(), TOLERANCE);
+            assertEquals(-2., model.objValDual(), TOLERANCE);
+            assertTrue(model.solveTime() > 0.);
+            assertEquals(6, model.iterations());
+            assertEquals(0., model.rPrim(), TOLERANCE);
+            assertEquals(0., model.rDual(), TOLERANCE);
+            assertEquals(PARDISO_MKL, model.directSolveMethod());
+            assertEquals(1, model.threads());
+            assertEquals(10, model.nnzA());
+            assertEquals(4, model.nnzL());
         }
     }
 
