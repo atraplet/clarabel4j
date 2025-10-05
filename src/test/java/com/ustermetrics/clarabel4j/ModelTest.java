@@ -441,8 +441,8 @@ class ModelTest {
             val parameters = Parameters.builder()
                     .directSolveMethod(PARDISO_MKL)
                     .pardisoIparm(pardisoIParm)
-                    .pardisoVerbose(true)
-                    .verbose(true)
+                    .pardisoVerbose(false)
+                    .verbose(false)
                     .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
