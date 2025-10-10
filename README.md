@@ -5,12 +5,11 @@
 [![Maven Central](https://img.shields.io/maven-central/v/com.ustermetrics/clarabel4j)](https://central.sonatype.com/artifact/com.ustermetrics/clarabel4j)
 [![Apache License, Version 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/atraplet/clarabel4j/blob/master/LICENSE)
 
-*This library requires JDK 24 as it depends on
-Java's [Foreign Function and Memory (FFM) API](https://docs.oracle.com/en/java/javase/24/core/foreign-function-and-memory-api.html).*
+*This library requires JDK 25 or later.*
 
 clarabel4j (Clarabel Solver for Java) is a Java library that provides an interface from the Java programming language to
 the native open source mathematical programming solver [Clarabel](https://clarabel.org). It invokes the solver through
-Java's [Foreign Function and Memory (FFM) API](https://docs.oracle.com/en/java/javase/24/core/foreign-function-and-memory-api.html).
+Java's [Foreign Function and Memory (FFM) API](https://docs.oracle.com/en/java/javase/25/core/foreign-function-and-memory-api.html).
 
 ## Usage
 
