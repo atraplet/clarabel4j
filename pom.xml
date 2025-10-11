@@ -9,8 +9,9 @@
     <version>3-SNAPSHOT</version>
 
     <properties>
-        <java.version>24</java.version>
+        <java.version>25</java.version>
         <lombok.version>1.18.42</lombok.version>
+        <clarabel4j-native.version>4.0.0-0.11.1</clarabel4j-native.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.proc>full</maven.compiler.proc>
@@ -113,7 +114,7 @@
                 <dependency>
                     <groupId>com.ustermetrics</groupId>
                     <artifactId>clarabel4j-native</artifactId>
-                    <version>3.0.0-0.11.1</version>
+                    <version>${clarabel4j-native.version}</version>
                     <classifier>linux_64</classifier>
                     <scope>test</scope>
                 </dependency>
@@ -130,7 +131,7 @@
                 <dependency>
                     <groupId>com.ustermetrics</groupId>
                     <artifactId>clarabel4j-native</artifactId>
-                    <version>3.0.0-0.11.1</version>
+                    <version>${clarabel4j-native.version}</version>
                     <classifier>windows_64</classifier>
                     <scope>test</scope>
                 </dependency>
@@ -147,7 +148,7 @@
                 <dependency>
                     <groupId>com.ustermetrics</groupId>
                     <artifactId>clarabel4j-native</artifactId>
-                    <version>3.0.0-0.11.1</version>
+                    <version>${clarabel4j-native.version}</version>
                     <classifier>osx_arm64</classifier>
                     <scope>test</scope>
                 </dependency>
