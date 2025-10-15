@@ -10,6 +10,9 @@ on:
       codecov_token:
         required: true
 
+env:
+  INTEL_ONEAPI_BASE_TOOLKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/3b7a16b3-a7b0-460f-be16-de0d64fa6b1e/intel-oneapi-base-toolkit-2025.2.1.44_offline.sh
+
 jobs:
   build:
     strategy:
@@ -33,7 +36,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         shell: bash
         run: |
-          wget -q -O intel-oneapi-base-toolkit_offline.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/3b7a16b3-a7b0-460f-be16-de0d64fa6b1e/intel-oneapi-base-toolkit-2025.2.1.44_offline.sh
+          wget -q -O intel-oneapi-base-toolkit_offline.sh ${{ env.INTEL_ONEAPI_BASE_TOOLKIT_URL }}
           sh ./intel-oneapi-base-toolkit_offline.sh -a --silent --eula accept
           echo "LD_LIBRARY_PATH=./intel/oneapi/mkl/latest/lib" >> $GITHUB_ENV
           echo "PARDISO_INSTALLED=true" >> $GITHUB_ENV
