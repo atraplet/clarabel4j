@@ -38,7 +38,7 @@ jobs:
         run: |
           wget -q -O intel-oneapi-base-toolkit_offline.sh ${{ env.INTEL_ONEAPI_BASE_TOOLKIT_URL }}
           sh ./intel-oneapi-base-toolkit_offline.sh -a --silent --eula accept
-          echo "LD_LIBRARY_PATH=./intel/oneapi/mkl/latest/lib" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/home/runner/intel/oneapi/mkl/latest/lib" >> $GITHUB_ENV
           echo "PARDISO_INSTALLED=true" >> $GITHUB_ENV
           pwd
           ls -la
