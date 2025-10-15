@@ -424,8 +424,8 @@ class ModelTest {
         }
     }
 
-    @Disabled("Needs installation of Pardiso from Intel oneAPI HPC Toolkit " +
-            "and 'libmkl_rt.so' must be on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
+    @Disabled("Needs Intel CPU, installation of Pardiso from Intel oneAPI Base Toolkit, and 'libmkl_rt.so' must be " +
+            "on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
     @Test
     void solveLinearProgramWithPardisoReturnsExpectedSolution() {
         // Linear program from the Clarabel examples
