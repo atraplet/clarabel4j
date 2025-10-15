@@ -40,6 +40,7 @@ jobs:
           sh ./intel-oneapi-base-toolkit_offline.sh -a --silent --eula accept
           echo "LD_LIBRARY_PATH=/home/runner/intel/oneapi/mkl/latest/lib" >> $GITHUB_ENV
           echo "PARDISO_INSTALLED=true" >> $GITHUB_ENV
+          ls -la /home/runner/intel/oneapi/
       - name: Build with Maven
         run: |
           mvn -B clean verify -P coverage --file pom.xml
