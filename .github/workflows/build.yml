@@ -29,6 +29,14 @@ jobs:
           java-version: ${{ env.JDK_VERSION }}
           distribution: 'temurin'
           cache: maven
+      - name: Install Intel oneAPI HPC Toolkit
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        run: |
+          wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/2d2a6686-ff06-44ce-baf0-ab84f8dafa89/intel-oneapi-hpc-toolkit-2025.2.1.44_offline.sh
+          sh ./intel-oneapi-hpc-toolkit-2025.2.1.44_offline.sh -a -s --eula accept
+          export LD_LIBRARY_PATH=/home/atrap/intel/oneapi/mkl/2025.2/lib
+          export PARDISO_INSTALLED=true
       - name: Build with Maven
         run: mvn -B clean verify -P coverage --file pom.xml
       - name: Upload coverage reports to Codecov
