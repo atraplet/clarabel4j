@@ -29,12 +29,12 @@ jobs:
           java-version: ${{ env.JDK_VERSION }}
           distribution: 'temurin'
           cache: maven
-      - name: Install Intel oneAPI HPC Toolkit
+      - name: Install Intel oneAPI Base Toolkit
         if: matrix.os == 'ubuntu-latest'
         shell: bash
         run: |
-          wget https://registrationcenter-download.intel.com/akdlm/IRC_NAS/2d2a6686-ff06-44ce-baf0-ab84f8dafa89/intel-oneapi-hpc-toolkit-2025.2.1.44_offline.sh
-          sh ./intel-oneapi-hpc-toolkit-2025.2.1.44_offline.sh -a -s --eula accept
+          wget -q https://registrationcenter-download.intel.com/akdlm/IRC_NAS/3b7a16b3-a7b0-460f-be16-de0d64fa6b1e/intel-oneapi-base-toolkit-2025.2.1.44_offline.sh
+          sh ./intel-oneapi-base-toolkit-2025.2.1.44_offline.sh -a -s --eula accept
           export LD_LIBRARY_PATH=/home/atrap/intel/oneapi/mkl/2025.2/lib
           export PARDISO_INSTALLED=true
       - name: Build with Maven
