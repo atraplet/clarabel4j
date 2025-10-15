@@ -33,12 +33,13 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         shell: bash
         run: |
-          wget -q https://registrationcenter-download.intel.com/akdlm/IRC_NAS/3b7a16b3-a7b0-460f-be16-de0d64fa6b1e/intel-oneapi-base-toolkit-2025.2.1.44_offline.sh
-          sh ./intel-oneapi-base-toolkit-2025.2.1.44_offline.sh -a -s --eula accept
-          export LD_LIBRARY_PATH=/home/atrap/intel/oneapi/mkl/2025.2/lib
-          export PARDISO_INSTALLED=true
+          wget -q -O intel-oneapi-base-toolkit_offline.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/3b7a16b3-a7b0-460f-be16-de0d64fa6b1e/intel-oneapi-base-toolkit-2025.2.1.44_offline.sh
+          sh ./intel-oneapi-base-toolkit_offline.sh -a --silent --eula accept
       - name: Build with Maven
-        run: mvn -B clean verify -P coverage --file pom.xml
+        run: |
+          export LD_LIBRARY_PATH=/home/atrap/intel/oneapi/mkl/latest/lib
+          export PARDISO_INSTALLED=true
+          mvn -B clean verify -P coverage --file pom.xml
       - name: Upload coverage reports to Codecov
         if: matrix.os == 'ubuntu-latest'
         uses: codecov/codecov-action@v5.5.1
