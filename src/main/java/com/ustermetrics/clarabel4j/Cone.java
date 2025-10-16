@@ -1,7 +1,7 @@
 package com.ustermetrics.clarabel4j;
 
 /**
- * Abstract sealed class {@code Cone} permits supported cone types.
+ * Abstract sealed class for cone types
  *
  * @see <a href="https://clarabel.org">Clarabel</a>
  */

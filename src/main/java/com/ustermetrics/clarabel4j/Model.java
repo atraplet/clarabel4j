@@ -27,6 +27,7 @@ public class Model implements AutoCloseable {
     private final Arena arena = Arena.ofConfined();
     private Stage stage = Stage.NEW;
     private Parameters parameters;
+    private Output output;
     private MemorySegment solverSeg;
     private MemorySegment solutionSeg;
     private MemorySegment infoSeg;
@@ -42,6 +43,18 @@ public class Model implements AutoCloseable {
         checkState(stage == Stage.NEW, "model must be in stage new");
 
         this.parameters = parameters;
+    }
+
+    /**
+     * Sets the output type.
+     * If not called, then the output goes to standard out.
+     *
+     * @param output the output type
+     */
+    public void setOutput(@NonNull Output output) {
+        checkState(stage == Stage.NEW, "model must be in stage new");
+
+        this.output = output;
     }
 
     /**
@@ -190,6 +203,8 @@ public class Model implements AutoCloseable {
         val settingsSeg = createSettingsSegment();
 
         solverSeg = clarabel_DefaultSolver_f64_new(pSeg, qSeg, aSeg, bSeg, nCones, conesSeg, settingsSeg);
+
+        setOutput();
 
         stage = Stage.SETUP;
     }
@@ -344,6 +359,17 @@ public class Model implements AutoCloseable {
         return settingsSeg;
     }
 
+    private void setOutput() {
+        if (output != null) {
+            switch (output) {
+                case StdOutOutput _ -> clarabel_DefaultSolver_f64_print_to_stdout(solverSeg);
+                case StringOutput _ -> clarabel_DefaultSolver_f64_print_to_buffer(solverSeg);
+                case FileOutput fileOutput ->
+                        clarabel_DefaultSolver_f64_print_to_file(solverSeg, arena.allocateFrom(fileOutput.getName()));
+            }
+        }
+    }
+
     /**
      * Optimizes this {@link Model} with the<a href="https://clarabel.org">Clarabel</a> solver.
      *
@@ -496,6 +522,20 @@ public class Model implements AutoCloseable {
     public int nnzL() {
         checkStageIsOptimized();
         return ClarabelLinearSolverInfo.nnzL(ClarabelDefaultInfo_f64.linsolver(infoSeg));
+    }
+
+    /**
+     * @return string output of this optimized {@link Model}
+     */
+    public String getStringOutput() {
+        checkStageIsOptimized();
+        checkState(output instanceof StringOutput, "output must be string");
+
+        val bufferSeg = clarabel_DefaultSolver_f64_get_print_buffer(solverSeg);
+        val output = bufferSeg.getString(0);
+        clarabel_free_print_buffer(bufferSeg);
+
+        return output;
     }
 
     private void checkStageIsOptimized() {
