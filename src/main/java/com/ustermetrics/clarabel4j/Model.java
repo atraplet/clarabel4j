@@ -530,7 +530,12 @@ public class Model implements AutoCloseable {
     public String getStringOutput() {
         checkStageIsOptimized();
         checkState(output instanceof StringOutput, "output must be string");
-        return clarabel_DefaultSolver_f64_get_print_buffer(solverSeg).getString(0);
+
+        val bufferSeg = clarabel_DefaultSolver_f64_get_print_buffer(solverSeg);
+        val output = bufferSeg.getString(0);
+        clarabel_free_print_buffer(bufferSeg);
+
+        return output;
     }
 
     private void checkStageIsOptimized() {
