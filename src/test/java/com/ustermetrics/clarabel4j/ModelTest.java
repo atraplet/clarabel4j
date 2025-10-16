@@ -4,6 +4,9 @@ import lombok.val;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 import static com.ustermetrics.clarabel4j.DirectSolveMethod.PARDISO_MKL;
@@ -421,6 +424,68 @@ class ModelTest {
             val status = model.optimize();
 
             assertEquals(SOLVED, status);
+        }
+    }
+
+    @Test
+    void solveProblemWithStdOutOutputReturnsSolved() {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+
+        try (val model = new Model()) {
+            val parameters = Parameters.builder()
+                    .verbose(true)
+                    .build();
+            model.setParameters(parameters);
+            model.setOutput(new StdOutOutput());
+            model.setup(p);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+        }
+    }
+
+    @Test
+    void solveProblemWithStringOutputReturnsExpected() {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+
+        try (val model = new Model()) {
+            val parameters = Parameters.builder()
+                    .verbose(true)
+                    .build();
+            model.setParameters(parameters);
+            model.setOutput(new StringOutput());
+            model.setup(p);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            assertNotNull(model.getStringOutput());
+            assertTrue(model.getStringOutput().contains("Clarabel.rs"));
+        }
+    }
+
+    @Test
+    void solveProblemWithFileOutputReturnsExpected() throws IOException {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+
+        try (val model = new Model()) {
+            val parameters = Parameters.builder()
+                    .verbose(true)
+                    .build();
+            model.setParameters(parameters);
+            val tempFile = File.createTempFile("clarabel4j-output-", ".txt");
+            model.setOutput(new FileOutput(tempFile.getAbsolutePath()));
+            model.setup(p);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+            val tempFilePath = tempFile.toPath();
+            val stringOutput = Files.readString(tempFilePath);
+            assertNotNull(stringOutput);
+            assertTrue(stringOutput.contains("Clarabel.rs"));
+            Files.delete(tempFilePath);
         }
     }
 
