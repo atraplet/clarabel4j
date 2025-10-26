@@ -59,7 +59,7 @@ public class ClarabelLinearSolverInfo {
         return name$LAYOUT;
     }
 
-    private static final long name$OFFSET = 0;
+    private static final long name$OFFSET = $LAYOUT.byteOffset(groupElement("name"));
 
     /**
      * Offset for field:
@@ -103,7 +103,7 @@ public class ClarabelLinearSolverInfo {
         return threads$LAYOUT;
     }
 
-    private static final long threads$OFFSET = 4;
+    private static final long threads$OFFSET = $LAYOUT.byteOffset(groupElement("threads"));
 
     /**
      * Offset for field:
@@ -147,7 +147,7 @@ public class ClarabelLinearSolverInfo {
         return direct$LAYOUT;
     }
 
-    private static final long direct$OFFSET = 8;
+    private static final long direct$OFFSET = $LAYOUT.byteOffset(groupElement("direct"));
 
     /**
      * Offset for field:
@@ -191,7 +191,7 @@ public class ClarabelLinearSolverInfo {
         return nnzA$LAYOUT;
     }
 
-    private static final long nnzA$OFFSET = 12;
+    private static final long nnzA$OFFSET = $LAYOUT.byteOffset(groupElement("nnzA"));
 
     /**
      * Offset for field:
@@ -235,7 +235,7 @@ public class ClarabelLinearSolverInfo {
         return nnzL$LAYOUT;
     }
 
-    private static final long nnzL$OFFSET = 16;
+    private static final long nnzL$OFFSET = $LAYOUT.byteOffset(groupElement("nnzL"));
 
     /**
      * Offset for field:
@@ -279,7 +279,7 @@ public class ClarabelLinearSolverInfo {
         return status$LAYOUT;
     }
 
-    private static final long status$OFFSET = 20;
+    private static final long status$OFFSET = $LAYOUT.byteOffset(groupElement("status"));
 
     /**
      * Offset for field:

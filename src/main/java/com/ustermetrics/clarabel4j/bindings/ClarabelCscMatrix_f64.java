@@ -56,7 +56,7 @@ public class ClarabelCscMatrix_f64 {
         return m$LAYOUT;
     }
 
-    private static final long m$OFFSET = 0;
+    private static final long m$OFFSET = $LAYOUT.byteOffset(groupElement("m"));
 
     /**
      * Offset for field:
@@ -100,7 +100,7 @@ public class ClarabelCscMatrix_f64 {
         return n$LAYOUT;
     }
 
-    private static final long n$OFFSET = 8;
+    private static final long n$OFFSET = $LAYOUT.byteOffset(groupElement("n"));
 
     /**
      * Offset for field:
@@ -144,7 +144,7 @@ public class ClarabelCscMatrix_f64 {
         return colptr$LAYOUT;
     }
 
-    private static final long colptr$OFFSET = 16;
+    private static final long colptr$OFFSET = $LAYOUT.byteOffset(groupElement("colptr"));
 
     /**
      * Offset for field:
@@ -188,7 +188,7 @@ public class ClarabelCscMatrix_f64 {
         return rowval$LAYOUT;
     }
 
-    private static final long rowval$OFFSET = 24;
+    private static final long rowval$OFFSET = $LAYOUT.byteOffset(groupElement("rowval"));
 
     /**
      * Offset for field:
@@ -232,7 +232,7 @@ public class ClarabelCscMatrix_f64 {
         return nzval$LAYOUT;
     }
 
-    private static final long nzval$OFFSET = 32;
+    private static final long nzval$OFFSET = $LAYOUT.byteOffset(groupElement("nzval"));
 
     /**
      * Offset for field:

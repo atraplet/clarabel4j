@@ -80,7 +80,7 @@ public class ClarabelDefaultInfo_f64 {
         return mu$LAYOUT;
     }
 
-    private static final long mu$OFFSET = 0;
+    private static final long mu$OFFSET = $LAYOUT.byteOffset(groupElement("mu"));
 
     /**
      * Offset for field:
@@ -124,7 +124,7 @@ public class ClarabelDefaultInfo_f64 {
         return sigma$LAYOUT;
     }
 
-    private static final long sigma$OFFSET = 8;
+    private static final long sigma$OFFSET = $LAYOUT.byteOffset(groupElement("sigma"));
 
     /**
      * Offset for field:
@@ -168,7 +168,7 @@ public class ClarabelDefaultInfo_f64 {
         return step_length$LAYOUT;
     }
 
-    private static final long step_length$OFFSET = 16;
+    private static final long step_length$OFFSET = $LAYOUT.byteOffset(groupElement("step_length"));
 
     /**
      * Offset for field:
@@ -212,7 +212,7 @@ public class ClarabelDefaultInfo_f64 {
         return iterations$LAYOUT;
     }
 
-    private static final long iterations$OFFSET = 24;
+    private static final long iterations$OFFSET = $LAYOUT.byteOffset(groupElement("iterations"));
 
     /**
      * Offset for field:
@@ -256,7 +256,7 @@ public class ClarabelDefaultInfo_f64 {
         return cost_primal$LAYOUT;
     }
 
-    private static final long cost_primal$OFFSET = 32;
+    private static final long cost_primal$OFFSET = $LAYOUT.byteOffset(groupElement("cost_primal"));
 
     /**
      * Offset for field:
@@ -300,7 +300,7 @@ public class ClarabelDefaultInfo_f64 {
         return cost_dual$LAYOUT;
     }
 
-    private static final long cost_dual$OFFSET = 40;
+    private static final long cost_dual$OFFSET = $LAYOUT.byteOffset(groupElement("cost_dual"));
 
     /**
      * Offset for field:
@@ -344,7 +344,7 @@ public class ClarabelDefaultInfo_f64 {
         return res_primal$LAYOUT;
     }
 
-    private static final long res_primal$OFFSET = 48;
+    private static final long res_primal$OFFSET = $LAYOUT.byteOffset(groupElement("res_primal"));
 
     /**
      * Offset for field:
@@ -388,7 +388,7 @@ public class ClarabelDefaultInfo_f64 {
         return res_dual$LAYOUT;
     }
 
-    private static final long res_dual$OFFSET = 56;
+    private static final long res_dual$OFFSET = $LAYOUT.byteOffset(groupElement("res_dual"));
 
     /**
      * Offset for field:
@@ -432,7 +432,7 @@ public class ClarabelDefaultInfo_f64 {
         return res_primal_inf$LAYOUT;
     }
 
-    private static final long res_primal_inf$OFFSET = 64;
+    private static final long res_primal_inf$OFFSET = $LAYOUT.byteOffset(groupElement("res_primal_inf"));
 
     /**
      * Offset for field:
@@ -476,7 +476,7 @@ public class ClarabelDefaultInfo_f64 {
         return res_dual_inf$LAYOUT;
     }
 
-    private static final long res_dual_inf$OFFSET = 72;
+    private static final long res_dual_inf$OFFSET = $LAYOUT.byteOffset(groupElement("res_dual_inf"));
 
     /**
      * Offset for field:
@@ -520,7 +520,7 @@ public class ClarabelDefaultInfo_f64 {
         return gap_abs$LAYOUT;
     }
 
-    private static final long gap_abs$OFFSET = 80;
+    private static final long gap_abs$OFFSET = $LAYOUT.byteOffset(groupElement("gap_abs"));
 
     /**
      * Offset for field:
@@ -564,7 +564,7 @@ public class ClarabelDefaultInfo_f64 {
         return gap_rel$LAYOUT;
     }
 
-    private static final long gap_rel$OFFSET = 88;
+    private static final long gap_rel$OFFSET = $LAYOUT.byteOffset(groupElement("gap_rel"));
 
     /**
      * Offset for field:
@@ -608,7 +608,7 @@ public class ClarabelDefaultInfo_f64 {
         return ktratio$LAYOUT;
     }
 
-    private static final long ktratio$OFFSET = 96;
+    private static final long ktratio$OFFSET = $LAYOUT.byteOffset(groupElement("ktratio"));
 
     /**
      * Offset for field:
@@ -652,7 +652,7 @@ public class ClarabelDefaultInfo_f64 {
         return solve_time$LAYOUT;
     }
 
-    private static final long solve_time$OFFSET = 104;
+    private static final long solve_time$OFFSET = $LAYOUT.byteOffset(groupElement("solve_time"));
 
     /**
      * Offset for field:
@@ -696,7 +696,7 @@ public class ClarabelDefaultInfo_f64 {
         return status$LAYOUT;
     }
 
-    private static final long status$OFFSET = 112;
+    private static final long status$OFFSET = $LAYOUT.byteOffset(groupElement("status"));
 
     /**
      * Offset for field:
@@ -740,7 +740,7 @@ public class ClarabelDefaultInfo_f64 {
         return linsolver$LAYOUT;
     }
 
-    private static final long linsolver$OFFSET = 116;
+    private static final long linsolver$OFFSET = $LAYOUT.byteOffset(groupElement("linsolver"));
 
     /**
      * Offset for field:

@@ -15,7 +15,7 @@ import java.util.stream.*;
 import static java.lang.foreign.ValueLayout.*;
 import static java.lang.foreign.MemoryLayout.PathElement.*;
 
-public class Clarabel_h {
+public class Clarabel_h extends Clarabel_h$shared {
 
     Clarabel_h() {
         // Should not be called directly
@@ -30,54 +30,10 @@ public class Clarabel_h {
     }
 
     static final Arena LIBRARY_ARENA = Arena.ofAuto();
-    static final boolean TRACE_DOWNCALLS = Boolean.getBoolean("jextract.trace.downcalls");
-
-    static void traceDowncall(String name, Object... args) {
-         String traceArgs = Arrays.stream(args)
-                       .map(Object::toString)
-                       .collect(Collectors.joining(", "));
-         System.out.printf("%s(%s)\n", name, traceArgs);
-    }
-
-    static MemorySegment findOrThrow(String symbol) {
-        return SYMBOL_LOOKUP.find(symbol)
-            .orElseThrow(() -> new UnsatisfiedLinkError("unresolved symbol: " + symbol));
-    }
-
-    static MethodHandle upcallHandle(Class<?> fi, String name, FunctionDescriptor fdesc) {
-        try {
-            return MethodHandles.lookup().findVirtual(fi, name, fdesc.toMethodType());
-        } catch (ReflectiveOperationException ex) {
-            throw new AssertionError(ex);
-        }
-    }
-
-    static MemoryLayout align(MemoryLayout layout, long align) {
-        return switch (layout) {
-            case PaddingLayout p -> p;
-            case ValueLayout v -> v.withByteAlignment(align);
-            case GroupLayout g -> {
-                MemoryLayout[] alignedMembers = g.memberLayouts().stream()
-                        .map(m -> align(m, align)).toArray(MemoryLayout[]::new);
-                yield g instanceof StructLayout ?
-                        MemoryLayout.structLayout(alignedMembers) : MemoryLayout.unionLayout(alignedMembers);
-            }
-            case SequenceLayout s -> MemoryLayout.sequenceLayout(s.elementCount(), align(s.elementLayout(), align));
-        };
-    }
 
     static final SymbolLookup SYMBOL_LOOKUP = SymbolLookup.loaderLookup()
             .or(Linker.nativeLinker().defaultLookup());
 
-    public static final ValueLayout.OfBoolean C_BOOL = ValueLayout.JAVA_BOOLEAN;
-    public static final ValueLayout.OfByte C_CHAR = ValueLayout.JAVA_BYTE;
-    public static final ValueLayout.OfShort C_SHORT = ValueLayout.JAVA_SHORT;
-    public static final ValueLayout.OfInt C_INT = ValueLayout.JAVA_INT;
-    public static final ValueLayout.OfLong C_LONG_LONG = ValueLayout.JAVA_LONG;
-    public static final ValueLayout.OfFloat C_FLOAT = ValueLayout.JAVA_FLOAT;
-    public static final ValueLayout.OfDouble C_DOUBLE = ValueLayout.JAVA_DOUBLE;
-    public static final AddressLayout C_POINTER = ValueLayout.ADDRESS
-            .withTargetLayout(MemoryLayout.sequenceLayout(java.lang.Long.MAX_VALUE, JAVA_BYTE));
     /**
      * {@snippet lang=c :
      * typedef double ClarabelFloat
@@ -95,7 +51,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_CscMatrix_f64_init");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_CscMatrix_f64_init");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -142,6 +98,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_CscMatrix_f64_init", ptr, m, n, colptr, rowval, nzval);
             }
             mh$.invokeExact(ptr, m, n, colptr, rowval, nzval);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -187,7 +145,7 @@ public class Clarabel_h {
         public static final FunctionDescriptor DESC = FunctionDescriptor.of(
             ClarabelDefaultSettings_f64.layout()    );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSettings_f64_default");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSettings_f64_default");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -234,6 +192,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSettings_f64_default", allocator);
             }
             return (MemorySegment)mh$.invokeExact(allocator);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -413,7 +373,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_new");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_new");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -460,6 +420,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_new", P, q, A, b, n_cones, cones, settings);
             }
             return (MemorySegment)mh$.invokeExact(P, q, A, b, n_cones, cones, settings);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -470,7 +432,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_print_to_stdout");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_print_to_stdout");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -517,6 +479,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_print_to_stdout", solver);
             }
             mh$.invokeExact(solver);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -528,7 +492,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_print_to_file");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_print_to_file");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -575,6 +539,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_print_to_file", solver, filename);
             }
             mh$.invokeExact(solver, filename);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -585,7 +551,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_print_to_buffer");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_print_to_buffer");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -632,6 +598,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_print_to_buffer", solver);
             }
             mh$.invokeExact(solver);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -643,7 +611,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_get_print_buffer");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_get_print_buffer");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -690,6 +658,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_get_print_buffer", solver);
             }
             return (MemorySegment)mh$.invokeExact(solver);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -700,7 +670,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_free_print_buffer");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_free_print_buffer");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -747,6 +717,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_free_print_buffer", buffer);
             }
             mh$.invokeExact(buffer);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -757,7 +729,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_solve");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_solve");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -804,6 +776,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_solve", solver);
             }
             mh$.invokeExact(solver);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -814,7 +788,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_free");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_free");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -861,6 +835,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_free", solver);
             }
             mh$.invokeExact(solver);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -872,7 +848,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_solution");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_solution");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -919,6 +895,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_solution", allocator, solver);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -930,7 +908,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_info");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_info");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -977,6 +955,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_info", allocator, solver);
             }
             return (MemorySegment)mh$.invokeExact(allocator, solver);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -989,7 +969,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_P");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_P");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1036,6 +1016,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_P", solver, Pnzval, nnzP);
             }
             mh$.invokeExact(solver, Pnzval, nnzP);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1049,7 +1031,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_P_partial");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_P_partial");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1096,6 +1078,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_P_partial", solver, index, values, nvals);
             }
             mh$.invokeExact(solver, index, values, nvals);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1107,7 +1091,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_P_csc");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_P_csc");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1154,6 +1138,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_P_csc", solver, P);
             }
             mh$.invokeExact(solver, P);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1166,7 +1152,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_A");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_A");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1213,6 +1199,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_A", solver, Anzval, nnzA);
             }
             mh$.invokeExact(solver, Anzval, nnzA);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1226,7 +1214,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_A_partial");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_A_partial");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1273,6 +1261,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_A_partial", solver, index, values, nvals);
             }
             mh$.invokeExact(solver, index, values, nvals);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1284,7 +1274,7 @@ public class Clarabel_h {
             Clarabel_h.C_POINTER
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_A_csc");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_A_csc");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1331,6 +1321,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_A_csc", solver, A);
             }
             mh$.invokeExact(solver, A);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1343,7 +1335,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_q");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_q");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1390,6 +1382,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_q", solver, values, n);
             }
             mh$.invokeExact(solver, values, n);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1403,7 +1397,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_q_partial");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_q_partial");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1450,6 +1444,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_q_partial", solver, index, values, nvals);
             }
             mh$.invokeExact(solver, index, values, nvals);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1462,7 +1458,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_b");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_b");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1509,6 +1505,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_b", solver, values, n);
             }
             mh$.invokeExact(solver, values, n);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
@@ -1522,7 +1520,7 @@ public class Clarabel_h {
             Clarabel_h.C_LONG_LONG
         );
 
-        public static final MemorySegment ADDR = Clarabel_h.findOrThrow("clarabel_DefaultSolver_f64_update_b_partial");
+        public static final MemorySegment ADDR = SYMBOL_LOOKUP.findOrThrow("clarabel_DefaultSolver_f64_update_b_partial");
 
         public static final MethodHandle HANDLE = Linker.nativeLinker().downcallHandle(ADDR, DESC);
     }
@@ -1569,6 +1567,8 @@ public class Clarabel_h {
                 traceDowncall("clarabel_DefaultSolver_f64_update_b_partial", solver, index, values, nvals);
             }
             mh$.invokeExact(solver, index, values, nvals);
+        } catch (Error | RuntimeException ex) {
+           throw ex;
         } catch (Throwable ex$) {
            throw new AssertionError("should not reach here", ex$);
         }
