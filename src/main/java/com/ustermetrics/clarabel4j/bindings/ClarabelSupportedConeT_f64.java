@@ -87,7 +87,7 @@ public class ClarabelSupportedConeT_f64 {
         return tag$LAYOUT;
     }
 
-    private static final long tag$OFFSET = 0;
+    private static final long tag$OFFSET = $LAYOUT.byteOffset(groupElement("tag"));
 
     /**
      * Offset for field:
@@ -131,7 +131,7 @@ public class ClarabelSupportedConeT_f64 {
         return zero_cone_t$LAYOUT;
     }
 
-    private static final long zero_cone_t$OFFSET = 8;
+    private static final long zero_cone_t$OFFSET = $LAYOUT.byteOffset(groupElement("$anon$64:5"), groupElement("$anon$66:9"), groupElement("zero_cone_t"));
 
     /**
      * Offset for field:
@@ -175,7 +175,7 @@ public class ClarabelSupportedConeT_f64 {
         return nonnegative_cone_t$LAYOUT;
     }
 
-    private static final long nonnegative_cone_t$OFFSET = 8;
+    private static final long nonnegative_cone_t$OFFSET = $LAYOUT.byteOffset(groupElement("$anon$64:5"), groupElement("$anon$70:9"), groupElement("nonnegative_cone_t"));
 
     /**
      * Offset for field:
@@ -219,7 +219,7 @@ public class ClarabelSupportedConeT_f64 {
         return second_order_cone_t$LAYOUT;
     }
 
-    private static final long second_order_cone_t$OFFSET = 8;
+    private static final long second_order_cone_t$OFFSET = $LAYOUT.byteOffset(groupElement("$anon$64:5"), groupElement("$anon$74:9"), groupElement("second_order_cone_t"));
 
     /**
      * Offset for field:
@@ -263,7 +263,7 @@ public class ClarabelSupportedConeT_f64 {
         return power_cone_t$LAYOUT;
     }
 
-    private static final long power_cone_t$OFFSET = 8;
+    private static final long power_cone_t$OFFSET = $LAYOUT.byteOffset(groupElement("$anon$64:5"), groupElement("$anon$79:9"), groupElement("power_cone_t"));
 
     /**
      * Offset for field:
@@ -307,7 +307,7 @@ public class ClarabelSupportedConeT_f64 {
         return genpow_cone_alpha_t$LAYOUT;
     }
 
-    private static final long genpow_cone_alpha_t$OFFSET = 8;
+    private static final long genpow_cone_alpha_t$OFFSET = $LAYOUT.byteOffset(groupElement("$anon$64:5"), groupElement("$anon$83:9"), groupElement("genpow_cone_alpha_t"));
 
     /**
      * Offset for field:
@@ -351,7 +351,7 @@ public class ClarabelSupportedConeT_f64 {
         return genpow_cone_dim1_t$LAYOUT;
     }
 
-    private static final long genpow_cone_dim1_t$OFFSET = 16;
+    private static final long genpow_cone_dim1_t$OFFSET = $LAYOUT.byteOffset(groupElement("$anon$64:5"), groupElement("$anon$83:9"), groupElement("genpow_cone_dim1_t"));
 
     /**
      * Offset for field:
@@ -395,7 +395,7 @@ public class ClarabelSupportedConeT_f64 {
         return genpow_cone_dim2_t$LAYOUT;
     }
 
-    private static final long genpow_cone_dim2_t$OFFSET = 24;
+    private static final long genpow_cone_dim2_t$OFFSET = $LAYOUT.byteOffset(groupElement("$anon$64:5"), groupElement("$anon$83:9"), groupElement("genpow_cone_dim2_t"));
 
     /**
      * Offset for field:

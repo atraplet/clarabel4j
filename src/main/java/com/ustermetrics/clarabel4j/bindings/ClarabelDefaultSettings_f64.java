@@ -136,7 +136,7 @@ public class ClarabelDefaultSettings_f64 {
         return max_iter$LAYOUT;
     }
 
-    private static final long max_iter$OFFSET = 0;
+    private static final long max_iter$OFFSET = $LAYOUT.byteOffset(groupElement("max_iter"));
 
     /**
      * Offset for field:
@@ -180,7 +180,7 @@ public class ClarabelDefaultSettings_f64 {
         return time_limit$LAYOUT;
     }
 
-    private static final long time_limit$OFFSET = 8;
+    private static final long time_limit$OFFSET = $LAYOUT.byteOffset(groupElement("time_limit"));
 
     /**
      * Offset for field:
@@ -224,7 +224,7 @@ public class ClarabelDefaultSettings_f64 {
         return verbose$LAYOUT;
     }
 
-    private static final long verbose$OFFSET = 16;
+    private static final long verbose$OFFSET = $LAYOUT.byteOffset(groupElement("verbose"));
 
     /**
      * Offset for field:
@@ -268,7 +268,7 @@ public class ClarabelDefaultSettings_f64 {
         return max_step_fraction$LAYOUT;
     }
 
-    private static final long max_step_fraction$OFFSET = 24;
+    private static final long max_step_fraction$OFFSET = $LAYOUT.byteOffset(groupElement("max_step_fraction"));
 
     /**
      * Offset for field:
@@ -312,7 +312,7 @@ public class ClarabelDefaultSettings_f64 {
         return tol_gap_abs$LAYOUT;
     }
 
-    private static final long tol_gap_abs$OFFSET = 32;
+    private static final long tol_gap_abs$OFFSET = $LAYOUT.byteOffset(groupElement("tol_gap_abs"));
 
     /**
      * Offset for field:
@@ -356,7 +356,7 @@ public class ClarabelDefaultSettings_f64 {
         return tol_gap_rel$LAYOUT;
     }
 
-    private static final long tol_gap_rel$OFFSET = 40;
+    private static final long tol_gap_rel$OFFSET = $LAYOUT.byteOffset(groupElement("tol_gap_rel"));
 
     /**
      * Offset for field:
@@ -400,7 +400,7 @@ public class ClarabelDefaultSettings_f64 {
         return tol_feas$LAYOUT;
     }
 
-    private static final long tol_feas$OFFSET = 48;
+    private static final long tol_feas$OFFSET = $LAYOUT.byteOffset(groupElement("tol_feas"));
 
     /**
      * Offset for field:
@@ -444,7 +444,7 @@ public class ClarabelDefaultSettings_f64 {
         return tol_infeas_abs$LAYOUT;
     }
 
-    private static final long tol_infeas_abs$OFFSET = 56;
+    private static final long tol_infeas_abs$OFFSET = $LAYOUT.byteOffset(groupElement("tol_infeas_abs"));
 
     /**
      * Offset for field:
@@ -488,7 +488,7 @@ public class ClarabelDefaultSettings_f64 {
         return tol_infeas_rel$LAYOUT;
     }
 
-    private static final long tol_infeas_rel$OFFSET = 64;
+    private static final long tol_infeas_rel$OFFSET = $LAYOUT.byteOffset(groupElement("tol_infeas_rel"));
 
     /**
      * Offset for field:
@@ -532,7 +532,7 @@ public class ClarabelDefaultSettings_f64 {
         return tol_ktratio$LAYOUT;
     }
 
-    private static final long tol_ktratio$OFFSET = 72;
+    private static final long tol_ktratio$OFFSET = $LAYOUT.byteOffset(groupElement("tol_ktratio"));
 
     /**
      * Offset for field:
@@ -576,7 +576,7 @@ public class ClarabelDefaultSettings_f64 {
         return reduced_tol_gap_abs$LAYOUT;
     }
 
-    private static final long reduced_tol_gap_abs$OFFSET = 80;
+    private static final long reduced_tol_gap_abs$OFFSET = $LAYOUT.byteOffset(groupElement("reduced_tol_gap_abs"));
 
     /**
      * Offset for field:
@@ -620,7 +620,7 @@ public class ClarabelDefaultSettings_f64 {
         return reduced_tol_gap_rel$LAYOUT;
     }
 
-    private static final long reduced_tol_gap_rel$OFFSET = 88;
+    private static final long reduced_tol_gap_rel$OFFSET = $LAYOUT.byteOffset(groupElement("reduced_tol_gap_rel"));
 
     /**
      * Offset for field:
@@ -664,7 +664,7 @@ public class ClarabelDefaultSettings_f64 {
         return reduced_tol_feas$LAYOUT;
     }
 
-    private static final long reduced_tol_feas$OFFSET = 96;
+    private static final long reduced_tol_feas$OFFSET = $LAYOUT.byteOffset(groupElement("reduced_tol_feas"));
 
     /**
      * Offset for field:
@@ -708,7 +708,7 @@ public class ClarabelDefaultSettings_f64 {
         return reduced_tol_infeas_abs$LAYOUT;
     }
 
-    private static final long reduced_tol_infeas_abs$OFFSET = 104;
+    private static final long reduced_tol_infeas_abs$OFFSET = $LAYOUT.byteOffset(groupElement("reduced_tol_infeas_abs"));
 
     /**
      * Offset for field:
@@ -752,7 +752,7 @@ public class ClarabelDefaultSettings_f64 {
         return reduced_tol_infeas_rel$LAYOUT;
     }
 
-    private static final long reduced_tol_infeas_rel$OFFSET = 112;
+    private static final long reduced_tol_infeas_rel$OFFSET = $LAYOUT.byteOffset(groupElement("reduced_tol_infeas_rel"));
 
     /**
      * Offset for field:
@@ -796,7 +796,7 @@ public class ClarabelDefaultSettings_f64 {
         return reduced_tol_ktratio$LAYOUT;
     }
 
-    private static final long reduced_tol_ktratio$OFFSET = 120;
+    private static final long reduced_tol_ktratio$OFFSET = $LAYOUT.byteOffset(groupElement("reduced_tol_ktratio"));
 
     /**
      * Offset for field:
@@ -840,7 +840,7 @@ public class ClarabelDefaultSettings_f64 {
         return equilibrate_enable$LAYOUT;
     }
 
-    private static final long equilibrate_enable$OFFSET = 128;
+    private static final long equilibrate_enable$OFFSET = $LAYOUT.byteOffset(groupElement("equilibrate_enable"));
 
     /**
      * Offset for field:
@@ -884,7 +884,7 @@ public class ClarabelDefaultSettings_f64 {
         return equilibrate_max_iter$LAYOUT;
     }
 
-    private static final long equilibrate_max_iter$OFFSET = 132;
+    private static final long equilibrate_max_iter$OFFSET = $LAYOUT.byteOffset(groupElement("equilibrate_max_iter"));
 
     /**
      * Offset for field:
@@ -928,7 +928,7 @@ public class ClarabelDefaultSettings_f64 {
         return equilibrate_min_scaling$LAYOUT;
     }
 
-    private static final long equilibrate_min_scaling$OFFSET = 136;
+    private static final long equilibrate_min_scaling$OFFSET = $LAYOUT.byteOffset(groupElement("equilibrate_min_scaling"));
 
     /**
      * Offset for field:
@@ -972,7 +972,7 @@ public class ClarabelDefaultSettings_f64 {
         return equilibrate_max_scaling$LAYOUT;
     }
 
-    private static final long equilibrate_max_scaling$OFFSET = 144;
+    private static final long equilibrate_max_scaling$OFFSET = $LAYOUT.byteOffset(groupElement("equilibrate_max_scaling"));
 
     /**
      * Offset for field:
@@ -1016,7 +1016,7 @@ public class ClarabelDefaultSettings_f64 {
         return linesearch_backtrack_step$LAYOUT;
     }
 
-    private static final long linesearch_backtrack_step$OFFSET = 152;
+    private static final long linesearch_backtrack_step$OFFSET = $LAYOUT.byteOffset(groupElement("linesearch_backtrack_step"));
 
     /**
      * Offset for field:
@@ -1060,7 +1060,7 @@ public class ClarabelDefaultSettings_f64 {
         return min_switch_step_length$LAYOUT;
     }
 
-    private static final long min_switch_step_length$OFFSET = 160;
+    private static final long min_switch_step_length$OFFSET = $LAYOUT.byteOffset(groupElement("min_switch_step_length"));
 
     /**
      * Offset for field:
@@ -1104,7 +1104,7 @@ public class ClarabelDefaultSettings_f64 {
         return min_terminate_step_length$LAYOUT;
     }
 
-    private static final long min_terminate_step_length$OFFSET = 168;
+    private static final long min_terminate_step_length$OFFSET = $LAYOUT.byteOffset(groupElement("min_terminate_step_length"));
 
     /**
      * Offset for field:
@@ -1148,7 +1148,7 @@ public class ClarabelDefaultSettings_f64 {
         return max_threads$LAYOUT;
     }
 
-    private static final long max_threads$OFFSET = 176;
+    private static final long max_threads$OFFSET = $LAYOUT.byteOffset(groupElement("max_threads"));
 
     /**
      * Offset for field:
@@ -1192,7 +1192,7 @@ public class ClarabelDefaultSettings_f64 {
         return direct_kkt_solver$LAYOUT;
     }
 
-    private static final long direct_kkt_solver$OFFSET = 180;
+    private static final long direct_kkt_solver$OFFSET = $LAYOUT.byteOffset(groupElement("direct_kkt_solver"));
 
     /**
      * Offset for field:
@@ -1236,7 +1236,7 @@ public class ClarabelDefaultSettings_f64 {
         return direct_solve_method$LAYOUT;
     }
 
-    private static final long direct_solve_method$OFFSET = 184;
+    private static final long direct_solve_method$OFFSET = $LAYOUT.byteOffset(groupElement("direct_solve_method"));
 
     /**
      * Offset for field:
@@ -1280,7 +1280,7 @@ public class ClarabelDefaultSettings_f64 {
         return static_regularization_enable$LAYOUT;
     }
 
-    private static final long static_regularization_enable$OFFSET = 188;
+    private static final long static_regularization_enable$OFFSET = $LAYOUT.byteOffset(groupElement("static_regularization_enable"));
 
     /**
      * Offset for field:
@@ -1324,7 +1324,7 @@ public class ClarabelDefaultSettings_f64 {
         return static_regularization_constant$LAYOUT;
     }
 
-    private static final long static_regularization_constant$OFFSET = 192;
+    private static final long static_regularization_constant$OFFSET = $LAYOUT.byteOffset(groupElement("static_regularization_constant"));
 
     /**
      * Offset for field:
@@ -1368,7 +1368,7 @@ public class ClarabelDefaultSettings_f64 {
         return static_regularization_proportional$LAYOUT;
     }
 
-    private static final long static_regularization_proportional$OFFSET = 200;
+    private static final long static_regularization_proportional$OFFSET = $LAYOUT.byteOffset(groupElement("static_regularization_proportional"));
 
     /**
      * Offset for field:
@@ -1412,7 +1412,7 @@ public class ClarabelDefaultSettings_f64 {
         return dynamic_regularization_enable$LAYOUT;
     }
 
-    private static final long dynamic_regularization_enable$OFFSET = 208;
+    private static final long dynamic_regularization_enable$OFFSET = $LAYOUT.byteOffset(groupElement("dynamic_regularization_enable"));
 
     /**
      * Offset for field:
@@ -1456,7 +1456,7 @@ public class ClarabelDefaultSettings_f64 {
         return dynamic_regularization_eps$LAYOUT;
     }
 
-    private static final long dynamic_regularization_eps$OFFSET = 216;
+    private static final long dynamic_regularization_eps$OFFSET = $LAYOUT.byteOffset(groupElement("dynamic_regularization_eps"));
 
     /**
      * Offset for field:
@@ -1500,7 +1500,7 @@ public class ClarabelDefaultSettings_f64 {
         return dynamic_regularization_delta$LAYOUT;
     }
 
-    private static final long dynamic_regularization_delta$OFFSET = 224;
+    private static final long dynamic_regularization_delta$OFFSET = $LAYOUT.byteOffset(groupElement("dynamic_regularization_delta"));
 
     /**
      * Offset for field:
@@ -1544,7 +1544,7 @@ public class ClarabelDefaultSettings_f64 {
         return iterative_refinement_enable$LAYOUT;
     }
 
-    private static final long iterative_refinement_enable$OFFSET = 232;
+    private static final long iterative_refinement_enable$OFFSET = $LAYOUT.byteOffset(groupElement("iterative_refinement_enable"));
 
     /**
      * Offset for field:
@@ -1588,7 +1588,7 @@ public class ClarabelDefaultSettings_f64 {
         return iterative_refinement_reltol$LAYOUT;
     }
 
-    private static final long iterative_refinement_reltol$OFFSET = 240;
+    private static final long iterative_refinement_reltol$OFFSET = $LAYOUT.byteOffset(groupElement("iterative_refinement_reltol"));
 
     /**
      * Offset for field:
@@ -1632,7 +1632,7 @@ public class ClarabelDefaultSettings_f64 {
         return iterative_refinement_abstol$LAYOUT;
     }
 
-    private static final long iterative_refinement_abstol$OFFSET = 248;
+    private static final long iterative_refinement_abstol$OFFSET = $LAYOUT.byteOffset(groupElement("iterative_refinement_abstol"));
 
     /**
      * Offset for field:
@@ -1676,7 +1676,7 @@ public class ClarabelDefaultSettings_f64 {
         return iterative_refinement_max_iter$LAYOUT;
     }
 
-    private static final long iterative_refinement_max_iter$OFFSET = 256;
+    private static final long iterative_refinement_max_iter$OFFSET = $LAYOUT.byteOffset(groupElement("iterative_refinement_max_iter"));
 
     /**
      * Offset for field:
@@ -1720,7 +1720,7 @@ public class ClarabelDefaultSettings_f64 {
         return iterative_refinement_stop_ratio$LAYOUT;
     }
 
-    private static final long iterative_refinement_stop_ratio$OFFSET = 264;
+    private static final long iterative_refinement_stop_ratio$OFFSET = $LAYOUT.byteOffset(groupElement("iterative_refinement_stop_ratio"));
 
     /**
      * Offset for field:
@@ -1764,7 +1764,7 @@ public class ClarabelDefaultSettings_f64 {
         return presolve_enable$LAYOUT;
     }
 
-    private static final long presolve_enable$OFFSET = 272;
+    private static final long presolve_enable$OFFSET = $LAYOUT.byteOffset(groupElement("presolve_enable"));
 
     /**
      * Offset for field:
@@ -1808,7 +1808,7 @@ public class ClarabelDefaultSettings_f64 {
         return pardiso_iparm$LAYOUT;
     }
 
-    private static final long pardiso_iparm$OFFSET = 276;
+    private static final long pardiso_iparm$OFFSET = $LAYOUT.byteOffset(groupElement("pardiso_iparm"));
 
     /**
      * Offset for field:
@@ -1885,7 +1885,7 @@ public class ClarabelDefaultSettings_f64 {
         return pardiso_verbose$LAYOUT;
     }
 
-    private static final long pardiso_verbose$OFFSET = 532;
+    private static final long pardiso_verbose$OFFSET = $LAYOUT.byteOffset(groupElement("pardiso_verbose"));
 
     /**
      * Offset for field:
