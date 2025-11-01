@@ -1,0 +1,9 @@
+name: 'Detect JDK'
+runs:
+  using: 'composite'
+  steps:
+    - name: Get JDK version from Maven project
+      shell: bash
+      run: |
+        JDK_VERSION=$(mvn help:evaluate -Dexpression=maven.compiler.source -q -DforceStdout)
+        echo "JDK_VERSION=$JDK_VERSION" >> $GITHUB_ENV
