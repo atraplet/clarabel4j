@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -486,6 +487,24 @@ class ModelTest {
             assertNotNull(stringOutput);
             assertTrue(stringOutput.contains("Clarabel.rs"));
             Files.delete(tempFilePath);
+        }
+    }
+
+    @Test
+    void solveProblemWithArenaReturnsSolved() {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
+
+        try (val arena = Arena.ofConfined();
+             val model = new Model(arena)) {
+            model.setParameters(parameters);
+            model.setup(p);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
         }
     }
 
