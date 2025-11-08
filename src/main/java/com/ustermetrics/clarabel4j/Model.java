@@ -17,20 +17,41 @@ import static java.lang.foreign.MemorySegment.NULL;
 /**
  * An optimization model which can be optimized with the <a href="https://clarabel.org">Clarabel</a> solver.
  * <p>
- * In order to control the lifecycle of native memory, {@link Model} implements the {@link AutoCloseable}
- * interface and should be used with the <i>try-with-resources</i> statement.
+ * To control the lifecycle of native memory, {@link Model} implements the {@link AutoCloseable} interface and should
+ * be used with the <i>try-with-resources</i> statement or the {@link #close()} method needs to be called manually.
  */
 public class Model implements AutoCloseable {
 
     private enum Stage {NEW, SETUP, OPTIMIZED}
 
-    private final Arena arena = Arena.ofConfined();
+    private final Arena arena;
+    private final boolean closeArena;
     private Stage stage = Stage.NEW;
     private Parameters parameters;
     private Output output;
     private MemorySegment solverSeg;
     private MemorySegment solutionSeg;
     private MemorySegment infoSeg;
+
+    /**
+     * Creates a new {@link Model} instance, where the lifecycle of native memory is controlled by a new confined arena.
+     * The arena is closed when the {@link Model} instance is closed.
+     */
+    public Model() {
+        arena = Arena.ofConfined();
+        closeArena = true;
+    }
+
+    /**
+     * Creates a new {@link Model} instance, where the lifecycle of native memory is controlled by the given
+     * {@link Arena} instance.
+     *
+     * @param arena {@link Arena} instance to control the lifecycle of native memory
+     */
+    public Model(Arena arena) {
+        this.arena = arena;
+        closeArena = false;
+    }
 
     /**
      * Sets the <a href="https://clarabel.org">Clarabel</a> solver settings.
@@ -547,7 +568,9 @@ public class Model implements AutoCloseable {
         if (stage != Stage.NEW) {
             clarabel_DefaultSolver_f64_free(solverSeg);
         }
-        arena.close();
+        if (closeArena) {
+            arena.close();
+        }
     }
 
 }

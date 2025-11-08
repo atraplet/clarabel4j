@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.nio.file.Files;
 import java.util.List;
 
@@ -28,15 +29,15 @@ class ModelTest {
         val a = new Matrix(4, 2, new long[]{0, 2, 4}, new long[]{0, 2, 1, 3}, new double[]{1., -1., 1., -1.});
         val b = new double[]{1., 1., 1., 1.};
         final List<Cone> cones = List.of(new NonnegativeCone(4));
+        val parameters = Parameters.builder()
+                .equilibrateEnable(true)
+                .equilibrateMaxIter(50)
+                .directSolveMethod(QDLDL)
+                .maxThreads(1)
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .equilibrateEnable(true)
-                    .equilibrateMaxIter(50)
-                    .directSolveMethod(QDLDL)
-                    .maxThreads(1)
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
 
@@ -67,13 +68,13 @@ class ModelTest {
         val a = new Matrix(4, 2, new long[]{0, 2, 4}, new long[]{0, 2, 1, 3}, new double[]{1., -1., 1., -1.});
         val b = new double[]{1., 1., 1., 1.};
         final List<Cone> cones = List.of(new NonnegativeCone(4));
+        val parameters = Parameters.builder()
+                .equilibrateEnable(true)
+                .equilibrateMaxIter(50)
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .equilibrateEnable(true)
-                    .equilibrateMaxIter(50)
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(q, a, b, cones);
 
@@ -96,11 +97,11 @@ class ModelTest {
                 new double[]{1., 1., -1., -2., 1., -1.});
         val b = new double[]{0., 1., 1., 1., 1.};
         val cones = List.of(new ZeroCone(1), new NonnegativeCone(4));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
 
@@ -122,11 +123,11 @@ class ModelTest {
         val a = new Matrix(3, 2, new long[]{0, 1, 2}, new long[]{1, 2}, new double[]{-2., -1.});
         val b = new double[]{1., -2., -2.};
         final List<Cone> cones = List.of(new SecondOrderCone(3));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, a, b, cones);
 
@@ -149,11 +150,11 @@ class ModelTest {
                 new double[]{-1., -1., 1., -1., 1.});
         val b = new double[]{0., 0., 0., 1., exp(5.)};
         val cones = List.of(new ExponentialCone(), new ZeroCone(2));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
 
@@ -176,11 +177,11 @@ class ModelTest {
                 new double[]{-1., -1., 1., -1., 1.});
         val b = new double[]{0., 0., 0., 1., exp(5.)};
         val cones = List.of(new ExponentialCone(), new ZeroCone(2));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(q, a, b, cones);
 
@@ -204,12 +205,12 @@ class ModelTest {
                 new double[]{-1., 1., -1., 2., -1., -1., 3., -1., 1., -1.});
         val b = new double[]{0., 0., 0., 0., 0., 0., 3., 1.};
         val cones = List.of(new PowerCone(0.6), new PowerCone(0.1), new ZeroCone(1), new ZeroCone(1));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .maxIter(100)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .maxIter(100)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
 
@@ -234,12 +235,12 @@ class ModelTest {
                 new double[]{-1., 1., -1., 2., -1., -1., 3., -1., 1., -1.});
         val b = new double[]{0., 0., 0., 0., 0., 0., 3., 1.};
         val cones = List.of(new PowerCone(0.6), new PowerCone(0.1), new ZeroCone(1), new ZeroCone(1));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .maxIter(100)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .maxIter(100)
-                    .build();
             model.setParameters(parameters);
             model.setup(q, a, b, cones);
 
@@ -266,12 +267,12 @@ class ModelTest {
         val b = new double[]{0., 0., 0., 0., 0., 0., 3., 1.};
         val cones = List.of(new GenPowerCone(new double[]{0.6, 0.4}, 1), new GenPowerCone(new double[]{0.1, 0.9}, 1),
                 new ZeroCone(1), new ZeroCone(1));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .maxIter(100)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .maxIter(100)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
 
@@ -297,12 +298,12 @@ class ModelTest {
         val b = new double[]{0., 0., 0., 0., 0., 0., 3., 1.};
         val cones = List.of(new GenPowerCone(new double[]{0.6, 0.4}, 1), new GenPowerCone(new double[]{0.1, 0.9}, 1),
                 new ZeroCone(1), new ZeroCone(1));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .maxIter(100)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .maxIter(100)
-                    .build();
             model.setParameters(parameters);
             model.setup(q, a, b, cones);
 
@@ -325,11 +326,11 @@ class ModelTest {
         val a = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
         val b = new double[]{6., 1.};
         final List<Cone> cones = List.of(new ZeroCone(2));
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(a, b, cones);
 
@@ -346,11 +347,11 @@ class ModelTest {
         //  [0., 4.]]
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
         val q = new double[]{-1., -4.};
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q);
 
@@ -366,11 +367,11 @@ class ModelTest {
         // [[6., 0.],
         //  [0., 4.]]
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p);
 
@@ -387,11 +388,11 @@ class ModelTest {
         //  [0., 4.]]
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
         var q = new double[]{-1., -4.};
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q);
             var status = model.optimize();
@@ -413,11 +414,11 @@ class ModelTest {
     @Test
     void solveProblemWithVerboseParameterTrueReturnsSolved() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(true)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(true)
-                    .build();
             model.setParameters(parameters);
             model.setup(p);
 
@@ -430,11 +431,11 @@ class ModelTest {
     @Test
     void solveProblemWithStdOutOutputReturnsSolved() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(true)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(true)
-                    .build();
             model.setParameters(parameters);
             model.setOutput(new StdOutOutput());
             model.setup(p);
@@ -448,11 +449,11 @@ class ModelTest {
     @Test
     void solveProblemWithStringOutputReturnsExpected() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(true)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(true)
-                    .build();
             model.setParameters(parameters);
             model.setOutput(new StringOutput());
             model.setup(p);
@@ -468,11 +469,11 @@ class ModelTest {
     @Test
     void solveProblemWithFileOutputReturnsExpected() throws IOException {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(true)
+                .build();
 
         try (val model = new Model()) {
-            val parameters = Parameters.builder()
-                    .verbose(true)
-                    .build();
             model.setParameters(parameters);
             val tempFile = File.createTempFile("clarabel4j-output-", ".txt");
             model.setOutput(new FileOutput(tempFile.getAbsolutePath()));
@@ -489,6 +490,24 @@ class ModelTest {
         }
     }
 
+    @Test
+    void solveProblemWithArenaReturnsSolved() {
+        val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
+
+        try (val arena = Arena.ofConfined();
+             val model = new Model(arena)) {
+            model.setParameters(parameters);
+            model.setup(p);
+
+            val status = model.optimize();
+
+            assertEquals(SOLVED, status);
+        }
+    }
+
     @Disabled("Needs Intel CPU, installation of Pardiso from Intel oneAPI Base Toolkit, and 'libmkl_rt.so' must be " +
             "on the system library path (e.g. on 'LD_LIBRARY_PATH' on Linux)")
     @Test
@@ -500,16 +519,16 @@ class ModelTest {
         val a = new Matrix(4, 2, new long[]{0, 2, 4}, new long[]{0, 2, 1, 3}, new double[]{1., -1., 1., -1.});
         val b = new double[]{1., 1., 1., 1.};
         final List<Cone> cones = List.of(new NonnegativeCone(4));
+        val pardisoIParm = new int[64];
+        pardisoIParm[1] = 0;
+        val parameters = Parameters.builder()
+                .directSolveMethod(PARDISO_MKL)
+                .pardisoIparm(pardisoIParm)
+                .pardisoVerbose(false)
+                .verbose(false)
+                .build();
 
         try (val model = new Model()) {
-            val pardisoIParm = new int[64];
-            pardisoIParm[1] = 0;
-            val parameters = Parameters.builder()
-                    .directSolveMethod(PARDISO_MKL)
-                    .pardisoIparm(pardisoIParm)
-                    .pardisoVerbose(false)
-                    .verbose(false)
-                    .build();
             model.setParameters(parameters);
             model.setup(p, q, a, b, cones);
 
@@ -535,49 +554,49 @@ class ModelTest {
     @Test
     void setAllParametersDoesNotThrow() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .maxIter(1)
+                .timeLimit(1.)
+                .verbose(true)
+                .maxStepFraction(1.)
+                .tolGapAbs(1.)
+                .tolGapRel(1.)
+                .tolFeas(1.)
+                .tolInfeasAbs(1.)
+                .tolInfeasRel(1.)
+                .tolKtratio(1.)
+                .reducedTolGapAbs(1.)
+                .reducedTolGapRel(1.)
+                .reducedTolFeas(1.)
+                .reducedTolInfeasAbs(1.)
+                .reducedTolInfeasRel(1.)
+                .reducedTolKtratio(1.)
+                .equilibrateEnable(true)
+                .equilibrateMaxIter(1)
+                .equilibrateMinScaling(1.)
+                .equilibrateMaxScaling(1.)
+                .linesearchBacktrackStep(1.)
+                .minSwitchStepLength(1.)
+                .minTerminateStepLength(1.)
+                .maxThreads(0)
+                .directKktSolver(true)
+                .directSolveMethod(QDLDL)
+                .staticRegularizationEnable(true)
+                .staticRegularizationConstant(1.)
+                .staticRegularizationProportional(1.)
+                .dynamicRegularizationEnable(true)
+                .dynamicRegularizationEps(1.)
+                .dynamicRegularizationDelta(1.)
+                .iterativeRefinementEnable(true)
+                .iterativeRefinementReltol(1.)
+                .iterativeRefinementAbstol(1.)
+                .iterativeRefinementMaxIter(1)
+                .iterativeRefinementStopRatio(1.)
+                .presolveEnable(true)
+                .build();
 
         assertDoesNotThrow(() -> {
             try (val model = new Model()) {
-                val parameters = Parameters.builder()
-                        .maxIter(1)
-                        .timeLimit(1.)
-                        .verbose(true)
-                        .maxStepFraction(1.)
-                        .tolGapAbs(1.)
-                        .tolGapRel(1.)
-                        .tolFeas(1.)
-                        .tolInfeasAbs(1.)
-                        .tolInfeasRel(1.)
-                        .tolKtratio(1.)
-                        .reducedTolGapAbs(1.)
-                        .reducedTolGapRel(1.)
-                        .reducedTolFeas(1.)
-                        .reducedTolInfeasAbs(1.)
-                        .reducedTolInfeasRel(1.)
-                        .reducedTolKtratio(1.)
-                        .equilibrateEnable(true)
-                        .equilibrateMaxIter(1)
-                        .equilibrateMinScaling(1.)
-                        .equilibrateMaxScaling(1.)
-                        .linesearchBacktrackStep(1.)
-                        .minSwitchStepLength(1.)
-                        .minTerminateStepLength(1.)
-                        .maxThreads(0)
-                        .directKktSolver(true)
-                        .directSolveMethod(QDLDL)
-                        .staticRegularizationEnable(true)
-                        .staticRegularizationConstant(1.)
-                        .staticRegularizationProportional(1.)
-                        .dynamicRegularizationEnable(true)
-                        .dynamicRegularizationEps(1.)
-                        .dynamicRegularizationDelta(1.)
-                        .iterativeRefinementEnable(true)
-                        .iterativeRefinementReltol(1.)
-                        .iterativeRefinementAbstol(1.)
-                        .iterativeRefinementMaxIter(1)
-                        .iterativeRefinementStopRatio(1.)
-                        .presolveEnable(true)
-                        .build();
                 model.setParameters(parameters);
                 model.setup(p);
             }
@@ -587,12 +606,12 @@ class ModelTest {
     @Test
     void setupAfterOptimizeThrowsException() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         val exception = assertThrows(IllegalStateException.class, () -> {
             try (val model = new Model()) {
-                val parameters = Parameters.builder()
-                        .verbose(false)
-                        .build();
                 model.setParameters(parameters);
                 model.setup(p);
                 model.optimize();
@@ -606,13 +625,13 @@ class ModelTest {
     @Test
     void setParametersAfterSetupThrowsException() {
         val p = new Matrix(2, 2, new long[]{0, 1, 2}, new long[]{0, 1}, new double[]{6., 4.});
+        val parameters = Parameters.builder()
+                .verbose(false)
+                .build();
 
         val exception = assertThrows(IllegalStateException.class, () -> {
             try (val model = new Model()) {
                 model.setup(p);
-                val parameters = Parameters.builder()
-                        .verbose(false)
-                        .build();
                 model.setParameters(parameters);
             }
         });
