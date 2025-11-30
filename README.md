@@ -58,16 +58,16 @@ Java runtime.
 
 ### Java bindings
 
-The directory `./bindings` contains the files and scripts needed to generate the Java bindings. The actual bindings are
-under `./src/main/java` in the package `com.ustermetrics.clarabel4j.bindings`.
+The directory `./bindings` contains the Bash script `generate.sh` needed to generate the Java bindings. The actual
+bindings are under `./src/main/java` in the package `com.ustermetrics.clarabel4j.bindings`.
 
-The scripts depend on the [jextract](https://jdk.java.net/jextract/) tool, which mechanically generates Java bindings
+The script depends on the [jextract](https://jdk.java.net/jextract/) tool, which mechanically generates the bindings
 from native library headers.
 
-The bindings are generated in two steps: First, `./bindings/generate_includes.sh` generates the dumps of the included
-symbols in the `includes.txt` file. Replace absolute platform dependent path with relative platform independent path in
-the comments. Remove unused includes. Second, `./bindings/generate_bindings.sh` generates the actual Java bindings.
-Add `NativeLoader.loadLibrary.` Remove platform dependent layout constants and make the code platform independent.
+The bindings are generated in two steps: First, `./bindings/generate.sh --dump-includes` generates the dump of the
+included symbols in the `includes.txt` file. Second, `./bindings/generate.sh` generates the actual bindings. After
+generating the bindings, update the code to load the native library using `NativeLoader.loadLibrary` and remove any
+platform-specific binding code.
 
 ## Release
 
