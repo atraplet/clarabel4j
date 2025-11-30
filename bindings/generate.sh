@@ -26,7 +26,7 @@ ARTIFACT_ID_DIR=$(echo "${ARTIFACT_ID}" | sed 's/\./\//g')
 
 TMP_DIR=$(dirname "$(mktemp -u)")
 REPO_DIR="${TMP_DIR}"/"${REPO##*/}"
-HEADER_FILE="${REPO_DIR}"/"${HEADER_FILE}"
+HEADER_FILE_FULL_PATH="${REPO_DIR}"/"${HEADER_FILE}"
 
 BINDINGS_DIR=$(dirname "$(realpath "${0}")")
 PROJECT_ROOT="${BINDINGS_DIR}"/..
@@ -46,13 +46,15 @@ fi
 # Clone and checkout repo
 rm -rf "${REPO_DIR}"
 cd "${TMP_DIR}" || exit 1
-git clone "${REPO}"
+git clone "${REPO}" || exit 1
 cd "${REPO_DIR}" || exit 1
-git checkout "${VERSION}"
+git checkout "${VERSION}" || exit 1
 
-# Evt. apply patches
+# Apply patches
 if [ -d "${PATCHES_DIR}" ]; then
-  git apply "${PATCHES_DIR}"/*.patch
+  if ls "${PATCHES_DIR}"/*.patch 1> /dev/null 2>&1; then
+    git apply "${PATCHES_DIR}"/*.patch
+  fi
 fi
 
 if [ "${DUMP_INCLUDES}" = "true" ]; then
@@ -63,7 +65,7 @@ if [ "${DUMP_INCLUDES}" = "true" ]; then
     --define-macro FEATURE_PARDISO_MKL \
     --define-macro FEATURE_PARDISO_ANY \
     --dump-includes "${INCLUDES_FILE}" \
-    "${HEADER_FILE}"
+    "${HEADER_FILE_FULL_PATH}" || exit 1
 
   # Select symbols
   grep "Clarabel" "${INCLUDES_FILE}" \
@@ -91,7 +93,7 @@ else
     --define-macro FEATURE_PARDISO_ANY \
     --target-package "${ARTIFACT_ID}".bindings \
     --output "${JAVA_SRC_DIR}" \
-    @"${BINDINGS_DIR}"/includes.txt "${HEADER_FILE}"
+    @"${BINDINGS_DIR}"/includes.txt "${HEADER_FILE_FULL_PATH}" || exit 1
 
 fi
 
