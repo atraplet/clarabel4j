@@ -18,7 +18,7 @@ fi
 PROJECT_NAME=clarabel4j
 VERSION=v0.11.1
 REPO="https://github.com/oxfordcontrol/Clarabel.cpp"
-HEADER_FILE=include/Clarabel.h
+HEADER_FILE=include/clarabel.h
 
 # Define variables
 ARTIFACT_ID=com.ustermetrics."${PROJECT_NAME}"
