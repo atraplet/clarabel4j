@@ -10,6 +10,8 @@ on:
       codecov_token:
         required: true
 
+permissions:
+  contents: read
 jobs:
   build:
     strategy:
