@@ -18,6 +18,7 @@ jobs:
       security-events: write
     steps:
       - uses: actions/checkout@v6
+      - uses: ./.github/actions/detect-jdk
       - name: Set up JDK
         uses: actions/setup-java@v5
         with:
