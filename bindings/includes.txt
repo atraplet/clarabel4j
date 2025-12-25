@@ -1,59 +1,59 @@
-#### Extracted from: Clarabel.cpp/include/c/ClarabelTypes.h
---include-typedef ClarabelFloat  # header: Clarabel.cpp/include/c/ClarabelTypes.h
-#### Extracted from: Clarabel.cpp/include/c/CscMatrix.h
---include-struct ClarabelCscMatrix_f64         # header: Clarabel.cpp/include/c/CscMatrix.h
---include-function clarabel_CscMatrix_f64_init # header: Clarabel.cpp/include/c/CscMatrix.h
-#### Extracted from: Clarabel.cpp/include/c/DefaultInfo.h
---include-struct ClarabelDefaultInfo_f64    # header: Clarabel.cpp/include/c/DefaultInfo.h
---include-struct ClarabelLinearSolverInfo   # header: Clarabel.cpp/include/c/DefaultInfo.h
-#### Extracted from: Clarabel.cpp/include/c/DefaultSettings.h
---include-struct ClarabelDefaultSettings_f64            # header: Clarabel.cpp/include/c/DefaultSettings.h
---include-constant AUTO                                 # header: Clarabel.cpp/include/c/DefaultSettings.h
---include-constant FAER                                 # header: Clarabel.cpp/include/c/DefaultSettings.h
---include-constant PARDISO_MKL                          # header: Clarabel.cpp/include/c/DefaultSettings.h
---include-constant QDLDL                                # header: Clarabel.cpp/include/c/DefaultSettings.h
---include-function clarabel_DefaultSettings_f64_default # header: Clarabel.cpp/include/c/DefaultSettings.h
-#### Extracted from: Clarabel.cpp/include/c/DefaultSolution.h
---include-struct ClarabelDefaultSolution_f64      # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelAlmostDualInfeasible   # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelAlmostPrimalInfeasible # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelAlmostSolved           # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelCallbackTerminated     # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelDualInfeasible         # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelInsufficientProgress   # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelMaxIterations          # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelMaxTime                # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelNumericalError         # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelPrimalInfeasible       # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelSolved                 # header: Clarabel.cpp/include/c/DefaultSolution.h
---include-constant ClarabelUnsolved               # header: Clarabel.cpp/include/c/DefaultSolution.h
-#### Extracted from: Clarabel.cpp/include/c/DefaultSolver.h
---include-typedef ClarabelDefaultSolver_f64                              # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_free                       # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_get_print_buffer           # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_info                       # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_new                        # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_print_to_buffer            # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_print_to_file              # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_print_to_stdout            # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_solution                   # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_solve                      # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_A                   # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_A_csc               # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_A_partial           # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_P                   # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_P_csc               # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_P_partial           # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_b                   # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_b_partial           # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_q                   # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_DefaultSolver_f64_update_q_partial           # header: Clarabel.cpp/include/c/DefaultSolver.h
---include-function clarabel_free_print_buffer                            # header: Clarabel.cpp/include/c/DefaultSolver.h
-#### Extracted from: Clarabel.cpp/include/c/SupportedConeT.h
---include-struct ClarabelSupportedConeT_f64     # header: Clarabel.cpp/include/c/SupportedConeT.h
---include-constant ClarabelExponentialConeT_Tag # header: Clarabel.cpp/include/c/SupportedConeT.h
---include-constant ClarabelGenPowerConeT_Tag    # header: Clarabel.cpp/include/c/SupportedConeT.h
---include-constant ClarabelNonnegativeConeT_Tag # header: Clarabel.cpp/include/c/SupportedConeT.h
---include-constant ClarabelPowerConeT_Tag       # header: Clarabel.cpp/include/c/SupportedConeT.h
---include-constant ClarabelSecondOrderConeT_Tag # header: Clarabel.cpp/include/c/SupportedConeT.h
---include-constant ClarabelZeroConeT_Tag        # header: Clarabel.cpp/include/c/SupportedConeT.h
+#### Extracted from: /tmp/Clarabel.cpp/include/c/ClarabelTypes.h
+--include-typedef ClarabelFloat  # header: /tmp/Clarabel.cpp/include/c/ClarabelTypes.h
+#### Extracted from: /tmp/Clarabel.cpp/include/c/CscMatrix.h
+--include-struct ClarabelCscMatrix_f64         # header: /tmp/Clarabel.cpp/include/c/CscMatrix.h
+--include-function clarabel_CscMatrix_f64_init # header: /tmp/Clarabel.cpp/include/c/CscMatrix.h
+#### Extracted from: /tmp/Clarabel.cpp/include/c/DefaultInfo.h
+--include-struct ClarabelDefaultInfo_f64    # header: /tmp/Clarabel.cpp/include/c/DefaultInfo.h
+--include-struct ClarabelLinearSolverInfo   # header: /tmp/Clarabel.cpp/include/c/DefaultInfo.h
+#### Extracted from: /tmp/Clarabel.cpp/include/c/DefaultSettings.h
+--include-struct ClarabelDefaultSettings_f64            # header: /tmp/Clarabel.cpp/include/c/DefaultSettings.h
+--include-function clarabel_DefaultSettings_f64_default # header: /tmp/Clarabel.cpp/include/c/DefaultSettings.h
+--include-constant AUTO                                 # header: /tmp/Clarabel.cpp/include/c/DefaultSettings.h
+--include-constant FAER                                 # header: /tmp/Clarabel.cpp/include/c/DefaultSettings.h
+--include-constant PARDISO_MKL                          # header: /tmp/Clarabel.cpp/include/c/DefaultSettings.h
+--include-constant QDLDL                                # header: /tmp/Clarabel.cpp/include/c/DefaultSettings.h
+#### Extracted from: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-struct ClarabelDefaultSolution_f64      # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelAlmostDualInfeasible   # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelAlmostPrimalInfeasible # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelAlmostSolved           # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelCallbackTerminated     # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelDualInfeasible         # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelInsufficientProgress   # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelMaxIterations          # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelMaxTime                # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelNumericalError         # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelPrimalInfeasible       # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelSolved                 # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+--include-constant ClarabelUnsolved               # header: /tmp/Clarabel.cpp/include/c/DefaultSolution.h
+#### Extracted from: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-typedef ClarabelDefaultSolver_f64                              # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_free                       # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_get_print_buffer           # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_info                       # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_new                        # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_print_to_buffer            # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_print_to_file              # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_print_to_stdout            # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_solution                   # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_solve                      # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_A                   # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_A_csc               # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_A_partial           # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_P                   # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_P_csc               # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_P_partial           # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_b                   # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_b_partial           # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_q                   # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_DefaultSolver_f64_update_q_partial           # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+--include-function clarabel_free_print_buffer                            # header: /tmp/Clarabel.cpp/include/c/DefaultSolver.h
+#### Extracted from: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
+--include-struct ClarabelSupportedConeT_f64     # header: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
+--include-constant ClarabelExponentialConeT_Tag # header: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
+--include-constant ClarabelGenPowerConeT_Tag    # header: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
+--include-constant ClarabelNonnegativeConeT_Tag # header: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
+--include-constant ClarabelPowerConeT_Tag       # header: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
+--include-constant ClarabelSecondOrderConeT_Tag # header: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
+--include-constant ClarabelZeroConeT_Tag        # header: /tmp/Clarabel.cpp/include/c/SupportedConeT.h
