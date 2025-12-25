@@ -39,7 +39,7 @@ if [[ "$OSTYPE" = "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" = "msys"* ]]; then
   JEXTRACT=jextract.bat
 else
-  echo "OS not supported"
+  echo "OS ${OSTYPE} not supported"
   exit 1
 fi
 
