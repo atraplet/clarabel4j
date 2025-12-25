@@ -83,7 +83,9 @@ if [ "${DUMP_INCLUDES}" = "true" ]; then
     | grep -v "\-\-include\-function clarabel_DefaultSolver_f64_unset_termination_callback " \
     | grep -v "\-\-include\-typedef ClarabelCallbackFcn " \
     | grep -v "\-\-include\-typedef ClarabelCallbackFcn_f64 " \
-    | grep -v "\-\-include\-typedef ClarabelSupportedConeT " >"${INCLUDES_FILE}".tmp && mv "${INCLUDES_FILE}".tmp "${INCLUDES_FILE}"
+    | grep -v "\-\-include\-typedef ClarabelSupportedConeT " \
+    | sed "s/Extracted from: .*Clarabel\.cpp/Extracted from: Clarabel.cpp/" \
+    | sed "s/header: .*Clarabel\.cpp/header: Clarabel.cpp/" >"${INCLUDES_FILE}".tmp && mv "${INCLUDES_FILE}".tmp "${INCLUDES_FILE}"
 
 else
 
