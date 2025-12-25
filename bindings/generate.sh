@@ -98,6 +98,7 @@ else
     --define-macro FEATURE_PARDISO_MKL \
     --define-macro FEATURE_PARDISO_ANY \
     --target-package "${ARTIFACT_ID}".bindings \
+    --header-class-name Clarabel_h \
     --output "${JAVA_SRC_DIR}" \
     @"${BINDINGS_DIR}"/includes.txt "${HEADER_FILE_FULL_PATH}" || { echo "Error: Failed to generate bindings"; exit 1; }
 
