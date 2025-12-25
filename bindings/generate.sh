@@ -61,6 +61,7 @@ if [ -d "${PATCHES_DIR}" ]; then
 fi
 
 if [ "${DUMP_INCLUDES}" = "true" ]; then
+
   echo "Dump symbols"
 
   # Dump included symbols
