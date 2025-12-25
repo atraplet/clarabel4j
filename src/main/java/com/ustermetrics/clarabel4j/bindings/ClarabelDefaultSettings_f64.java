@@ -1860,7 +1860,7 @@ public class ClarabelDefaultSettings_f64 {
      * }
      */
     public static int pardiso_iparm(MemorySegment struct, long index0) {
-        return (int)pardiso_iparm$ELEM_HANDLE.get(struct, 0L, index0);
+        return (int)pardiso_iparm$ELEM_HANDLE.get(struct, pardiso_iparm$OFFSET, index0);
     }
 
     /**
@@ -1870,7 +1870,7 @@ public class ClarabelDefaultSettings_f64 {
      * }
      */
     public static void pardiso_iparm(MemorySegment struct, long index0, int fieldValue) {
-        pardiso_iparm$ELEM_HANDLE.set(struct, 0L, index0, fieldValue);
+        pardiso_iparm$ELEM_HANDLE.set(struct, pardiso_iparm$OFFSET, index0, fieldValue);
     }
 
     private static final OfBoolean pardiso_verbose$LAYOUT = (OfBoolean)$LAYOUT.select(groupElement("pardiso_verbose"));
