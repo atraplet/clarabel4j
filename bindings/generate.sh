@@ -55,8 +55,8 @@ git checkout "${VERSION}" || { echo "Error: Failed to checkout version ${VERSION
 if [ -d "${PATCHES_DIR}" ]; then
   if ls "${PATCHES_DIR}"/*.patch 1> /dev/null 2>&1; then
     PATCHES=$(basename -a "${PATCHES_DIR}"/*.patch | tr "\n" " ")
-    echo "Apply patches ${PATCHES}"
-    git apply "${PATCHES_DIR}"/*.patch
+    echo "Apply patch(es) ${PATCHES}"
+    git apply "${PATCHES_DIR}"/*.patch || { echo "Error: Failed to apply patch(es) ${PATCHES}"; exit 1; }
   fi
 fi
 
