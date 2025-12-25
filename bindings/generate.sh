@@ -44,20 +44,24 @@ else
 fi
 
 # Clone and checkout repo
+echo "Clone repository ${REPO} into ${REPO_DIR}"
 rm -rf "${REPO_DIR}"
-cd "${TMP_DIR}" || exit 1
-git clone "${REPO}" || exit 1
-cd "${REPO_DIR}" || exit 1
-git checkout "${VERSION}" || exit 1
+cd "${TMP_DIR}" || { echo "Error: Failed to change directory to ${TMP_DIR}"; exit 1; }
+git clone "${REPO}" || { echo "Error: Failed to clone repository ${REPO}"; exit 1; }
+cd "${REPO_DIR}" || { echo "Error: Failed to change directory to ${REPO_DIR}"; exit 1; }
+git checkout "${VERSION}" || { echo "Error: Failed to checkout version ${VERSION}"; exit 1; }
 
 # Apply patches
 if [ -d "${PATCHES_DIR}" ]; then
   if ls "${PATCHES_DIR}"/*.patch 1> /dev/null 2>&1; then
+    PATCHES=$(ls "${PATCHES_DIR}"/*.patch)
+    echo "Apply patches ${PATCHES}"
     git apply "${PATCHES_DIR}"/*.patch
   fi
 fi
 
 if [ "${DUMP_INCLUDES}" = "true" ]; then
+  echo "Dump symbols"
 
   # Dump included symbols
   "${JEXTRACT}" \
@@ -65,7 +69,7 @@ if [ "${DUMP_INCLUDES}" = "true" ]; then
     --define-macro FEATURE_PARDISO_MKL \
     --define-macro FEATURE_PARDISO_ANY \
     --dump-includes "${INCLUDES_FILE}" \
-    "${HEADER_FILE_FULL_PATH}" || exit 1
+    "${HEADER_FILE_FULL_PATH}" || { echo "Error: Failed to dump symbols"; exit 1; }
 
   # Select symbols
   grep "Clarabel" "${INCLUDES_FILE}" \
@@ -83,6 +87,8 @@ if [ "${DUMP_INCLUDES}" = "true" ]; then
 
 else
 
+  echo "Generate bindings"
+
   # Remove old bindings
   rm -rf "${JAVA_SRC_DIR}"/"${ARTIFACT_ID_DIR}"/bindings
 
@@ -93,7 +99,7 @@ else
     --define-macro FEATURE_PARDISO_ANY \
     --target-package "${ARTIFACT_ID}".bindings \
     --output "${JAVA_SRC_DIR}" \
-    @"${BINDINGS_DIR}"/includes.txt "${HEADER_FILE_FULL_PATH}" || exit 1
+    @"${BINDINGS_DIR}"/includes.txt "${HEADER_FILE_FULL_PATH}" || { echo "Error: Failed to generate bindings"; exit 1; }
 
 fi
 
