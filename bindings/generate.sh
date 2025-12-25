@@ -22,7 +22,7 @@ HEADER_FILE=include/clarabel.h
 
 # Define variables
 ARTIFACT_ID=com.ustermetrics."${PROJECT_NAME}"
-ARTIFACT_ID_DIR=$(echo "${ARTIFACT_ID}" | sed 's/\./\//g')
+ARTIFACT_ID_DIR=$(echo "${ARTIFACT_ID}" | sed "s/\./\//g")
 
 TMP_DIR=$(dirname "$(mktemp -u)")
 REPO_DIR="${TMP_DIR}"/"${REPO##*/}"
@@ -39,25 +39,30 @@ if [[ "$OSTYPE" = "linux-gnu"* ]]; then
 elif [[ "$OSTYPE" = "msys"* ]]; then
   JEXTRACT=jextract.bat
 else
-  echo "OS not supported"
+  echo "Error: OS ${OSTYPE} not supported"
   exit 1
 fi
 
 # Clone and checkout repo
+echo "Clone repository ${REPO} into ${REPO_DIR}"
 rm -rf "${REPO_DIR}"
-cd "${TMP_DIR}" || exit 1
-git clone "${REPO}" || exit 1
-cd "${REPO_DIR}" || exit 1
-git checkout "${VERSION}" || exit 1
+cd "${TMP_DIR}" || { echo "Error: Failed to change directory to ${TMP_DIR}"; exit 1; }
+git clone "${REPO}" || { echo "Error: Failed to clone repository ${REPO}"; exit 1; }
+cd "${REPO_DIR}" || { echo "Error: Failed to change directory to ${REPO_DIR}"; exit 1; }
+git checkout "${VERSION}" || { echo "Error: Failed to checkout version ${VERSION}"; exit 1; }
 
 # Apply patches
 if [ -d "${PATCHES_DIR}" ]; then
   if ls "${PATCHES_DIR}"/*.patch 1> /dev/null 2>&1; then
-    git apply "${PATCHES_DIR}"/*.patch
+    PATCHES=$(basename -a "${PATCHES_DIR}"/*.patch | tr "\n" " ")
+    echo "Apply patch(es) ${PATCHES}"
+    git apply "${PATCHES_DIR}"/*.patch || { echo "Error: Failed to apply patch(es) ${PATCHES}"; exit 1; }
   fi
 fi
 
 if [ "${DUMP_INCLUDES}" = "true" ]; then
+
+  echo "Dump symbols"
 
   # Dump included symbols
   "${JEXTRACT}" \
@@ -65,7 +70,7 @@ if [ "${DUMP_INCLUDES}" = "true" ]; then
     --define-macro FEATURE_PARDISO_MKL \
     --define-macro FEATURE_PARDISO_ANY \
     --dump-includes "${INCLUDES_FILE}" \
-    "${HEADER_FILE_FULL_PATH}" || exit 1
+    "${HEADER_FILE_FULL_PATH}" || { echo "Error: Failed to dump symbols"; exit 1; }
 
   # Select symbols
   grep "Clarabel" "${INCLUDES_FILE}" \
@@ -79,9 +84,13 @@ if [ "${DUMP_INCLUDES}" = "true" ]; then
     | grep -v "\-\-include\-function clarabel_DefaultSolver_f64_unset_termination_callback " \
     | grep -v "\-\-include\-typedef ClarabelCallbackFcn " \
     | grep -v "\-\-include\-typedef ClarabelCallbackFcn_f64 " \
-    | grep -v "\-\-include\-typedef ClarabelSupportedConeT " >"${INCLUDES_FILE}".tmp && mv "${INCLUDES_FILE}".tmp "${INCLUDES_FILE}"
+    | grep -v "\-\-include\-typedef ClarabelSupportedConeT " \
+    | sed "s/Extracted from: .*Clarabel\.cpp/Extracted from: Clarabel.cpp/" \
+    | sed "s/header: .*Clarabel\.cpp/header: Clarabel.cpp/" >"${INCLUDES_FILE}".tmp && mv "${INCLUDES_FILE}".tmp "${INCLUDES_FILE}"
 
 else
+
+  echo "Generate bindings"
 
   # Remove old bindings
   rm -rf "${JAVA_SRC_DIR}"/"${ARTIFACT_ID_DIR}"/bindings
@@ -92,8 +101,9 @@ else
     --define-macro FEATURE_PARDISO_MKL \
     --define-macro FEATURE_PARDISO_ANY \
     --target-package "${ARTIFACT_ID}".bindings \
+    --header-class-name Clarabel_h \
     --output "${JAVA_SRC_DIR}" \
-    @"${BINDINGS_DIR}"/includes.txt "${HEADER_FILE_FULL_PATH}" || exit 1
+    @"${BINDINGS_DIR}"/includes.txt "${HEADER_FILE_FULL_PATH}" || { echo "Error: Failed to generate bindings"; exit 1; }
 
 fi
 
