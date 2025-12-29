@@ -11,7 +11,7 @@
     <properties>
         <java.version>25</java.version>
         <lombok.version>1.18.42</lombok.version>
-        <clarabel4j-native.version>4.0.0-0.11.1</clarabel4j-native.version>
+        <clarabel4j-native.version>4.0.1-0.11.1</clarabel4j-native.version>
         <slf4j.version>2.0.17</slf4j.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
