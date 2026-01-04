@@ -32,7 +32,7 @@ public record Matrix(int m, int n, long @NonNull [] colPtr, long @NonNull [] row
         checkArgument(nnz == rowVal.length, "length of data must be equal to the length of the row index");
         checkArgument(colPtr.length == n + 1,
                 "length of the column index must be equal to the number of columns plus one");
-        checkArgument(nnz <= m * n,
+        checkArgument(nnz <= (long) m * n,
                 "number of non-zero entries must be less equal than the number of rows times the number of columns");
         checkArgument(Arrays.stream(rowVal).allMatch(i -> 0 <= i && i < m),
                 "entries of the row index must be greater equal zero and less than the number of rows");

@@ -3,6 +3,8 @@ package com.ustermetrics.clarabel4j;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixTest {
@@ -123,6 +125,16 @@ class MatrixTest {
         );
 
         assertEquals("entries of the row index within each column must be strictly ordered", exception.getMessage());
+    }
+
+    @Test
+    void createLargeMatrixDoesNotThrowException() {
+        val m = 46341;
+        val colPtr = new long[m + 1];
+        Arrays.fill(colPtr, 1, m + 1, 1);
+        assertDoesNotThrow(() ->
+                new Matrix(m, m, colPtr, new long[]{0}, new double[]{1.})
+        );
     }
 
 }
