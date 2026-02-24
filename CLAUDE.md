@@ -41,7 +41,7 @@ Native Clarabel C Library (clarabel_c — loaded at runtime via NativeLoader)
 
 ### Key Classes (all in `com.ustermetrics.clarabel4j`)
 
-- **Model** — Main orchestrator. Implements `AutoCloseable`. Has three lifecycle stages: `NEW → SETUP → OPTIMIZED`. Manages native memory via `Arena` (confined by default, or caller-provided). Methods: `setParameters()`, `setup()`, `optimize()`, `x()/z()/s()` for results.
+- **Model** — Main orchestrator. Implements `AutoCloseable`. Has three lifecycle stages: `NEW → SETUP → OPTIMIZED`. Manages native memory via `Arena` (confined by default, or caller-provided). Methods: `setParameters()`, `setup()`, `optimize()`, `x()/z()/s()` etc. for results.
 - **Parameters** — Lombok `@Builder` record with ~35 nullable solver settings. Only non-null values override Clarabel defaults.
 - **Matrix** — Record for CSC (Compressed Sparse Column) format sparse matrices. Validates column pointer monotonicity and row index ordering.
 - **Cone** — Abstract sealed class. Subtypes: `ZeroCone`, `NonnegativeCone`, `SecondOrderCone`, `ExponentialCone`, `PowerCone`, `GenPowerCone`. Each has a `getTag()` (native enum value) and `getDimension()`.
