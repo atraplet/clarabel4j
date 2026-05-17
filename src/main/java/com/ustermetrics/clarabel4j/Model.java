@@ -392,7 +392,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * Optimizes this {@link Model} with the<a href="https://clarabel.org">Clarabel</a> solver.
+     * Optimizes this {@link Model} with the <a href="https://clarabel.org">Clarabel</a> solver.
      *
      * @return solver status
      */
