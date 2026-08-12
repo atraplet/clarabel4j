@@ -1,3 +1,5 @@
+
+
 # Clarabel Solver for Java
 
 [![Build](https://github.com/atraplet/clarabel4j/actions/workflows/build.yml/badge.svg)](https://github.com/atraplet/clarabel4j/actions/workflows/build.yml)
@@ -55,6 +57,14 @@ use `--enable-native-access=com.ustermetrics.clarabel4j --enable-native-access=o
 Java runtime.
 
 ## Build
+
+### Project
+
+To compile the project and run tests, use Maven:
+
+```bash
+mvn clean verify
+```
 
 ### Java bindings
 
