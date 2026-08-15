@@ -56,6 +56,14 @@ Java runtime.
 
 ## Build
 
+### Project
+
+To compile the project and run tests, use Maven
+
+```
+mvn clean verify
+```
+
 ### Java bindings
 
 The directory `./bindings` contains the Bash script `generate.sh` needed to generate the Java bindings. The actual
