@@ -1,5 +1,3 @@
-
-
 # Clarabel Solver for Java
 
 [![Build](https://github.com/atraplet/clarabel4j/actions/workflows/build.yml/badge.svg)](https://github.com/atraplet/clarabel4j/actions/workflows/build.yml)
