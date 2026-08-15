@@ -60,7 +60,7 @@ Java runtime.
 
 To compile the project and run tests, use Maven:
 
-```bash
+```
 mvn clean verify
 ```
 
