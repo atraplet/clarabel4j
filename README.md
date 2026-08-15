@@ -58,7 +58,7 @@ Java runtime.
 
 ### Project
 
-To compile the project and run tests, use Maven:
+To compile the project and run tests, use Maven
 
 ```
 mvn clean verify
