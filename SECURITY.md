@@ -27,5 +27,5 @@ We will acknowledge receipt of your report as soon as possible and will keep you
 fix and full announcement. We ask that you do not disclose the vulnerability publicly until we have had a chance to
 address it.
 
-While we will try to triage and fix issues in a timely manner, we cannot guarantee any fixed timeline for issue
-resolution.
+While we will try to triage and fix vulnerabilities in a timely manner, we cannot guarantee any fixed timeline for
+vulnerabilities resolution.
