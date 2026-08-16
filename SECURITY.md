@@ -26,3 +26,6 @@ Please include as much of the following information as possible to help us triag
 We will acknowledge receipt of your report as soon as possible and will keep you informed of the progress towards a
 fix and full announcement. We ask that you do not disclose the vulnerability publicly until we have had a chance to
 address it.
+
+While we will try to triage and fix issues in a timely manner, we cannot guarantee any fixed timeline for issue
+resolution.
