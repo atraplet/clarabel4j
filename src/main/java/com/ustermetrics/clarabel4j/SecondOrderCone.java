@@ -1,9 +1,9 @@
 package com.ustermetrics.clarabel4j;
 
-import lombok.Getter;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelSecondOrderConeT_Tag;
+
+import lombok.Getter;
 
 /**
  * Second-Order Cone
@@ -32,5 +32,4 @@ public final class SecondOrderCone extends Cone {
     public long getDimension() {
         return n;
     }
-
 }

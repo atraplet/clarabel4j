@@ -1,10 +1,10 @@
 package com.ustermetrics.clarabel4j;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ZeroConeTest {
 
@@ -36,5 +36,4 @@ class ZeroConeTest {
 
         assertEquals("n must be positive", exception.getMessage());
     }
-
 }

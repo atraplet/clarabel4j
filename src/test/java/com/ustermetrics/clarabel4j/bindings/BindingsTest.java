@@ -1,14 +1,13 @@
 package com.ustermetrics.clarabel4j.bindings;
 
-import lombok.val;
-import org.junit.jupiter.api.Test;
-
-import java.lang.foreign.Arena;
-
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.*;
 import static java.lang.foreign.MemorySegment.NULL;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.lang.foreign.Arena;
+import lombok.val;
+import org.junit.jupiter.api.Test;
 
 class BindingsTest {
 
@@ -43,14 +42,17 @@ class BindingsTest {
             ClarabelDefaultSettings_f64.verbose(settingsSeg, false);
 
             // Create solver
-            val solverSeg = clarabel_DefaultSolver_f64_new(pSeg, qSeg, aSeg, bSeg, 1, conesSeg, settingsSeg);
+            val solverSeg =
+                    clarabel_DefaultSolver_f64_new(
+                            pSeg, qSeg, aSeg, bSeg, 1, conesSeg, settingsSeg);
 
             // Solve
             clarabel_DefaultSolver_f64_solve(solverSeg);
 
             // Get solution
-            val solutionSeg = ClarabelDefaultSolution_f64.reinterpret(clarabel_DefaultSolver_f64_solution(arena,
-                    solverSeg), arena, null);
+            val solutionSeg =
+                    ClarabelDefaultSolution_f64.reinterpret(
+                            clarabel_DefaultSolver_f64_solution(arena, solverSeg), arena, null);
 
             // Get status
             val status = ClarabelDefaultSolution_f64.status(solutionSeg);
@@ -61,14 +63,14 @@ class BindingsTest {
             assertEquals(2, xLength);
 
             // Get x
-            val x = ClarabelDefaultSolution_f64.x(solutionSeg)
-                    .reinterpret(C_DOUBLE.byteSize() * xLength, arena, null)
-                    .toArray(C_DOUBLE);
-            assertArrayEquals(new double[]{-1., 1.}, x, 1e-8);
+            val x =
+                    ClarabelDefaultSolution_f64.x(solutionSeg)
+                            .reinterpret(C_DOUBLE.byteSize() * xLength, arena, null)
+                            .toArray(C_DOUBLE);
+            assertArrayEquals(new double[] {-1., 1.}, x, 1e-8);
 
             // Free solver
             clarabel_DefaultSolver_f64_free(solverSeg);
         }
     }
-
 }

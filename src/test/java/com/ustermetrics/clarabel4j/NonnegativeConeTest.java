@@ -1,10 +1,10 @@
 package com.ustermetrics.clarabel4j;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import lombok.val;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class NonnegativeConeTest {
 
@@ -32,9 +32,9 @@ class NonnegativeConeTest {
 
     @Test
     void newNonnegativeConeWithZeroNThrowsException() {
-        val exception = assertThrowsExactly(IllegalArgumentException.class, () -> new NonnegativeCone(0));
+        val exception =
+                assertThrowsExactly(IllegalArgumentException.class, () -> new NonnegativeCone(0));
 
         assertEquals("n must be positive", exception.getMessage());
     }
-
 }

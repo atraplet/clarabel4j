@@ -1,13 +1,12 @@
 package com.ustermetrics.clarabel4j;
 
-import lombok.Getter;
-import lombok.NonNull;
-
-import java.util.Arrays;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelGenPowerConeT_Tag;
 import static java.lang.Math.abs;
+
+import java.util.Arrays;
+import lombok.Getter;
+import lombok.NonNull;
 
 /**
  * Generalized Power Cone
@@ -28,8 +27,11 @@ public final class GenPowerCone extends Cone {
      */
     public GenPowerCone(double @NonNull [] a, long n) {
         checkArgument(a.length > 0, "length of a must be positive");
-        checkArgument(Arrays.stream(a).allMatch(e -> 0 < e && e < 1), "all entries of a must be in (0, 1)");
-        checkArgument(abs(Arrays.stream(a).sum() - 1.) < TOLERANCE,
+        checkArgument(
+                Arrays.stream(a).allMatch(e -> 0 < e && e < 1),
+                "all entries of a must be in (0, 1)");
+        checkArgument(
+                abs(Arrays.stream(a).sum() - 1.) < TOLERANCE,
                 "the sum of all entries of a must be equal to one");
         checkArgument(n > 0, "n must be positive");
 
@@ -46,5 +48,4 @@ public final class GenPowerCone extends Cone {
     public long getDimension() {
         return a.length + n;
     }
-
 }

@@ -1,9 +1,9 @@
 package com.ustermetrics.clarabel4j;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import lombok.val;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class FileOutputTest {
 
@@ -14,5 +14,4 @@ class FileOutputTest {
 
         assertEquals(name, output.getName());
     }
-
 }

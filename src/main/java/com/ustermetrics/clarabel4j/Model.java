@@ -1,28 +1,33 @@
 package com.ustermetrics.clarabel4j;
 
-import com.ustermetrics.clarabel4j.bindings.*;
-import lombok.NonNull;
-import lombok.val;
-
-import java.lang.foreign.Arena;
-import java.lang.foreign.MemorySegment;
-import java.util.List;
-import java.util.Optional;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.*;
 import static java.lang.foreign.MemorySegment.NULL;
 
+import com.ustermetrics.clarabel4j.bindings.*;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
+import java.util.List;
+import java.util.Optional;
+import lombok.NonNull;
+import lombok.val;
+
 /**
- * An optimization model which can be optimized with the <a href="https://clarabel.org">Clarabel</a> solver.
- * <p>
- * To control the lifecycle of native memory, {@link Model} implements the {@link AutoCloseable} interface and should
- * be used with the <i>try-with-resources</i> statement or the {@link #close()} method needs to be called manually.
+ * An optimization model which can be optimized with the <a href="https://clarabel.org">Clarabel</a>
+ * solver.
+ *
+ * <p>To control the lifecycle of native memory, {@link Model} implements the {@link AutoCloseable}
+ * interface and should be used with the <i>try-with-resources</i> statement or the {@link #close()}
+ * method needs to be called manually.
  */
 public class Model implements AutoCloseable {
 
-    private enum Stage {NEW, SETUP, OPTIMIZED}
+    private enum Stage {
+        NEW,
+        SETUP,
+        OPTIMIZED
+    }
 
     private final Arena arena;
     private final boolean closeArena;
@@ -34,8 +39,8 @@ public class Model implements AutoCloseable {
     private MemorySegment infoSeg;
 
     /**
-     * Creates a new {@link Model} instance, where the lifecycle of native memory is controlled by a new confined arena.
-     * The arena is closed when the {@link Model} instance is closed.
+     * Creates a new {@link Model} instance, where the lifecycle of native memory is controlled by a
+     * new confined arena. The arena is closed when the {@link Model} instance is closed.
      */
     public Model() {
         arena = Arena.ofConfined();
@@ -43,8 +48,8 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * Creates a new {@link Model} instance, where the lifecycle of native memory is controlled by the given
-     * {@link Arena} instance.
+     * Creates a new {@link Model} instance, where the lifecycle of native memory is controlled by
+     * the given {@link Arena} instance.
      *
      * @param arena {@link Arena} instance to control the lifecycle of native memory
      */
@@ -55,8 +60,8 @@ public class Model implements AutoCloseable {
 
     /**
      * Sets the <a href="https://clarabel.org">Clarabel</a> solver settings.
-     * <p>
-     * If not called, then solver defaults are applied.
+     *
+     * <p>If not called, then solver defaults are applied.
      *
      * @param parameters parameter object for the solver settings
      */
@@ -67,8 +72,7 @@ public class Model implements AutoCloseable {
     }
 
     /**
-     * Sets the output type.
-     * If not called, then the output goes to standard out.
+     * Sets the output type. If not called, then the output goes to standard out.
      *
      * @param output the output type
      */
@@ -80,20 +84,23 @@ public class Model implements AutoCloseable {
 
     /**
      * Set up this {@link Model} data for a convex optimization problem of type
+     *
      * <pre>
      * minimize        1/2 x'Px + q'x
      * subject to      Ax + s = b
      *                 s in K
      * </pre>
-     * where x are the primal variables, s are slack variables, and P, q, A, and b are the model data. The convex set
-     * K is a composition of convex cones. Supported cones are the Zero cone, the Nonnegative Orthant, the
-     * Second-Order Cone, the Exponential Cone, the Power Cone, and the Generalized Power Cone.
      *
-     * @param p     (optional) cost function matrix P. P is assumed to be positive semi-definite and only values in
-     *              the upper triangular part of P need to be supplied.
-     * @param q     (optional) cost function weights q
-     * @param a     (optional) cone constraints matrix A
-     * @param b     (optional) right-hand-side of the cone constraints
+     * where x are the primal variables, s are slack variables, and P, q, A, and b are the model
+     * data. The convex set K is a composition of convex cones. Supported cones are the Zero cone,
+     * the Nonnegative Orthant, the Second-Order Cone, the Exponential Cone, the Power Cone, and the
+     * Generalized Power Cone.
+     *
+     * @param p (optional) cost function matrix P. P is assumed to be positive semi-definite and
+     *     only values in the upper triangular part of P need to be supplied.
+     * @param q (optional) cost function weights q
+     * @param a (optional) cone constraints matrix A
+     * @param b (optional) right-hand-side of the cone constraints
      * @param cones (optional) types and dimensions of the convex cones
      * @see <a href="https://clarabel.org">Clarabel</a>
      */
@@ -102,9 +109,11 @@ public class Model implements AutoCloseable {
         unsafeSetup(p, q, a, b, cones);
     }
 
-    private static void checkArguments(Matrix p, double[] q, Matrix a, double[] b, List<Cone> cones) {
+    private static void checkArguments(
+            Matrix p, double[] q, Matrix a, double[] b, List<Cone> cones) {
         checkArgument(p != null || a != null, "P or A must be supplied");
-        checkArgument(a != null && b != null && cones != null || a == null && b == null && cones == null,
+        checkArgument(
+                a != null && b != null && cones != null || a == null && b == null && cones == null,
                 "A, b, and cones must be supplied together or must be null together");
 
         checkArgument(p == null || p.m() == p.n(), "P must be null or a square matrix");
@@ -112,43 +121,52 @@ public class Model implements AutoCloseable {
         checkArgument(b == null || b.length > 0, "b must be null or the length must be positive");
         checkArgument(cones == null || !cones.isEmpty(), "cones must be null or not empty");
 
-        checkArgument(p == null || q == null || p.n() == q.length,
+        checkArgument(
+                p == null || q == null || p.n() == q.length,
                 "P or q must be null or the number of columns of P must be equal to the length of q");
-        checkArgument(p == null || a == null || p.n() == a.n(),
+        checkArgument(
+                p == null || a == null || p.n() == a.n(),
                 "P or A must be null or the number of columns of P must be equal to the number of columns of A");
-        checkArgument(q == null || a == null || q.length == a.n(),
+        checkArgument(
+                q == null || a == null || q.length == a.n(),
                 "q or A must be null or the length of q must be equal to the number of columns of A");
-        checkArgument(a == null || a.m() == b.length,
+        checkArgument(
+                a == null || a.m() == b.length,
                 "A must be null or the number of rows of A must be equal to the length of b");
-        checkArgument(a == null || a.m() == cones.stream().mapToLong(Cone::getDimension).sum(),
+        checkArgument(
+                a == null || a.m() == cones.stream().mapToLong(Cone::getDimension).sum(),
                 "A must be null or the number of rows of A must be equal to the dimension of the convex set K");
     }
 
     /**
      * Set up the {@link Model} data.
-     * <p>
-     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without quadratic cost
-     * function part, i.e. {@code p} is {@code null}.
      *
-     * @param q     (optional) cost function weights q
-     * @param a     cone constraints matrix A
-     * @param b     right-hand-side of the cone constraints
+     * <p>Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)}
+     * without quadratic cost function part, i.e. {@code p} is {@code null}.
+     *
+     * @param q (optional) cost function weights q
+     * @param a cone constraints matrix A
+     * @param b right-hand-side of the cone constraints
      * @param cones types and dimensions of the convex cones
      */
-    public void setup(double[] q, @NonNull Matrix a, double @NonNull [] b, @NonNull List<@NonNull Cone> cones) {
+    public void setup(
+            double[] q,
+            @NonNull Matrix a,
+            double @NonNull [] b,
+            @NonNull List<@NonNull Cone> cones) {
         setup(null, q, a, b, cones);
     }
 
     /**
      * Set up the {@link Model} data.
-     * <p>
-     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without linear cost
-     * function part, i.e. {@code q} is {@code null}.
      *
-     * @param p     (optional) cost function matrix P. P is assumed to be positive semi-definite and only values in
-     *              the upper triangular part of P need to be supplied.
-     * @param a     (optional) cone constraints matrix A
-     * @param b     (optional) right-hand-side of the cone constraints
+     * <p>Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)}
+     * without linear cost function part, i.e. {@code q} is {@code null}.
+     *
+     * @param p (optional) cost function matrix P. P is assumed to be positive semi-definite and
+     *     only values in the upper triangular part of P need to be supplied.
+     * @param a (optional) cone constraints matrix A
+     * @param b (optional) right-hand-side of the cone constraints
      * @param cones (optional) types and dimensions of the convex cones
      */
     public void setup(Matrix p, Matrix a, double[] b, List<@NonNull Cone> cones) {
@@ -157,26 +175,27 @@ public class Model implements AutoCloseable {
 
     /**
      * Set up the {@link Model} data.
-     * <p>
-     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without cost function, i.e.
-     * {@code p} and {@code q} are {@code null}.
      *
-     * @param a     cone constraints matrix A
-     * @param b     right-hand-side of the cone constraints
+     * <p>Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)}
+     * without cost function, i.e. {@code p} and {@code q} are {@code null}.
+     *
+     * @param a cone constraints matrix A
+     * @param b right-hand-side of the cone constraints
      * @param cones types and dimensions of the convex cones
      */
-    public void setup(@NonNull Matrix a, double @NonNull [] b, @NonNull List<@NonNull Cone> cones) { //
+    public void setup(
+            @NonNull Matrix a, double @NonNull [] b, @NonNull List<@NonNull Cone> cones) { //
         setup(null, null, a, b, cones);
     }
 
     /**
      * Set up the {@link Model} data.
-     * <p>
-     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without cone constraints,
-     * i.e. {@code a}, {@code b}, and {@code cones} are {@code null}.
      *
-     * @param p cost function matrix P. P is assumed to be positive semi-definite and only values in the upper
-     *          triangular part of P need to be supplied.
+     * <p>Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)}
+     * without cone constraints, i.e. {@code a}, {@code b}, and {@code cones} are {@code null}.
+     *
+     * @param p cost function matrix P. P is assumed to be positive semi-definite and only values in
+     *     the upper triangular part of P need to be supplied.
      * @param q (optional) cost function weights q
      */
     public void setup(@NonNull Matrix p, double[] q) {
@@ -185,12 +204,13 @@ public class Model implements AutoCloseable {
 
     /**
      * Set up the {@link Model} data.
-     * <p>
-     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without linear cost
-     * function part and cone constraints, i.e. {@code q}, {@code a}, {@code b}, and {@code cones} are {@code null}.
      *
-     * @param p cost function matrix P. P is assumed to be positive semi-definite and only values in the upper
-     *          triangular part of P need to be supplied.
+     * <p>Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)}
+     * without linear cost function part and cone constraints, i.e. {@code q}, {@code a}, {@code b},
+     * and {@code cones} are {@code null}.
+     *
+     * @param p cost function matrix P. P is assumed to be positive semi-definite and only values in
+     *     the upper triangular part of P need to be supplied.
      */
     public void setup(@NonNull Matrix p) {
         setup(p, null, null, null, null);
@@ -198,32 +218,38 @@ public class Model implements AutoCloseable {
 
     /**
      * Unsafe set up the {@link Model} data.
-     * <p>
-     * Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)} without any precondition
-     * checks on its arguments.
-     * <p>
-     * <b>Warning: Setting the arguments incorrectly may lead to incorrect results in the best case. In the worst
-     * case, it can crash the JVM and may silently result in memory corruption.</b>
      *
-     * @param p     (optional) cost function matrix P. P is assumed to be positive semi-definite and only values in
-     *              the upper triangular part of P need to be supplied.
-     * @param q     (optional) cost function weights q
-     * @param a     (optional) cone constraints matrix A
-     * @param b     (optional) right-hand-side of the cone constraints
+     * <p>Same as {@link Model#setup(Matrix p, double[] q, Matrix a, double[] b, List cones)}
+     * without any precondition checks on its arguments.
+     *
+     * <p><b>Warning: Setting the arguments incorrectly may lead to incorrect results in the best
+     * case. In the worst case, it can crash the JVM and may silently result in memory
+     * corruption.</b>
+     *
+     * @param p (optional) cost function matrix P. P is assumed to be positive semi-definite and
+     *     only values in the upper triangular part of P need to be supplied.
+     * @param q (optional) cost function weights q
+     * @param a (optional) cone constraints matrix A
+     * @param b (optional) right-hand-side of the cone constraints
      * @param cones (optional) types and dimensions of the convex cones
      */
     public void unsafeSetup(Matrix p, double[] q, Matrix a, double[] b, List<@NonNull Cone> cones) {
         checkState(stage == Stage.NEW, "model must be in stage new");
 
         val pSeg = p != null ? createMatrixSegment(p) : createNullMatrixSegment(a.n(), a.n());
-        val qSeg = q != null ? createArraySegment(q) : createNullArraySegment(p != null ? p.n() : a.n());
+        val qSeg =
+                q != null
+                        ? createArraySegment(q)
+                        : createNullArraySegment(p != null ? p.n() : a.n());
         val aSeg = a != null ? createMatrixSegment(a) : createNullMatrixSegment(0, p.n());
         val bSeg = b != null ? createArraySegment(b) : createNullArraySegment(0);
         val nCones = cones != null ? cones.size() : 0;
         val conesSeg = cones != null ? createConesSegment(cones) : createNullConesSegment();
         val settingsSeg = createSettingsSegment();
 
-        solverSeg = clarabel_DefaultSolver_f64_new(pSeg, qSeg, aSeg, bSeg, nCones, conesSeg, settingsSeg);
+        solverSeg =
+                clarabel_DefaultSolver_f64_new(
+                        pSeg, qSeg, aSeg, bSeg, nCones, conesSeg, settingsSeg);
 
         setOutput();
 
@@ -235,7 +261,8 @@ public class Model implements AutoCloseable {
         val colPtrSeg = arena.allocateFrom(C_LONG_LONG, matrix.colPtr());
         val rowValSeg = arena.allocateFrom(C_LONG_LONG, matrix.rowVal());
         val nzValSeg = arena.allocateFrom(C_DOUBLE, matrix.nzVal());
-        clarabel_CscMatrix_f64_init(matrixSeg, matrix.m(), matrix.n(), colPtrSeg, rowValSeg, nzValSeg);
+        clarabel_CscMatrix_f64_init(
+                matrixSeg, matrix.m(), matrix.n(), colPtrSeg, rowValSeg, nzValSeg);
 
         return matrixSeg;
     }
@@ -265,18 +292,22 @@ public class Model implements AutoCloseable {
             val cone = cones.get(i);
 
             switch (cone) {
-                case ZeroCone zeroCone -> ClarabelSupportedConeT_f64.zero_cone_t(coneSeg, zeroCone.getN());
+                case ZeroCone zeroCone ->
+                        ClarabelSupportedConeT_f64.zero_cone_t(coneSeg, zeroCone.getN());
                 case NonnegativeCone nonnegativeCone ->
-                        ClarabelSupportedConeT_f64.nonnegative_cone_t(coneSeg, nonnegativeCone.getN());
+                        ClarabelSupportedConeT_f64.nonnegative_cone_t(
+                                coneSeg, nonnegativeCone.getN());
                 case SecondOrderCone secondOrderCone ->
-                        ClarabelSupportedConeT_f64.second_order_cone_t(coneSeg, secondOrderCone.getN());
-                case ExponentialCone _ -> {
-                }
-                case PowerCone powerCone -> ClarabelSupportedConeT_f64.power_cone_t(coneSeg, powerCone.getA());
+                        ClarabelSupportedConeT_f64.second_order_cone_t(
+                                coneSeg, secondOrderCone.getN());
+                case ExponentialCone _ -> {}
+                case PowerCone powerCone ->
+                        ClarabelSupportedConeT_f64.power_cone_t(coneSeg, powerCone.getA());
                 case GenPowerCone genPowerCone -> {
                     val alphaSeg = arena.allocateFrom(C_DOUBLE, genPowerCone.getA());
                     ClarabelSupportedConeT_f64.genpow_cone_alpha_t(coneSeg, alphaSeg);
-                    ClarabelSupportedConeT_f64.genpow_cone_dim1_t(coneSeg, genPowerCone.getA().length);
+                    ClarabelSupportedConeT_f64.genpow_cone_dim1_t(
+                            coneSeg, genPowerCone.getA().length);
                     ClarabelSupportedConeT_f64.genpow_cone_dim2_t(coneSeg, genPowerCone.getN());
                 }
             }
@@ -316,63 +347,127 @@ public class Model implements AutoCloseable {
             Optional.ofNullable(parameters.tolKtratio())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.tol_ktratio(settingsSeg, p));
             Optional.ofNullable(parameters.reducedTolGapAbs())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_gap_abs(settingsSeg, p));
+                    .ifPresent(
+                            p -> ClarabelDefaultSettings_f64.reduced_tol_gap_abs(settingsSeg, p));
             Optional.ofNullable(parameters.reducedTolGapRel())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_gap_rel(settingsSeg, p));
+                    .ifPresent(
+                            p -> ClarabelDefaultSettings_f64.reduced_tol_gap_rel(settingsSeg, p));
             Optional.ofNullable(parameters.reducedTolFeas())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_feas(settingsSeg, p));
             Optional.ofNullable(parameters.reducedTolInfeasAbs())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_infeas_abs(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.reduced_tol_infeas_abs(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.reducedTolInfeasRel())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_infeas_rel(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.reduced_tol_infeas_rel(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.reducedTolKtratio())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.reduced_tol_ktratio(settingsSeg, p));
+                    .ifPresent(
+                            p -> ClarabelDefaultSettings_f64.reduced_tol_ktratio(settingsSeg, p));
             Optional.ofNullable(parameters.equilibrateEnable())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_enable(settingsSeg, p));
             Optional.ofNullable(parameters.equilibrateMaxIter())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_max_iter(settingsSeg, p));
+                    .ifPresent(
+                            p -> ClarabelDefaultSettings_f64.equilibrate_max_iter(settingsSeg, p));
             Optional.ofNullable(parameters.equilibrateMinScaling())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_min_scaling(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.equilibrate_min_scaling(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.equilibrateMaxScaling())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.equilibrate_max_scaling(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.equilibrate_max_scaling(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.linesearchBacktrackStep())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.linesearch_backtrack_step(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.linesearch_backtrack_step(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.minSwitchStepLength())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.min_switch_step_length(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.min_switch_step_length(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.minTerminateStepLength())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.min_terminate_step_length(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.min_terminate_step_length(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.maxThreads())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.max_threads(settingsSeg, p));
             Optional.ofNullable(parameters.directKktSolver())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.direct_kkt_solver(settingsSeg, p));
             Optional.ofNullable(parameters.directSolveMethod())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.direct_solve_method(settingsSeg, p.method()));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.direct_solve_method(
+                                            settingsSeg, p.method()));
             Optional.ofNullable(parameters.staticRegularizationEnable())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.static_regularization_enable(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.static_regularization_enable(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.staticRegularizationConstant())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.static_regularization_constant(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.static_regularization_constant(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.staticRegularizationProportional())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.static_regularization_proportional(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.static_regularization_proportional(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.dynamicRegularizationEnable())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.dynamic_regularization_enable(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.dynamic_regularization_enable(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.dynamicRegularizationEps())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.dynamic_regularization_eps(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.dynamic_regularization_eps(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.dynamicRegularizationDelta())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.dynamic_regularization_delta(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.dynamic_regularization_delta(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.iterativeRefinementEnable())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_enable(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.iterative_refinement_enable(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.iterativeRefinementReltol())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_reltol(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.iterative_refinement_reltol(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.iterativeRefinementAbstol())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_abstol(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.iterative_refinement_abstol(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.iterativeRefinementMaxIter())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_max_iter(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.iterative_refinement_max_iter(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.iterativeRefinementStopRatio())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.iterative_refinement_stop_ratio(settingsSeg, p));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.iterative_refinement_stop_ratio(
+                                            settingsSeg, p));
             Optional.ofNullable(parameters.presolveEnable())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.presolve_enable(settingsSeg, p));
             Optional.ofNullable(parameters.pardisoIparm())
-                    .ifPresent(p -> ClarabelDefaultSettings_f64.pardiso_iparm(settingsSeg, arena.allocateFrom(C_INT, p)));
+                    .ifPresent(
+                            p ->
+                                    ClarabelDefaultSettings_f64.pardiso_iparm(
+                                            settingsSeg, arena.allocateFrom(C_INT, p)));
             Optional.ofNullable(parameters.pardisoVerbose())
                     .ifPresent(p -> ClarabelDefaultSettings_f64.pardiso_verbose(settingsSeg, p));
         }
@@ -386,7 +481,8 @@ public class Model implements AutoCloseable {
                 case StdOutOutput _ -> clarabel_DefaultSolver_f64_print_to_stdout(solverSeg);
                 case StringOutput _ -> clarabel_DefaultSolver_f64_print_to_buffer(solverSeg);
                 case FileOutput fileOutput ->
-                        clarabel_DefaultSolver_f64_print_to_file(solverSeg, arena.allocateFrom(fileOutput.getName()));
+                        clarabel_DefaultSolver_f64_print_to_file(
+                                solverSeg, arena.allocateFrom(fileOutput.getName()));
             }
         }
     }
@@ -400,9 +496,12 @@ public class Model implements AutoCloseable {
         checkState(stage != Stage.NEW, "model must not be in stage new");
 
         clarabel_DefaultSolver_f64_solve(solverSeg);
-        solutionSeg = ClarabelDefaultSolution_f64.reinterpret(clarabel_DefaultSolver_f64_solution(arena, solverSeg),
-                arena, null);
-        infoSeg = ClarabelDefaultInfo_f64.reinterpret(clarabel_DefaultSolver_f64_info(arena, solverSeg), arena, null);
+        solutionSeg =
+                ClarabelDefaultSolution_f64.reinterpret(
+                        clarabel_DefaultSolver_f64_solution(arena, solverSeg), arena, null);
+        infoSeg =
+                ClarabelDefaultInfo_f64.reinterpret(
+                        clarabel_DefaultSolver_f64_info(arena, solverSeg), arena, null);
 
         val status = Status.valueOf(ClarabelDefaultSolution_f64.status(solutionSeg));
         stage = Stage.OPTIMIZED;
@@ -410,9 +509,7 @@ public class Model implements AutoCloseable {
         return status;
     }
 
-    /**
-     * Cleanup: free this {@link Model} native memory.
-     */
+    /** Cleanup: free this {@link Model} native memory. */
     public void cleanup() {
         checkState(stage != Stage.NEW, "model must not be in stage new");
         clarabel_DefaultSolver_f64_free(solverSeg);
@@ -515,7 +612,8 @@ public class Model implements AutoCloseable {
      */
     public DirectSolveMethod directSolveMethod() {
         checkStageIsOptimized();
-        return DirectSolveMethod.valueOf(ClarabelLinearSolverInfo.name(ClarabelDefaultInfo_f64.linsolver(infoSeg)));
+        return DirectSolveMethod.valueOf(
+                ClarabelLinearSolverInfo.name(ClarabelDefaultInfo_f64.linsolver(infoSeg)));
     }
 
     /**
@@ -572,5 +670,4 @@ public class Model implements AutoCloseable {
             arena.close();
         }
     }
-
 }

@@ -1,14 +1,11 @@
 package com.ustermetrics.clarabel4j;
 
-import lombok.val;
-
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.*;
 
-/**
- * The direct linear solver used by <a href="https://clarabel.org">Clarabel</a>.
- */
-public enum DirectSolveMethod {
+import lombok.val;
 
+/** The direct linear solver used by <a href="https://clarabel.org">Clarabel</a>. */
+public enum DirectSolveMethod {
     AUTO(AUTO()),
     QDLDL(QDLDL()),
     FAER(FAER()),
@@ -33,5 +30,4 @@ public enum DirectSolveMethod {
 
         throw new IllegalArgumentException("Unknown direct solve method " + method);
     }
-
 }

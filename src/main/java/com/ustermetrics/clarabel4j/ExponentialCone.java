@@ -18,5 +18,4 @@ public final class ExponentialCone extends Cone {
     public long getDimension() {
         return 3;
     }
-
 }

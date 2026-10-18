@@ -1,9 +1,9 @@
 package com.ustermetrics.clarabel4j;
 
-import lombok.Getter;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelNonnegativeConeT_Tag;
+
+import lombok.Getter;
 
 /**
  * Nonnegative Orthant
@@ -32,5 +32,4 @@ public final class NonnegativeCone extends Cone {
     public long getDimension() {
         return n;
     }
-
 }

@@ -1,9 +1,9 @@
 package com.ustermetrics.clarabel4j;
 
-import lombok.Getter;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelPowerConeT_Tag;
+
+import lombok.Getter;
 
 /**
  * Power Cone
@@ -32,5 +32,4 @@ public final class PowerCone extends Cone {
     public long getDimension() {
         return 3;
     }
-
 }

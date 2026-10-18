@@ -3,9 +3,7 @@ package com.ustermetrics.clarabel4j;
 import lombok.Getter;
 import lombok.NonNull;
 
-/**
- * File output
- */
+/** File output */
 @Getter
 public final class FileOutput implements Output {
 
@@ -14,5 +12,4 @@ public final class FileOutput implements Output {
     public FileOutput(@NonNull String name) {
         this.name = name;
     }
-
 }
