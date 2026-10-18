@@ -124,3 +124,6 @@ fabric.properties
 
 # VS Code
 .vscode/
+
+# Claude Code inside Nono sandbox
+claude-security-guidance-*/
