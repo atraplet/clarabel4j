@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: Uster Metrics GmbH
+// SPDX-License-Identifier: Apache-2.0
 package com.ustermetrics.clarabel4j;
 
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelExponentialConeT_Tag;
@@ -18,5 +20,4 @@ public final class ExponentialCone extends Cone {
     public long getDimension() {
         return 3;
     }
-
 }
