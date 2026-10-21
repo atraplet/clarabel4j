@@ -1,10 +1,12 @@
+// SPDX-FileCopyrightText: Uster Metrics GmbH
+// SPDX-License-Identifier: Apache-2.0
 package com.ustermetrics.clarabel4j;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 class ExponentialConeTest {
 
@@ -24,5 +26,4 @@ class ExponentialConeTest {
     void getDimensionReturnsCorrectDimension() {
         assertEquals(3, cone.getDimension());
     }
-
 }
