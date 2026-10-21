@@ -1,9 +1,11 @@
+// SPDX-FileCopyrightText: Uster Metrics GmbH
+// SPDX-License-Identifier: Apache-2.0
 package com.ustermetrics.clarabel4j;
-
-import lombok.Getter;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.ClarabelNonnegativeConeT_Tag;
+
+import lombok.Getter;
 
 /**
  * Nonnegative Orthant
@@ -15,9 +17,7 @@ public final class NonnegativeCone extends Cone {
 
     private final long n;
 
-    /**
-     * @param n dimension
-     */
+    /** @param n dimension */
     public NonnegativeCone(long n) {
         checkArgument(n > 0, "n must be positive");
         this.n = n;
@@ -32,5 +32,4 @@ public final class NonnegativeCone extends Cone {
     public long getDimension() {
         return n;
     }
-
 }

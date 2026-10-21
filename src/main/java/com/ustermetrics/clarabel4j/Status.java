@@ -1,14 +1,13 @@
+// SPDX-FileCopyrightText: Uster Metrics GmbH
+// SPDX-License-Identifier: Apache-2.0
 package com.ustermetrics.clarabel4j;
-
-import lombok.val;
 
 import static com.ustermetrics.clarabel4j.bindings.Clarabel_h.*;
 
-/**
- * The <a href="https://clarabel.org">Clarabel</a> solver status from optimizing a {@link Model}.
- */
-public enum Status {
+import lombok.val;
 
+/** The <a href="https://clarabel.org">Clarabel</a> solver status from optimizing a {@link Model}. */
+public enum Status {
     UNSOLVED(ClarabelUnsolved()),
     SOLVED(ClarabelSolved()),
     PRIMAL_INFEASIBLE(ClarabelPrimalInfeasible()),
@@ -41,5 +40,4 @@ public enum Status {
 
         throw new IllegalArgumentException("Unknown status " + status);
     }
-
 }

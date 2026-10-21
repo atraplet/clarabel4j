@@ -1,11 +1,13 @@
+// SPDX-FileCopyrightText: Uster Metrics GmbH
+// SPDX-License-Identifier: Apache-2.0
 package com.ustermetrics.clarabel4j;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class DirectSolveMethodTest {
 
@@ -21,5 +23,4 @@ class DirectSolveMethodTest {
 
         assertEquals("Unknown direct solve method 100", exception.getMessage());
     }
-
 }
