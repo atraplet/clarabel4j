@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ustermetrics</groupId>
     <artifactId>clarabel4j</artifactId>
     <version>3-SNAPSHOT</version>
-
-    <properties>
-        <java.version>25</java.version>
-        <lombok.version>1.18.48</lombok.version>
-        <clarabel4j-native.version>4.0.1-0.11.1</clarabel4j-native.version>
-        <slf4j.version>2.0.20</slf4j.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <maven.compiler.proc>full</maven.compiler.proc>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <git.repository>https://github.com/atraplet/${project.artifactId}</git.repository>
-        <argLine/>
-    </properties>
 
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Clarabel Solver for Java</description>
@@ -47,6 +32,20 @@
         <developerConnection>scm:git:${git.repository}.git</developerConnection>
         <url>${git.repository}/tree/master</url>
     </scm>
+
+    <properties>
+        <java.version>25</java.version>
+        <lombok.version>1.18.48</lombok.version>
+        <clarabel4j-native.version>4.0.1-0.11.1</clarabel4j-native.version>
+        <slf4j.version>2.0.20</slf4j.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.proc>full</maven.compiler.proc>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <git.repository>https://github.com/atraplet/${project.artifactId}</git.repository>
+        <argLine/>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -106,11 +105,44 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.6.0</version>
                 <configuration>
-                    <argLine>
-                        @{argLine} --enable-native-access=com.ustermetrics.clarabel4j
-                        --enable-native-access=org.scijava.nativelib
-                    </argLine>
+                    <argLine>@{argLine} --enable-native-access=com.ustermetrics.clarabel4j
+                        --enable-native-access=org.scijava.nativelib</argLine>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>3.10.4</version>
+                <configuration>
+                    <java>
+                        <excludes>
+                            <exclude>src/main/java/com/ustermetrics/clarabel4j/bindings/*.java</exclude>
+                        </excludes>
+                        <palantirJavaFormat>
+                            <version>2.102.0</version>
+                            <style>PALANTIR</style>
+                            <formatJavadoc>true</formatJavadoc>
+                        </palantirJavaFormat>
+                        <removeUnusedImports/>
+                        <licenseHeader>
+                            <file>${project.basedir}/license-header.txt</file>
+                        </licenseHeader>
+                    </java>
+                    <pom>
+                        <sortPom>
+                            <nrOfIndentSpace>4</nrOfIndentSpace>
+                            <expandEmptyElements>false</expandEmptyElements>
+                            <indentAttribute>schemaLocation</indentAttribute>
+                        </sortPom>
+                    </pom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -204,10 +236,10 @@
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
-                                <phase>verify</phase>
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <phase>verify</phase>
                                 <configuration>
                                     <gpgArguments>
                                         <arg>--pinentry-mode</arg>
@@ -238,6 +270,11 @@
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <version>0.8.15</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/ustermetrics/clarabel4j/bindings/**</exclude>
+                            </excludes>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
@@ -251,11 +288,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <excludes>
-                                <exclude>com/ustermetrics/clarabel4j/bindings/**</exclude>
-                            </excludes>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
